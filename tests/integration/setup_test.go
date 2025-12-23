@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/stretchr/testify/require"
 	"github.com/waqasmani/go-boilerplate/internal/app"
 	"github.com/waqasmani/go-boilerplate/internal/config"
 	"github.com/waqasmani/go-boilerplate/internal/infrastructure/observability"
@@ -55,11 +56,13 @@ func SetupTestEnvironment(t *testing.T) *TestContext {
 
 	testDBUser := os.Getenv("TEST_DB_USER")
 	if testDBUser == "" {
+		// Use the same credentials as defined in the CI workflow
 		testDBUser = "auth_user"
 	}
 
 	testDBPassword := os.Getenv("TEST_DB_PASSWORD")
 	if testDBPassword == "" {
+		// Use the same credentials as defined in the CI workflow
 		testDBPassword = "your_secure_password"
 	}
 
@@ -72,45 +75,42 @@ func SetupTestEnvironment(t *testing.T) *TestContext {
 	os.Setenv("DB_NAME", testDBName)
 
 	cfg, err := config.Load()
-	if err != nil {
-		t.Fatalf("Failed to load config: %v", err)
-	}
+	require.NoError(t, err, "Failed to load config")
 
 	logger, err := observability.NewLogger("error", "console")
-	if err != nil {
-		t.Fatalf("Failed to create logger: %v", err)
-	}
+	require.NoError(t, err, "Failed to create logger")
 
-	rootDSN := fmt.Sprintf("%s:%s@tcp(%s:%s)/", testDBUser, testDBPassword, testDBHost, testDBPort)
+	// Create database as root user first
+	rootDSN := fmt.Sprintf("root:root_password@tcp(%s:%s)/", testDBHost, testDBPort)
 	rootDB, err := sql.Open("mysql", rootDSN)
-	if err != nil {
-		t.Fatalf("Failed to connect to MySQL: %v", err)
-	}
+	require.NoError(t, err, "Failed to connect to MySQL as root")
 
+	defer func() {
+		if err := rootDB.Close(); err != nil {
+			t.Logf("Warning: Failed to close root database connection: %v", err)
+		}
+	}()
+
+	// Create test database
 	_, err = rootDB.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS `%s`", testDBName))
-	if err != nil {
-		t.Fatalf("Failed to create test database: %v", err)
-	}
-	rootDB.Close()
+	require.NoError(t, err, "Failed to create test database")
+
+	// Grant privileges to the test user
+	_, err = rootDB.Exec(fmt.Sprintf("GRANT ALL PRIVILEGES ON `%s`.* TO '%s'@'%%'", testDBName, testDBUser))
+	require.NoError(t, err, "Failed to grant privileges to test user")
 
 	testDSN := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&charset=utf8mb4&collation=utf8mb4_unicode_ci",
 		testDBUser, testDBPassword, testDBHost, testDBPort, testDBName)
 
 	db, err := sql.Open("mysql", testDSN)
-	if err != nil {
-		t.Fatalf("Failed to connect to test database: %v", err)
-	}
+	require.NoError(t, err, "Failed to connect to test database")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	if err := db.PingContext(ctx); err != nil {
-		t.Fatalf("Failed to ping test database: %v", err)
-	}
+	require.NoError(t, db.PingContext(ctx), "Failed to ping test database")
 
-	if err := runMigrations(db); err != nil {
-		t.Fatalf("Failed to run migrations: %v", err)
-	}
+	require.NoError(t, runMigrations(db), "Failed to run migrations")
 
 	container := app.NewContainer(cfg, db, logger)
 	router := app.SetupRouter(container)
@@ -125,22 +125,42 @@ func SetupTestEnvironment(t *testing.T) *TestContext {
 }
 
 func (tc *TestContext) Cleanup(t *testing.T) {
+	if tc == nil {
+		return
+	}
+
+	if tc.DB != nil {
+		if err := tc.DB.Close(); err != nil {
+			t.Logf("Warning: Failed to close test database connection: %v", err)
+		}
+	}
+
+	if tc.Logger != nil {
+		if err := tc.Logger.Sync(); err != nil {
+			t.Logf("Warning: Failed to sync logger: %v", err)
+		}
+	}
+
+	if tc.Config == nil {
+		return
+	}
+
 	testDBName := tc.Config.Database.Name
-
-	tc.DB.Close()
-
 	testDBHost := tc.Config.Database.Host
 	testDBPort := tc.Config.Database.Port
-	testDBUser := tc.Config.Database.User
-	testDBPassword := tc.Config.Database.Password
 
-	rootDSN := fmt.Sprintf("%s:%s@tcp(%s:%s)/", testDBUser, testDBPassword, testDBHost, testDBPort)
+	// Use root credentials for cleanup
+	rootDSN := fmt.Sprintf("root:root_password@tcp(%s:%s)/", testDBHost, testDBPort)
 	rootDB, err := sql.Open("mysql", rootDSN)
 	if err != nil {
 		t.Logf("Warning: Failed to connect to MySQL for cleanup: %v", err)
 		return
 	}
-	defer rootDB.Close()
+	defer func() {
+		if err := rootDB.Close(); err != nil {
+			t.Logf("Warning: Failed to close root database connection during cleanup: %v", err)
+		}
+	}()
 
 	_, err = rootDB.Exec(fmt.Sprintf("DROP DATABASE IF EXISTS `%s`", testDBName))
 	if err != nil {
@@ -179,10 +199,23 @@ func runMigrations(db *sql.DB) error {
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`,
 	}
 
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+
 	for _, migration := range migrations {
-		if _, err := db.Exec(migration); err != nil {
+		if _, err := tx.ExecContext(ctx, migration); err != nil {
+			tx.Rollback()
 			return fmt.Errorf("migration failed: %w", err)
 		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit migrations: %w", err)
 	}
 
 	return nil
@@ -190,22 +223,16 @@ func runMigrations(db *sql.DB) error {
 
 func (tc *TestContext) CreateTestUser(t *testing.T, email, password, role string) uint64 {
 	hashedPassword, err := tc.Container.PasswordService.Hash(context.Background(), password)
-	if err != nil {
-		t.Fatalf("Failed to hash password: %v", err)
-	}
+	require.NoError(t, err, "Failed to hash password")
 
 	result, err := tc.DB.Exec(
-		"INSERT INTO users (email, password_hash, first_name, last_name, role) VALUES (?, ?, ?, ?, ?)",
+		"INSERT INTO users (email, password_hash, first_name, last_name, role, is_active) VALUES (?, ?, ?, ?, ?, TRUE)",
 		email, hashedPassword, "Test", "User", role,
 	)
-	if err != nil {
-		t.Fatalf("Failed to create test user: %v", err)
-	}
+	require.NoError(t, err, "Failed to create test user")
 
 	userID, err := result.LastInsertId()
-	if err != nil {
-		t.Fatalf("Failed to get user ID: %v", err)
-	}
+	require.NoError(t, err, "Failed to get user ID")
 
 	return uint64(userID)
 }
