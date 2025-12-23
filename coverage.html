@@ -65,7 +65,7 @@
 				
 				<option value="file4">github.com/waqasmani/go-boilerplate/internal/app/server.go (15.0%)</option>
 				
-				<option value="file5">github.com/waqasmani/go-boilerplate/internal/config/config.go (87.8%)</option>
+				<option value="file5">github.com/waqasmani/go-boilerplate/internal/config/config.go (87.0%)</option>
 				
 				<option value="file6">github.com/waqasmani/go-boilerplate/internal/infrastructure/database/mariadb.go (42.9%)</option>
 				
@@ -1236,7 +1236,8 @@ func NewContainer(cfg *config.Config, db *sql.DB, logger *observability.Logger) 
                 UsersHandler:    usersHandler,
                 RateLimiter:     rateLimiter,
         }</span>
-}</pre>
+}
+</pre>
 		
 		<pre class="file" id="file3" style="display: none">package app
 
@@ -1726,15 +1727,14 @@ import (
 )
 
 type Config struct {
-        Server    ServerConfig   `mapstructure:"server"`
-        Database  DatabaseConfig `mapstructure:"database"`
-        JWT       JWTConfig      `mapstructure:"jwt"`
-        Security  SecurityConfig `mapstructure:"security"`
-        CORS      CORSConfig     `mapstructure:"cors"`
-        Logging   LoggingConfig  `mapstructure:"logging"`
-        Metrics   MetricsConfig  `mapstructure:"metrics"`
-        Redis     RedisConfig    `mapstructure:"redis"`
-        RateLimit bool
+        Server   ServerConfig   `mapstructure:"server"`
+        Database DatabaseConfig `mapstructure:"database"`
+        JWT      JWTConfig      `mapstructure:"jwt"`
+        Security SecurityConfig `mapstructure:"security"`
+        CORS     CORSConfig     `mapstructure:"cors"`
+        Logging  LoggingConfig  `mapstructure:"logging"`
+        Metrics  MetricsConfig  `mapstructure:"metrics"`
+        Redis    RedisConfig    `mapstructure:"redis"`
 }
 
 type RedisConfig struct {
@@ -1804,10 +1804,7 @@ func Load() (*Config, error) <span class="cov3" title="3">{
         if err := godotenv.Load(); err != nil </span><span class="cov3" title="3">{
                 fmt.Println("Warning: .env file not found, using environment variables")
         }</span>
-        <span class="cov3" title="3">rateLimit, err := strconv.ParseBool(os.Getenv("ENABLE_RATE_LIMIT"))
-        if err != nil </span><span class="cov3" title="3">{
-                fmt.Println("ENABLE_RATE_LIMIT must be a bool true or false")
-        }</span>
+
         <span class="cov3" title="3">cfg := &amp;Config{
                 Server: ServerConfig{
                         Port:            getEnv("SERVER_PORT", "8080"),
@@ -1846,7 +1843,6 @@ func Load() (*Config, error) <span class="cov3" title="3">{
                         AllowedMethods: getEnvAsSlice("CORS_ALLOWED_METHODS", []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"}),
                         AllowedHeaders: getEnvAsSlice("CORS_ALLOWED_HEADERS", []string{"Content-Type", "Authorization"}),
                 },
-                RateLimit: rateLimit,
                 Logging: LoggingConfig{
                         Level:    getEnv("LOG_LEVEL", "info"),
                         Encoding: getEnv("LOG_ENCODING", "json"),
