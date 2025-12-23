@@ -38,8 +38,7 @@ func TestAuthFlow_CompleteJourney(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code)
 
 		var response map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &response)
-		require.NoError(t, err)
+		require.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 
 		assert.True(t, response["success"].(bool))
 		data := response["data"].(map[string]interface{})
@@ -79,7 +78,7 @@ func TestAuthFlow_CompleteJourney(t *testing.T) {
 		assert.Equal(t, http.StatusUnauthorized, w.Code)
 
 		var response map[string]interface{}
-		json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 		assert.False(t, response["success"].(bool))
 	})
 
@@ -115,8 +114,7 @@ func TestAuthFlow_CompleteJourney(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code)
 
 		var response map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &response)
-		require.NoError(t, err)
+		require.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 
 		assert.True(t, response["success"].(bool))
 		data := response["data"].(map[string]interface{})
@@ -234,7 +232,7 @@ func TestAuthFlow_TokenExpiration(t *testing.T) {
 	tc.Router.ServeHTTP(w, req)
 
 	var response map[string]interface{}
-	json.Unmarshal(w.Body.Bytes(), &response)
+	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 	data := response["data"].(map[string]interface{})
 	accessToken := data["access_token"].(string)
 
@@ -276,7 +274,7 @@ func TestAuthFlow_InactiveUser(t *testing.T) {
 	assert.Equal(t, http.StatusUnauthorized, w.Code)
 
 	var response map[string]interface{}
-	json.Unmarshal(w.Body.Bytes(), &response)
+	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 	assert.False(t, response["success"].(bool))
 	assert.Equal(t, http.StatusUnauthorized, w.Code)
 }
@@ -309,8 +307,7 @@ func TestAuth_Register(t *testing.T) {
 		require.Equal(t, http.StatusCreated, w.Code)
 
 		var response map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &response)
-		require.NoError(t, err)
+		require.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 
 		// Check success flag
 		assert.True(t, response["success"].(bool))
@@ -343,7 +340,7 @@ func TestAuth_Register(t *testing.T) {
 		assert.Equal(t, http.StatusConflict, w.Code)
 
 		var response map[string]interface{}
-		json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 		assert.False(t, response["success"].(bool))
 	})
 

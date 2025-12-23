@@ -35,7 +35,9 @@ func setupAuthServiceHelper(t *testing.T) (*AuthService, sqlmock.Sqlmock, *secur
 
 func TestAuthService_Login(t *testing.T) {
 	service, mock, _, passService := setupAuthServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 	ctx := context.Background()
 	email := "test@example.com"
 	rawPass := "SecurePass123!" // Use a password that meets all requirements
@@ -96,7 +98,9 @@ func TestAuthService_Login(t *testing.T) {
 
 func TestAuthService_RefreshTokens(t *testing.T) {
 	service, mock, jwtService, _ := setupAuthServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 	ctx := context.Background()
 	validToken, _ := jwtService.GenerateRefreshToken(ctx, 1, "test@example.com")
 
@@ -179,7 +183,9 @@ func TestAuthService_RefreshTokens(t *testing.T) {
 
 func TestAuthService_Logout(t *testing.T) {
 	service, mock, _, _ := setupAuthServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 	ctx := context.Background()
 	token := "some-token"
 	tokenHash := service.passwordService.HashToken(token)
@@ -202,7 +208,9 @@ func TestAuthService_Logout(t *testing.T) {
 // TestAuthService_Register tests the successful registration of a new user.
 func TestAuthService_Register(t *testing.T) {
 	service, mock, _, passService := setupAuthServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 
 	ctx := context.Background()
 	email := "newuser@example.com"
@@ -255,7 +263,9 @@ func TestAuthService_Register(t *testing.T) {
 // TestAuthService_Register_DuplicateUser tests the scenario where a user tries to register with an existing email.
 func TestAuthService_Register_DuplicateUser(t *testing.T) {
 	service, mock, _, _ := setupAuthServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 
 	ctx := context.Background()
 	email := "existing@example.com"
@@ -289,7 +299,9 @@ func TestAuthService_Register_DuplicateUser(t *testing.T) {
 // but the database insertion fails.
 func TestAuthService_Register_DBErrorOnCreate(t *testing.T) {
 	service, mock, _, _ := setupAuthServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 
 	ctx := context.Background()
 	email := "newuser@example.com"

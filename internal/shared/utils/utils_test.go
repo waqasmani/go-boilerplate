@@ -41,7 +41,7 @@ func TestResponse_Error(t *testing.T) {
 	assert.Equal(t, http.StatusNotFound, w.Code)
 
 	var response utils.Response
-	json.Unmarshal(w.Body.Bytes(), &response)
+	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 	assert.False(t, response.Success)
 	assert.Equal(t, "NOT_FOUND", response.Error.Code)
 }
