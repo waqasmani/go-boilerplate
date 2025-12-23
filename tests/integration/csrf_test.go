@@ -125,7 +125,7 @@ func TestCSRF_Protection(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code)
 
 		var response map[string]interface{}
-		json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 		data := response["data"].(map[string]interface{})
 		newCSRFToken := data["csrf_token"].(string)
 

@@ -45,8 +45,7 @@ func TestUserManagement_CRUD(t *testing.T) {
 		assert.Equal(t, http.StatusCreated, w.Code)
 
 		var response map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &response)
-		require.NoError(t, err)
+		require.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 
 		assert.True(t, response["success"].(bool))
 		data := response["data"].(map[string]interface{})
@@ -67,7 +66,7 @@ func TestUserManagement_CRUD(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code)
 
 		var response map[string]interface{}
-		json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 		data := response["data"].(map[string]interface{})
 		users := data["users"].([]interface{})
 
@@ -84,7 +83,7 @@ func TestUserManagement_CRUD(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code)
 
 		var response map[string]interface{}
-		json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 		data := response["data"].(map[string]interface{})
 
 		assert.Equal(t, float64(createdUserID), data["id"])
@@ -109,7 +108,7 @@ func TestUserManagement_CRUD(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code)
 
 		var response map[string]interface{}
-		json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 		data := response["data"].(map[string]interface{})
 
 		assert.Equal(t, "Updated", data["first_name"])
@@ -233,8 +232,7 @@ func loginAndGetTokens(t *testing.T, tc *TestContext, email, password string) (s
 	require.Equal(t, http.StatusOK, w.Code)
 
 	var response map[string]interface{}
-	err := json.Unmarshal(w.Body.Bytes(), &response)
-	require.NoError(t, err)
+	require.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 
 	data := response["data"].(map[string]interface{})
 	return data["access_token"].(string), data["csrf_token"].(string)
