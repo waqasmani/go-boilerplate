@@ -64,10 +64,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	tokens, userID, err := h.service.Login(c.Request.Context(), LoginRequest{
-		Email:    req.Email,
-		Password: req.Password,
-	})
+	tokens, userID, err := h.service.Login(c.Request.Context(), LoginRequest(req))
 	if err != nil {
 		h.auditLogger.LogSecurityEvent(c.Request.Context(), observability.SecurityEvent{
 			Type:      "authentication",

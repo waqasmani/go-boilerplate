@@ -24,7 +24,9 @@ func setupUserServiceHelper(t *testing.T) (*UsersService, sqlmock.Sqlmock) {
 
 func TestUsersService_CreateUser(t *testing.T) {
 	service, mock := setupUserServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 	ctx := context.Background()
 	req := CreateUserRequest{
 		Email: "new@example.com", Password: "SecurePass123!", FirstName: "F", LastName: "L", Role: "user",
@@ -46,7 +48,9 @@ func TestUsersService_CreateUser(t *testing.T) {
 
 func TestUsersService_UpdateUser(t *testing.T) {
 	service, mock := setupUserServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 	ctx := context.Background()
 
 	userColumns := []string{"id", "email", "password_hash", "first_name", "last_name", "role", "is_active", "created_at", "updated_at"}
@@ -71,7 +75,9 @@ func TestUsersService_UpdateUser(t *testing.T) {
 
 func TestUsersService_ChangePassword(t *testing.T) {
 	service, mock := setupUserServiceHelper(t)
-	defer mock.ExpectationsWereMet()
+	defer func() {
+		assert.NoError(t, mock.ExpectationsWereMet())
+	}()
 	ctx := context.Background()
 
 	userColumns := []string{"id", "email", "password_hash", "first_name", "last_name", "role", "is_active", "created_at", "updated_at"}

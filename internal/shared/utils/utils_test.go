@@ -23,8 +23,7 @@ func TestResponse_Success(t *testing.T) {
 	utils.Success(c, http.StatusOK, data)
 
 	var response utils.Response
-	err := json.Unmarshal(w.Body.Bytes(), &response)
-	assert.NoError(t, err)
+	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
 	assert.True(t, response.Success)
 
 	respData := response.Data.(map[string]interface{})
