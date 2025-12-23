@@ -32,7 +32,7 @@ jobs:
     needs: lint
     services:
       mariadb:
-        image: mariadb:11.4.8
+        image: mariadb:11.4
         env:
           MYSQL_ROOT_PASSWORD: root_password
           MYSQL_DATABASE: auth_test_db
