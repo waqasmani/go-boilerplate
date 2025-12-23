@@ -30,7 +30,6 @@ func SetupTestEnvironment(t *testing.T) *TestContext {
 	prometheus.DefaultRegisterer = registry
 	prometheus.DefaultGatherer = registry
 	gin.SetMode(gin.TestMode)
-	os.Setenv("ENABLE_RATE_LIMIT", "false")
 	os.Setenv("JWT_ACCESS_SECRET", "test_access_secret_that_is_at_least_32_characters_long")
 	os.Setenv("JWT_REFRESH_SECRET", "test_refresh_secret_that_is_at_least_32_characters_long")
 

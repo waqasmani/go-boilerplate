@@ -70,7 +70,7 @@ jobs:
           DB_NAME: auth_test_db
           REDIS_HOST: localhost
           REDIS_PORT: 6379
-          ENABLE_REDIS: true
+          ENABLE_REDIS: false
           JWT_ACCESS_SECRET: CI_TEST_ACCESS_SECRET_32_CHARS_MIN
           JWT_REFRESH_SECRET: CI_TEST_REFRESH_SECRET_32_CHARS_MIN
           CSRF_SECRET: CI_TEST_CSRF_SECRET_32_CHARS_MIN
