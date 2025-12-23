@@ -1106,9 +1106,13 @@ func main() <span class="cov0" title="0">{
         if err != nil </span><span class="cov0" title="0">{
                 log.Fatalf("Failed to initialize logger: %v", err)
         }</span>
-        <span class="cov0" title="0">defer logger.Sync()
+        <span class="cov0" title="0">defer func() </span><span class="cov0" title="0">{
+                if err := logger.Sync(); err != nil </span><span class="cov0" title="0">{
+                        log.Printf("Failed to sync logger: %v", err)
+                }</span>
+        }()
 
-        db, err := database.NewMariaDB(context.Background(), &amp;cfg.Database)
+        <span class="cov0" title="0">db, err := database.NewMariaDB(context.Background(), &amp;cfg.Database)
         if err != nil </span><span class="cov0" title="0">{
                 log.Fatalf("Failed to connect to database: %v", err)
         }</span>

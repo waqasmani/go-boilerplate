@@ -30,7 +30,7 @@ func TestLogger(t *testing.T) {
 	// We just ensure these don't panic
 	logger.Info(ctx, "test info")
 	logger.Error(ctx, "test error")
-	logger.Sync()
+	_ = logger.Sync()
 }
 
 func TestMetrics(t *testing.T) {
@@ -66,7 +66,7 @@ func TestLogger_Levels(t *testing.T) {
 	assert.NotNil(t, l)
 
 	// Test sync (often ignored, but good to cover)
-	l.Sync()
+	_ = l.Sync()
 }
 
 func TestAuditLogger_Event(t *testing.T) {
