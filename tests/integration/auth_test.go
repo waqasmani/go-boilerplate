@@ -231,9 +231,9 @@ func TestAuthFlow_TokenExpiration(t *testing.T) {
 
 	tc.Router.ServeHTTP(w, req)
 
-	var response map[string]interface{}
+	var response map[string]any
 	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
-	data := response["data"].(map[string]interface{})
+	data := response["data"].(map[string]any)
 	accessToken := data["access_token"].(string)
 
 	// Wait for token to expire
