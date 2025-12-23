@@ -20,9 +20,6 @@
 *   **Testing**: Includes unit and integration tests with `testify` and `sqlmock`.
 *   **CI/CD Ready**: Includes a GitHub Actions workflow for automated testing.
 
-## 📁 Project Structure
-
-
 ## ⚙️ Prerequisites
 
 *   **Go**: Version 1.25 or later.
