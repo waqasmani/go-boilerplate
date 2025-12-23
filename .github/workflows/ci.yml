@@ -32,12 +32,12 @@ jobs:
     needs: lint
     services:
       mariadb:
-        image: mariadb:10.11
+        image: mariadb:11.4.8
         env:
           MYSQL_ROOT_PASSWORD: root_password
-          MYSQL_DATABASE: auth_db
-          MYSQL_USER: vms_user
-          MYSQL_PASSWORD: vms_password
+          MYSQL_DATABASE: auth_test_db
+          MYSQL_USER: auth_user
+          MYSQL_PASSWORD: your_secure_password
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -65,9 +65,9 @@ jobs:
         env:
           DB_HOST: localhost
           DB_PORT: 3306
-          DB_USER: vms_user
-          DB_PASSWORD: vms_password
-          DB_NAME: auth_db
+          DB_USER: auth_user
+          DB_PASSWORD: your_secure_password
+          DB_NAME: auth_test_db
           REDIS_HOST: localhost
           REDIS_PORT: 6379
           ENABLE_REDIS: true

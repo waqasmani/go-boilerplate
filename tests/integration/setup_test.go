@@ -60,7 +60,7 @@ func SetupTestEnvironment(t *testing.T) *TestContext {
 
 	testDBPassword := os.Getenv("TEST_DB_PASSWORD")
 	if testDBPassword == "" {
-		testDBPassword = "Pakistancool123@#$"
+		testDBPassword = "your_secure_password"
 	}
 
 	testDBName := "auth_test_db"

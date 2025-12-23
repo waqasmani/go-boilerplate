@@ -3127,10 +3127,7 @@ func (h *Handler) Login(c *gin.Context) <span class="cov0" title="0">{
                 return
         }</span>
 
-        <span class="cov0" title="0">tokens, userID, err := h.service.Login(c.Request.Context(), LoginRequest{
-                Email:    req.Email,
-                Password: req.Password,
-        })
+        <span class="cov0" title="0">tokens, userID, err := h.service.Login(c.Request.Context(), LoginRequest(req))
         if err != nil </span><span class="cov0" title="0">{
                 h.auditLogger.LogSecurityEvent(c.Request.Context(), observability.SecurityEvent{
                         Type:      "authentication",
