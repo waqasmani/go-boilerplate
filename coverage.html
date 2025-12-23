@@ -1,0 +1,4782 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>docs: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/waqasmani/go-boilerplate/cmd/api/docs/docs.go (0.0%)</option>
+				
+				<option value="file1">github.com/waqasmani/go-boilerplate/cmd/api/main.go (0.0%)</option>
+				
+				<option value="file2">github.com/waqasmani/go-boilerplate/internal/app/container.go (65.5%)</option>
+				
+				<option value="file3">github.com/waqasmani/go-boilerplate/internal/app/router.go (52.9%)</option>
+				
+				<option value="file4">github.com/waqasmani/go-boilerplate/internal/app/server.go (15.0%)</option>
+				
+				<option value="file5">github.com/waqasmani/go-boilerplate/internal/config/config.go (87.0%)</option>
+				
+				<option value="file6">github.com/waqasmani/go-boilerplate/internal/infrastructure/database/mariadb.go (42.9%)</option>
+				
+				<option value="file7">github.com/waqasmani/go-boilerplate/internal/infrastructure/observability/audit.go (100.0%)</option>
+				
+				<option value="file8">github.com/waqasmani/go-boilerplate/internal/infrastructure/observability/logger.go (71.1%)</option>
+				
+				<option value="file9">github.com/waqasmani/go-boilerplate/internal/infrastructure/observability/metrics.go (33.3%)</option>
+				
+				<option value="file10">github.com/waqasmani/go-boilerplate/internal/infrastructure/observability/tracing.go (100.0%)</option>
+				
+				<option value="file11">github.com/waqasmani/go-boilerplate/internal/infrastructure/security/csrf.go (62.5%)</option>
+				
+				<option value="file12">github.com/waqasmani/go-boilerplate/internal/infrastructure/security/jwt.go (78.1%)</option>
+				
+				<option value="file13">github.com/waqasmani/go-boilerplate/internal/infrastructure/security/password.go (61.9%)</option>
+				
+				<option value="file14">github.com/waqasmani/go-boilerplate/internal/infrastructure/security/rate_limiter.go (39.1%)</option>
+				
+				<option value="file15">github.com/waqasmani/go-boilerplate/internal/infrastructure/security/security.go (0.0%)</option>
+				
+				<option value="file16">github.com/waqasmani/go-boilerplate/internal/modules/auth/auth.handler.go (0.0%)</option>
+				
+				<option value="file17">github.com/waqasmani/go-boilerplate/internal/modules/auth/auth.middleware.go (0.0%)</option>
+				
+				<option value="file18">github.com/waqasmani/go-boilerplate/internal/modules/auth/auth.routes.go (0.0%)</option>
+				
+				<option value="file19">github.com/waqasmani/go-boilerplate/internal/modules/auth/auth.service.go (83.5%)</option>
+				
+				<option value="file20">github.com/waqasmani/go-boilerplate/internal/modules/health/health.handler.go (87.5%)</option>
+				
+				<option value="file21">github.com/waqasmani/go-boilerplate/internal/modules/health/health.routes.go (0.0%)</option>
+				
+				<option value="file22">github.com/waqasmani/go-boilerplate/internal/modules/users/users.handler.go (0.0%)</option>
+				
+				<option value="file23">github.com/waqasmani/go-boilerplate/internal/modules/users/users.service.go (44.0%)</option>
+				
+				<option value="file24">github.com/waqasmani/go-boilerplate/internal/shared/errors/errors.go (46.7%)</option>
+				
+				<option value="file25">github.com/waqasmani/go-boilerplate/internal/shared/utils/response.go (69.2%)</option>
+				
+				<option value="file26">github.com/waqasmani/go-boilerplate/internal/shared/validator/validator.go (62.5%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">// Package docs Code generated by swaggo/swag. DO NOT EDIT
+package docs
+
+import "github.com/swaggo/swag"
+
+const docTemplate = `{
+    "schemes": {{ marshal .Schemes }},
+    "swagger": "2.0",
+    "info": {
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
+        "contact": {},
+        "version": "{{.Version}}"
+    },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
+    "paths": {
+        "/alive": {
+            "get": {
+                "description": "Lightweight check to verify API process is running",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Check API liveness",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/csrf-token": {
+            "get": {
+                "description": "Get a new CSRF token for state-changing requests",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get CSRF token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003caccess_token\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contains csrf_token",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "Authenticate user and get access and refresh tokens",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User login",
+                "parameters": [
+                    {
+                        "description": "Login credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_auth.loginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contains access_token and csrf_token",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "description": "Revoke refresh token and clear cookies",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User logout",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "description": "Get new access token using refresh token from cookie",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh tokens",
+                "responses": {
+                    "200": {
+                        "description": "Contains access_token and csrf_token",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Register a new user account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User registration",
+                "parameters": [
+                    {
+                        "description": "Registration details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "Get comprehensive health status of the API including database connectivity and system metrics",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Check API health",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_health.HealthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/ready": {
+            "get": {
+                "description": "Check if API is ready to serve traffic (database connectivity check)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Check API readiness",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_health.HealthResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_health.HealthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    },
+                    {
+                        "X-CSRF-Token": []
+                    }
+                ],
+                "description": "Get paginated list of users (admin only)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "List users",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 100,
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Items per page",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_users.ListUsersResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    },
+                    {
+                        "X-CSRF-Token": []
+                    }
+                ],
+                "description": "Create a new user (admin only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create user",
+                "parameters": [
+                    {
+                        "description": "User creation details",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_users.CreateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get user profile by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get user by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    },
+                    {
+                        "X-CSRF-Token": []
+                    }
+                ],
+                "description": "Update user profile (own profile or admin can update any)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated user details",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_users.UpdateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    },
+                    {
+                        "X-CSRF-Token": []
+                    }
+                ],
+                "description": "Deactivate user account (admin only)",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Deactivate user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/password": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    },
+                    {
+                        "X-CSRF-Token": []
+                    }
+                ],
+                "description": "Change user password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Change password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Password change details",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_users.ChangePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "password",
+                "role"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "role": {
+                    "type": "string",
+                    "enum": [
+                        "user",
+                        "admin"
+                    ]
+                }
+            }
+        },
+        "github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "details": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_waqasmani_api-boilerplate_internal_shared_utils.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "internal_modules_auth.loginRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                }
+            }
+        },
+        "internal_modules_health.DatabaseHealth": {
+            "type": "object",
+            "properties": {
+                "idle": {
+                    "type": "integer"
+                },
+                "in_use": {
+                    "type": "integer"
+                },
+                "max_open_conns": {
+                    "type": "integer"
+                },
+                "open_connections": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_modules_health.HealthResponse": {
+            "type": "object",
+            "properties": {
+                "database": {
+                    "$ref": "#/definitions/internal_modules_health.DatabaseHealth"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "system": {
+                    "$ref": "#/definitions/internal_modules_health.SystemHealth"
+                },
+                "uptime": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_modules_health.SystemHealth": {
+            "type": "object",
+            "properties": {
+                "mem_alloc_mb": {
+                    "type": "integer"
+                },
+                "num_cpu": {
+                    "type": "integer"
+                },
+                "num_goroutine": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_modules_users.ChangePasswordRequest": {
+            "type": "object",
+            "required": [
+                "current_password",
+                "new_password"
+            ],
+            "properties": {
+                "current_password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "new_password": {
+                    "type": "string",
+                    "minLength": 8
+                }
+            }
+        },
+        "internal_modules_users.CreateUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "password",
+                "role"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "role": {
+                    "type": "string",
+                    "enum": [
+                        "user",
+                        "admin"
+                    ]
+                }
+            }
+        },
+        "internal_modules_users.ListUsersResponse": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total_count": {
+                    "type": "integer"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_users.UserResponse"
+                    }
+                }
+            }
+        },
+        "internal_modules_users.UpdateUserRequest": {
+            "type": "object",
+            "required": [
+                "first_name",
+                "last_name"
+            ],
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                }
+            }
+        },
+        "internal_modules_users.UserResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}`
+
+// SwaggerInfo holds exported Swagger Info so clients can modify it
+var SwaggerInfo = &amp;swag.Spec{
+        Version:          "",
+        Host:             "",
+        BasePath:         "",
+        Schemes:          []string{},
+        Title:            "",
+        Description:      "",
+        InfoInstanceName: "swagger",
+        SwaggerTemplate:  docTemplate,
+        LeftDelim:        "{{",
+        RightDelim:       "}}",
+}
+
+func init() <span class="cov0" title="0">{
+        swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package main
+
+import (
+        "context"
+        "log"
+
+        "github.com/waqasmani/go-boilerplate/cmd/api/docs" // docs is generated by Swag CLI
+        "github.com/waqasmani/go-boilerplate/internal/app"
+        "github.com/waqasmani/go-boilerplate/internal/config"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/database"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/observability"
+)
+
+func main() <span class="cov0" title="0">{
+        // programmatically set swagger info
+        docs.SwaggerInfo.Title = "Swagger Example API"
+        docs.SwaggerInfo.Description = "This is a sample server Petstore server."
+        docs.SwaggerInfo.Version = "1.0"
+        docs.SwaggerInfo.BasePath = "/api/v1"
+        cfg, err := config.Load()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatalf("Failed to load config: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">logger, err := observability.NewLogger(cfg.Logging.Level, cfg.Logging.Encoding)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatalf("Failed to initialize logger: %v", err)
+        }</span>
+        <span class="cov0" title="0">defer logger.Sync()
+
+        db, err := database.NewMariaDB(context.Background(), &amp;cfg.Database)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatalf("Failed to connect to database: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">container := app.NewContainer(cfg, db.DB, logger)
+        server := app.NewServer(container)
+
+        if err := server.Start(); err != nil </span><span class="cov0" title="0">{
+                log.Fatalf("Server error: %v", err)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package app
+
+import (
+        "context"
+        "database/sql"
+        "fmt"
+        "time"
+
+        "github.com/redis/go-redis/v9"
+        "github.com/waqasmani/go-boilerplate/internal/config"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/observability"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/sqlc"
+        "github.com/waqasmani/go-boilerplate/internal/modules/auth"
+        "github.com/waqasmani/go-boilerplate/internal/modules/health"
+        "github.com/waqasmani/go-boilerplate/internal/modules/users"
+        "github.com/waqasmani/go-boilerplate/internal/shared/validator"
+        "go.uber.org/zap"
+)
+
+type Container struct {
+        Config *config.Config
+        DB     *sql.DB
+        Logger *observability.Logger
+
+        Queries *sqlc.Queries
+        Repo    *sqlc.Repository
+
+        JWTService      *security.JWTService
+        PasswordService *security.PasswordService
+        CSRFManager     security.CSRFManager
+        AuthMiddleware  *auth.AuthMiddleware
+
+        Validator *validator.Validator
+
+        Metrics *observability.Metrics
+
+        AuditLogger *observability.AuditLogger
+
+        HealthHandler *health.Handler
+        AuthHandler   *auth.Handler
+        UsersHandler  *users.Handler
+        RateLimiter   security.RateLimiter
+}
+
+func NewContainer(cfg *config.Config, db *sql.DB, logger *observability.Logger) *Container <span class="cov10" title="4">{
+        jwtService := security.NewJWTService(&amp;cfg.JWT)
+        passwordService := security.NewPasswordService(cfg.Security.BcryptCost)
+        var csrfManager security.CSRFManager
+        var rateLimiter security.RateLimiter
+
+        if cfg.Redis.Enabled </span><span class="cov0" title="0">{
+                rdb := redis.NewClient(&amp;redis.Options{
+                        Addr:            fmt.Sprintf("%s:%s", cfg.Redis.Host, cfg.Redis.Port),
+                        Password:        cfg.Redis.Password,
+                        DB:              cfg.Redis.DB,
+                        MaxRetries:      cfg.Redis.MaxRetries,
+                        PoolSize:        cfg.Redis.PoolSize,
+                        MinIdleConns:    cfg.Redis.MinIdleConns,
+                        ConnMaxLifetime: cfg.Redis.ConnMaxLifetime,
+                })
+
+                ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+                defer cancel()
+
+                if err := rdb.Ping(ctx).Err(); err != nil </span><span class="cov0" title="0">{
+                        logger.Error(context.Background(), "Failed to connect to Redis, falling back to in-memory", zap.Error(err))
+                        csrfManager = security.NewInMemoryCSRFManager(time.Hour)
+                        rateLimiter = security.NewInMemoryRateLimiter()
+                }</span> else<span class="cov0" title="0"> {
+                        logger.Info(context.Background(), "Using Redis for CSRF and rate limiting")
+                        csrfManager = security.NewRedisCSRFManager(rdb, time.Hour)
+                        rateLimiter = security.NewRedisRateLimiter(rdb)
+                }</span>
+        } else<span class="cov10" title="4"> {
+                rateLimiter = security.NewInMemoryRateLimiter()
+                csrfManager = security.NewInMemoryCSRFManager(time.Hour)
+        }</span>
+
+        <span class="cov10" title="4">validatorInstance := validator.New()
+        metrics := observability.NewMetrics()
+        queries := sqlc.New(db)
+        repo := sqlc.NewRepository(db)
+        authMiddleware := auth.NewAuthMiddleware(jwtService, csrfManager)
+        auditLogger := observability.NewAuditLogger(logger)
+
+        healthHandler := health.NewHandler(db)
+        authService := auth.NewAuthService(queries, repo, jwtService, passwordService)
+        authHandler := auth.NewHandler(authService, validatorInstance, cfg.Server.Env == "production", auditLogger, csrfManager, metrics)
+        usersService := users.NewUsersService(queries, passwordService, repo)
+        usersHandler := users.NewHandler(usersService, validatorInstance)
+
+        return &amp;Container{
+                Config:          cfg,
+                DB:              db,
+                Logger:          logger,
+                Queries:         queries,
+                Repo:            repo,
+                JWTService:      jwtService,
+                PasswordService: passwordService,
+                CSRFManager:     csrfManager,
+                AuthMiddleware:  authMiddleware,
+                Validator:       validatorInstance,
+                Metrics:         metrics,
+                AuditLogger:     auditLogger,
+                HealthHandler:   healthHandler,
+                AuthHandler:     authHandler,
+                UsersHandler:    usersHandler,
+                RateLimiter:     rateLimiter,
+        }</span>
+}</pre>
+		
+		<pre class="file" id="file3" style="display: none">package app
+
+import (
+        "context"
+        "database/sql"
+        "fmt"
+        "net/http"
+        "time"
+
+        "github.com/gin-contrib/cors"
+        "github.com/gin-gonic/gin"
+        "github.com/google/uuid"
+        "github.com/prometheus/client_golang/prometheus/promhttp"
+        swaggerFiles "github.com/swaggo/files"
+        ginSwagger "github.com/swaggo/gin-swagger"
+        "github.com/waqasmani/go-boilerplate/internal/config"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/observability"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
+        "github.com/waqasmani/go-boilerplate/internal/modules/auth"
+        "github.com/waqasmani/go-boilerplate/internal/modules/health"
+        "go.uber.org/zap"
+)
+
+func SetupRouter(container *Container) *gin.Engine <span class="cov7" title="3">{
+        if container.Config.Server.Env == "production" </span><span class="cov1" title="1">{
+                gin.SetMode(gin.ReleaseMode)
+        }</span>
+
+        <span class="cov7" title="3">router := gin.New()
+        router.Use(gin.Recovery())
+        router.Use(PanicRecoveryMiddleware(container.Logger))
+
+        router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+        router.Use(RequestIDMiddleware())
+        router.Use(LoggerMiddleware(container.Logger))
+        router.Use(TimeoutMiddleware(30 * time.Second))
+        router.Use(NewCORSMiddleware(container.Config.CORS))
+        router.Use(SecurityHeadersMiddleware())
+
+        if container.Config.Metrics.Enabled </span><span class="cov4" title="2">{
+                router.Use(MetricsMiddleware(container.Metrics))
+                router.Use(DatabaseMetricsMiddleware(container.DB, container.Metrics))
+        }</span>
+        <span class="cov7" title="3">health.RegisterRoutes(router, container.HealthHandler)
+
+        auth.RegisterRoutes(router, container.AuthHandler, container.AuthMiddleware, container.RateLimiter)
+
+        protected := router.Group("/api/v1")
+        protected.Use(container.AuthMiddleware.Authenticate())
+        </span><span class="cov7" title="3">{
+                stateChangingRoutes := protected.Group("/")
+                stateChangingRoutes.Use(container.AuthMiddleware.CSRFProtection())
+
+                usersGroup := stateChangingRoutes.Group("/users")
+                usersGroup.Use(security.RouteRateLimitMiddleware(container.RateLimiter, 100, time.Hour))
+                </span><span class="cov7" title="3">{
+                        adminRoutes := usersGroup.Group("/")
+                        adminRoutes.Use(container.AuthMiddleware.Authorize("admin"))
+                        adminRoutes.Use(security.RouteRateLimitMiddleware(container.RateLimiter, 50, time.Hour))
+                        </span><span class="cov7" title="3">{
+                                adminRoutes.POST("/", container.UsersHandler.CreateUser)
+                                adminRoutes.GET("/", container.UsersHandler.ListUsers)
+                                adminRoutes.DELETE("/:id", container.UsersHandler.DeactivateUser)
+                        }</span>
+
+                        <span class="cov7" title="3">usersGroup.GET("/:id", container.UsersHandler.GetUserByID)
+                        usersGroup.PUT("/:id", container.UsersHandler.UpdateUser)
+                        usersGroup.PUT("/:id/password", container.UsersHandler.ChangePassword)</span>
+                }
+        }
+
+        <span class="cov7" title="3">if container.Config.Metrics.Enabled </span><span class="cov4" title="2">{
+                router.GET("/api/v1/metrics", gin.WrapH(promhttp.Handler()))
+        }</span>
+
+        <span class="cov7" title="3">return router</span>
+}
+
+func RequestIDMiddleware() gin.HandlerFunc <span class="cov10" title="5">{
+        return func(c *gin.Context) </span><span class="cov4" title="2">{
+                requestID := c.GetHeader("X-Request-ID")
+                if requestID == "" </span><span class="cov1" title="1">{
+                        id, _ := uuid.NewRandom()
+                        requestID = id.String()
+                }</span>
+
+                <span class="cov4" title="2">ctx := context.WithValue(c.Request.Context(), observability.RequestIDKey, requestID)
+                c.Request = c.Request.WithContext(ctx)
+
+                c.Set(string(observability.RequestIDKey), requestID)
+                c.Header("X-Request-ID", requestID)
+
+                c.Next()</span>
+        }
+}
+
+func TimeoutMiddleware(timeout time.Duration) gin.HandlerFunc <span class="cov7" title="3">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                ctx, cancel := context.WithTimeout(c.Request.Context(), timeout)
+                defer cancel()
+
+                c.Request = c.Request.WithContext(ctx)
+
+                finished := make(chan struct{})
+                go func() </span><span class="cov0" title="0">{
+                        c.Next()
+                        finished &lt;- struct{}{}
+                }</span>()
+
+                <span class="cov0" title="0">select </span>{
+                case &lt;-finished:<span class="cov0" title="0">
+                        return</span>
+                case &lt;-ctx.Done():<span class="cov0" title="0">
+                        if ctx.Err() == context.DeadlineExceeded </span><span class="cov0" title="0">{
+                                c.AbortWithStatusJSON(http.StatusRequestTimeout, gin.H{
+                                        "success": false,
+                                        "error": gin.H{
+                                                "code":    "REQUEST_TIMEOUT",
+                                                "message": "Request timeout",
+                                        },
+                                })
+                        }</span>
+                }
+        }
+}
+
+func NewCORSMiddleware(cfg config.CORSConfig) gin.HandlerFunc <span class="cov7" title="3">{
+        corsCfg := cors.Config{
+                AllowOrigins:     cfg.AllowedOrigins,
+                AllowMethods:     cfg.AllowedMethods,
+                AllowHeaders:     append(cfg.AllowedHeaders, "X-CSRF-Token", "X-Request-ID"),
+                AllowCredentials: true,
+                MaxAge:           24 * time.Hour,
+                ExposeHeaders:    []string{"X-Request-ID", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"},
+        }
+
+        for _, origin := range cfg.AllowedOrigins </span><span class="cov7" title="3">{
+                if origin == "*" </span><span class="cov7" title="3">{
+                        corsCfg.AllowAllOrigins = true
+                        corsCfg.AllowOrigins = nil
+                        break</span>
+                }
+        }
+
+        <span class="cov7" title="3">return cors.New(corsCfg)</span>
+}
+
+func SecurityHeadersMiddleware() gin.HandlerFunc <span class="cov7" title="3">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                c.Header("X-Content-Type-Options", "nosniff")
+                c.Header("X-Frame-Options", "DENY")
+                c.Header("X-XSS-Protection", "1; mode=block")
+                c.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+                c.Header("Content-Security-Policy", "default-src 'self'")
+                c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
+                c.Header("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
+                c.Next()
+        }</span>
+}
+
+func LoggerMiddleware(logger *observability.Logger) gin.HandlerFunc <span class="cov7" title="3">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                start := time.Now()
+                path := c.Request.URL.Path
+                method := c.Request.Method
+                userAgent := c.Request.UserAgent()
+                clientIP := c.ClientIP()
+
+                c.Next()
+
+                latency := time.Since(start)
+                statusCode := c.Writer.Status()
+
+                fields := []zap.Field{
+                        logger.Field("method", method),
+                        logger.Field("path", path),
+                        logger.Field("status", statusCode),
+                        logger.Field("latency_ms", latency.Milliseconds()),
+                        logger.Field("client_ip", clientIP),
+                        logger.Field("user_agent", userAgent),
+                }
+
+                if len(c.Errors) &gt; 0 </span><span class="cov0" title="0">{
+                        fields = append(fields, logger.Field("errors", c.Errors.String()))
+                }</span>
+
+                <span class="cov0" title="0">if statusCode &gt;= 500 </span><span class="cov0" title="0">{
+                        logger.Error(c.Request.Context(), "HTTP Request completed with server error", fields...)
+                }</span> else<span class="cov0" title="0"> if statusCode &gt;= 400 </span><span class="cov0" title="0">{
+                        logger.Warn(c.Request.Context(), "HTTP Request completed with client error", fields...)
+                }</span> else<span class="cov0" title="0"> {
+                        logger.Info(c.Request.Context(), "HTTP Request completed", fields...)
+                }</span>
+        }
+}
+
+func MetricsMiddleware(metrics *observability.Metrics) gin.HandlerFunc <span class="cov4" title="2">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                start := time.Now()
+                path := c.Request.URL.Path
+                method := c.Request.Method
+
+                c.Next()
+
+                duration := time.Since(start).Seconds()
+                status := fmt.Sprintf("%d", c.Writer.Status())
+
+                metrics.HttpRequestsTotal.WithLabelValues(method, path, status).Inc()
+                metrics.HttpRequestDuration.WithLabelValues(method, path).Observe(duration)
+
+                if c.Request.ContentLength &gt; 0 </span><span class="cov0" title="0">{
+                        metrics.HttpRequestSize.WithLabelValues(method, path).Observe(float64(c.Request.ContentLength))
+                }</span>
+
+                <span class="cov0" title="0">responseSize := c.Writer.Size()
+                if responseSize &gt; 0 </span><span class="cov0" title="0">{
+                        metrics.HttpResponseSize.WithLabelValues(method, path).Observe(float64(responseSize))
+                }</span>
+        }
+}
+
+func DatabaseMetricsMiddleware(db *sql.DB, metrics *observability.Metrics) gin.HandlerFunc <span class="cov4" title="2">{
+        ticker := time.NewTicker(10 * time.Second)
+
+        go func() </span><span class="cov4" title="2">{
+                for range ticker.C </span><span class="cov0" title="0">{
+                        stats := db.Stats()
+                        metrics.RecordDatabaseStats(
+                                stats.OpenConnections,
+                                stats.InUse,
+                                stats.Idle,
+                        )
+                }</span>
+        }()
+
+        <span class="cov4" title="2">return func(c *gin.Context) </span><span class="cov0" title="0">{
+                c.Next()
+        }</span>
+}
+
+func PanicRecoveryMiddleware(logger *observability.Logger) gin.HandlerFunc <span class="cov7" title="3">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                defer func() </span><span class="cov0" title="0">{
+                        if err := recover(); err != nil </span><span class="cov0" title="0">{
+                                logger.Error(c.Request.Context(), "Panic recovered",
+                                        zap.Any("error", err),
+                                        zap.String("path", c.Request.URL.Path),
+                                        zap.String("method", c.Request.Method),
+                                )
+
+                                c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+                                        "success": false,
+                                        "error": gin.H{
+                                                "code":    "INTERNAL_ERROR",
+                                                "message": "Internal server error",
+                                        },
+                                })
+                        }</span>
+                }()
+                <span class="cov0" title="0">c.Next()</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package app
+
+import (
+        "context"
+        "fmt"
+        "net/http"
+        "os"
+        "os/signal"
+        "syscall"
+        "time"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+type Server struct {
+        router     *gin.Engine
+        container  *Container
+        httpServer *http.Server
+}
+
+func NewServer(container *Container) *Server <span class="cov8" title="1">{
+        router := SetupRouter(container)
+        return &amp;Server{
+                router:    router,
+                container: container,
+        }
+}</span>
+
+func (s *Server) Start() error <span class="cov0" title="0">{
+        ctx, cancel := context.WithCancel(context.Background())
+        defer cancel()
+
+        s.startBackgroundWorkers(ctx)
+        s.startMetricsCollector(ctx)
+
+        addr := fmt.Sprintf("%s:%s", s.container.Config.Server.Host, s.container.Config.Server.Port)
+        s.httpServer = &amp;http.Server{
+                Addr:           addr,
+                Handler:        s.router,
+                ReadTimeout:    15 * time.Second,
+                WriteTimeout:   15 * time.Second,
+                IdleTimeout:    60 * time.Second,
+                MaxHeaderBytes: 1 &lt;&lt; 20,
+        }
+
+        s.container.Logger.Info(context.Background(),
+                fmt.Sprintf("Starting server on %s", addr),
+                zap.String("env", s.container.Config.Server.Env),
+        )
+
+        errChan := make(chan error, 1)
+        go func() </span><span class="cov0" title="0">{
+                if err := s.httpServer.ListenAndServe(); err != nil &amp;&amp; err != http.ErrServerClosed </span><span class="cov0" title="0">{
+                        errChan &lt;- fmt.Errorf("server failed: %w", err)
+                }</span>
+        }()
+
+        <span class="cov0" title="0">select </span>{
+        case err := &lt;-errChan:<span class="cov0" title="0">
+                return err</span>
+        default:<span class="cov0" title="0">
+                return s.waitForShutdown(cancel)</span>
+        }
+}
+
+func (s *Server) startBackgroundWorkers(ctx context.Context) <span class="cov0" title="0">{
+        interval := s.container.Config.Security.RefreshTokenCleanupInterval
+        if interval &lt;= 0 </span><span class="cov0" title="0">{
+                interval = 24 * time.Hour
+        }</span>
+
+        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
+                ticker := time.NewTicker(interval)
+                defer ticker.Stop()
+
+                s.container.Logger.Info(ctx, "Starting background workers",
+                        zap.Duration("cleanup_interval", interval))
+
+                for </span><span class="cov0" title="0">{
+                        select </span>{
+                        case &lt;-ticker.C:<span class="cov0" title="0">
+                                s.cleanupExpiredTokens(ctx)</span>
+                        case &lt;-ctx.Done():<span class="cov0" title="0">
+                                s.container.Logger.Info(ctx, "Stopping background workers...")
+                                return</span>
+                        }
+                }
+        }()
+}
+
+func (s *Server) startMetricsCollector(ctx context.Context) <span class="cov0" title="0">{
+        if !s.container.Config.Metrics.Enabled </span><span class="cov0" title="0">{
+                return
+        }</span>
+
+        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
+                ticker := time.NewTicker(30 * time.Second)
+                defer ticker.Stop()
+
+                for </span><span class="cov0" title="0">{
+                        select </span>{
+                        case &lt;-ticker.C:<span class="cov0" title="0">
+                                s.collectDatabaseMetrics(ctx)</span>
+                        case &lt;-ctx.Done():<span class="cov0" title="0">
+                                return</span>
+                        }
+                }
+        }()
+}
+
+func (s *Server) collectDatabaseMetrics(ctx context.Context) <span class="cov0" title="0">{
+        stats := s.container.DB.Stats()
+        s.container.Metrics.RecordDatabaseStats(
+                stats.OpenConnections,
+                stats.InUse,
+                stats.Idle,
+        )
+}</span>
+
+func (s *Server) cleanupExpiredTokens(ctx context.Context) <span class="cov8" title="1">{
+        start := time.Now()
+        jobName := "token_cleanup"
+
+        defer func() </span><span class="cov8" title="1">{
+                duration := time.Since(start)
+                if r := recover(); r != nil </span><span class="cov0" title="0">{
+                        s.container.Logger.Error(ctx, "Panic in cleanup job",
+                                zap.Any("error", r),
+                                zap.String("job", jobName))
+                        s.container.Metrics.RecordBackgroundJob(jobName, duration, fmt.Errorf("panic: %v", r))
+                }</span>
+        }()
+
+        <span class="cov8" title="1">err := s.container.Queries.DeleteExpiredRefreshTokens(ctx)
+        duration := time.Since(start)
+
+        if err != nil </span><span class="cov0" title="0">{
+                s.container.Logger.Error(ctx, "Failed to clean up expired refresh tokens",
+                        zap.Error(err),
+                        zap.Duration("duration", duration))
+                s.container.Metrics.RecordBackgroundJob(jobName, duration, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">s.container.Logger.Info(ctx, "Cleaned up expired refresh tokens",
+                zap.Duration("duration", duration))
+        s.container.Metrics.RecordBackgroundJob(jobName, duration, nil)</span>
+}
+
+func (s *Server) waitForShutdown(cancel context.CancelFunc) error <span class="cov0" title="0">{
+        quit := make(chan os.Signal, 1)
+        signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+        &lt;-quit
+        s.container.Logger.Info(context.Background(), "Shutting down server...")
+
+        cancel()
+
+        ctx, stop := context.WithTimeout(context.Background(), 30*time.Second)
+        defer stop()
+
+        if err := s.gracefulShutdown(ctx); err != nil </span><span class="cov0" title="0">{
+                s.container.Logger.Error(context.Background(), "Graceful shutdown failed", zap.Error(err))
+                return err
+        }</span>
+
+        <span class="cov0" title="0">s.container.Logger.Info(context.Background(), "Server shutdown complete")
+        return nil</span>
+}
+
+func (s *Server) gracefulShutdown(ctx context.Context) error <span class="cov0" title="0">{
+        // Stop accepting new requests first
+        if err := s.httpServer.Shutdown(ctx); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("HTTP server shutdown failed: %w", err)
+        }</span>
+        // Allow in-flight requests to complete with extended deadline
+        <span class="cov0" title="0">_, cancel := context.WithTimeout(ctx, 10*time.Second)
+        defer cancel()
+        done := make(chan error, 1)
+        go func() </span><span class="cov0" title="0">{
+                done &lt;- s.container.DB.Close()
+        }</span>()
+
+        <span class="cov0" title="0">select </span>{
+        case err := &lt;-done:<span class="cov0" title="0">
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("database close failed: %w", err)
+                }</span>
+                <span class="cov0" title="0">return nil</span>
+        case &lt;-ctx.Done():<span class="cov0" title="0">
+                return fmt.Errorf("database close timeout: %w", ctx.Err())</span>
+        }
+}
+
+func (s *Server) Stats() ServerStats <span class="cov0" title="0">{
+        dbStats := s.container.DB.Stats()
+        return ServerStats{
+                OpenConnections: dbStats.OpenConnections,
+                InUse:           dbStats.InUse,
+                Idle:            dbStats.Idle,
+        }
+}</span>
+
+type ServerStats struct {
+        OpenConnections int
+        InUse           int
+        Idle            int
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package config
+
+import (
+        "fmt"
+        "os"
+        "strconv"
+        "strings"
+        "time"
+
+        "github.com/joho/godotenv"
+)
+
+type Config struct {
+        Server   ServerConfig   `mapstructure:"server"`
+        Database DatabaseConfig `mapstructure:"database"`
+        JWT      JWTConfig      `mapstructure:"jwt"`
+        Security SecurityConfig `mapstructure:"security"`
+        CORS     CORSConfig     `mapstructure:"cors"`
+        Logging  LoggingConfig  `mapstructure:"logging"`
+        Metrics  MetricsConfig  `mapstructure:"metrics"`
+        Redis    RedisConfig    `mapstructure:"redis"`
+}
+
+type RedisConfig struct {
+        Enabled         bool          `mapstructure:"enabled"`
+        Host            string        `mapstructure:"host"`
+        Port            string        `mapstructure:"port"`
+        Password        string        `mapstructure:"password"`
+        DB              int           `mapstructure:"db"`
+        MaxRetries      int           `mapstructure:"max_retries"`
+        PoolSize        int           `mapstructure:"pool_size"`
+        MinIdleConns    int           `mapstructure:"min_idle_conns"`
+        ConnMaxLifetime time.Duration `mapstructure:"conn_max_lifetime"`
+}
+
+type ServerConfig struct {
+        Port            string        `mapstructure:"port"`
+        Host            string        `mapstructure:"host"`
+        Env             string        `mapstructure:"env"`
+        ReadTimeout     time.Duration `mapstructure:"read_timeout"`
+        WriteTimeout    time.Duration `mapstructure:"write_timeout"`
+        IdleTimeout     time.Duration `mapstructure:"idle_timeout"`
+        ShutdownTimeout time.Duration `mapstructure:"shutdown_timeout"`
+}
+
+type DatabaseConfig struct {
+        Host            string        `mapstructure:"host"`
+        Port            string        `mapstructure:"port"`
+        User            string        `mapstructure:"user"`
+        Password        string        `mapstructure:"password"`
+        Name            string        `mapstructure:"name"`
+        MaxOpenConns    int           `mapstructure:"max_open_conns"`
+        MaxIdleConns    int           `mapstructure:"max_idle_conns"`
+        ConnMaxLifetime time.Duration `mapstructure:"conn_max_lifetime"`
+        ConnMaxIdleTime time.Duration `mapstructure:"conn_max_idle_time"`
+}
+
+type JWTConfig struct {
+        AccessSecret  string        `mapstructure:"access_secret"`
+        RefreshSecret string        `mapstructure:"refresh_secret"`
+        AccessExpiry  time.Duration `mapstructure:"access_expiry"`
+        RefreshExpiry time.Duration `mapstructure:"refresh_expiry"`
+}
+
+type SecurityConfig struct {
+        BcryptCost                  int           `mapstructure:"bcrypt_cost"`
+        RefreshTokenCleanupInterval time.Duration `mapstructure:"refresh_token_cleanup_interval"`
+        MaxLoginAttempts            int           `mapstructure:"max_login_attempts"`
+        LoginLockoutDuration        time.Duration `mapstructure:"login_lockout_duration"`
+}
+
+type CORSConfig struct {
+        AllowedOrigins []string `mapstructure:"allowed_origins"`
+        AllowedMethods []string `mapstructure:"allowed_methods"`
+        AllowedHeaders []string `mapstructure:"allowed_headers"`
+}
+
+type LoggingConfig struct {
+        Level    string `mapstructure:"level"`
+        Encoding string `mapstructure:"encoding"`
+}
+
+type MetricsConfig struct {
+        Enabled bool `mapstructure:"enabled"`
+}
+
+func Load() (*Config, error) <span class="cov3" title="3">{
+        if err := godotenv.Load(); err != nil </span><span class="cov3" title="3">{
+                fmt.Println("Warning: .env file not found, using environment variables")
+        }</span>
+
+        <span class="cov3" title="3">cfg := &amp;Config{
+                Server: ServerConfig{
+                        Port:            getEnv("SERVER_PORT", "8080"),
+                        Host:            getEnv("SERVER_HOST", "localhost"),
+                        Env:             getEnv("ENV", "development"),
+                        ReadTimeout:     getEnvAsDuration("SERVER_READ_TIMEOUT", 15*time.Second),
+                        WriteTimeout:    getEnvAsDuration("SERVER_WRITE_TIMEOUT", 15*time.Second),
+                        IdleTimeout:     getEnvAsDuration("SERVER_IDLE_TIMEOUT", 60*time.Second),
+                        ShutdownTimeout: getEnvAsDuration("SERVER_SHUTDOWN_TIMEOUT", 30*time.Second),
+                },
+                Database: DatabaseConfig{
+                        Host:            getEnv("DB_HOST", "localhost"),
+                        Port:            getEnv("DB_PORT", "3306"),
+                        User:            getEnv("DB_USER", "apiuser"),
+                        Password:        getEnv("DB_PASSWORD", "apipassword"),
+                        Name:            getEnv("DB_NAME", "apidb"),
+                        MaxOpenConns:    getEnvAsInt("DB_MAX_OPEN_CONNS", 25),
+                        MaxIdleConns:    getEnvAsInt("DB_MAX_IDLE_CONNS", 5),
+                        ConnMaxLifetime: getEnvAsDuration("DB_CONN_MAX_LIFETIME", 5*time.Minute),
+                        ConnMaxIdleTime: getEnvAsDuration("DB_CONN_MAX_IDLE_TIME", 5*time.Minute),
+                },
+                JWT: JWTConfig{
+                        AccessSecret:  getEnv("JWT_ACCESS_SECRET", ""),
+                        RefreshSecret: getEnv("JWT_REFRESH_SECRET", ""),
+                        AccessExpiry:  getEnvAsDuration("JWT_ACCESS_EXPIRY", 15*time.Minute),
+                        RefreshExpiry: getEnvAsDuration("JWT_REFRESH_EXPIRY", 168*time.Hour),
+                },
+                Security: SecurityConfig{
+                        BcryptCost:                  getEnvAsInt("BCRYPT_COST", 12),
+                        RefreshTokenCleanupInterval: getEnvAsDuration("REFRESH_TOKEN_CLEANUP_INTERVAL", 24*time.Hour),
+                        MaxLoginAttempts:            getEnvAsInt("MAX_LOGIN_ATTEMPTS", 5),
+                        LoginLockoutDuration:        getEnvAsDuration("LOGIN_LOCKOUT_DURATION", 15*time.Minute),
+                },
+                CORS: CORSConfig{
+                        AllowedOrigins: getEnvAsSlice("CORS_ALLOWED_ORIGINS", []string{"*"}),
+                        AllowedMethods: getEnvAsSlice("CORS_ALLOWED_METHODS", []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"}),
+                        AllowedHeaders: getEnvAsSlice("CORS_ALLOWED_HEADERS", []string{"Content-Type", "Authorization"}),
+                },
+                Logging: LoggingConfig{
+                        Level:    getEnv("LOG_LEVEL", "info"),
+                        Encoding: getEnv("LOG_ENCODING", "json"),
+                },
+                Metrics: MetricsConfig{
+                        Enabled: getEnvAsBool("ENABLE_METRICS", true),
+                },
+                Redis: RedisConfig{
+                        Enabled:         getEnvAsBool("ENABLE_REDIS", false),
+                        Host:            getEnv("REDIS_HOST", "localhost"),
+                        Port:            getEnv("REDIS_PORT", "6379"),
+                        Password:        getEnv("REDIS_PASSWORD", ""),
+                        DB:              getEnvAsInt("REDIS_DB", 0),
+                        MaxRetries:      getEnvAsInt("REDIS_MAX_RETRIES", 3),
+                        PoolSize:        getEnvAsInt("REDIS_POOL_SIZE", 10),
+                        MinIdleConns:    getEnvAsInt("REDIS_MIN_IDLE_CONNS", 5),
+                        ConnMaxLifetime: getEnvAsDuration("REDIS_CONN_MAX_LIFETIME", 30*time.Minute),
+                },
+        }
+
+        if err := cfg.ValidateDependencies(); err != nil </span><span class="cov2" title="2">{
+                return nil, err
+        }</span>
+
+        <span class="cov1" title="1">return cfg, nil</span>
+}
+
+func (c *Config) ValidateDependencies() error <span class="cov3" title="3">{
+        if c.Redis.Enabled &amp;&amp; c.Redis.Host == "" </span><span class="cov0" title="0">{
+                return fmt.Errorf("redis host required when redis is enabled")
+        }</span>
+        <span class="cov3" title="3">if c.JWT.AccessSecret == "" </span><span class="cov1" title="1">{
+                return fmt.Errorf("JWT_ACCESS_SECRET is required")
+        }</span>
+        <span class="cov2" title="2">if c.JWT.RefreshSecret == "" </span><span class="cov0" title="0">{
+                return fmt.Errorf("JWT_REFRESH_SECRET is required")
+        }</span>
+        <span class="cov2" title="2">if len(c.JWT.AccessSecret) &lt; 32 </span><span class="cov1" title="1">{
+                return fmt.Errorf("JWT_ACCESS_SECRET must be at least 32 characters long")
+        }</span>
+        <span class="cov1" title="1">if len(c.JWT.RefreshSecret) &lt; 32 </span><span class="cov0" title="0">{
+                return fmt.Errorf("JWT_REFRESH_SECRET must be at least 32 characters long")
+        }</span>
+        <span class="cov1" title="1">if c.Database.MaxIdleConns &gt; c.Database.MaxOpenConns </span><span class="cov0" title="0">{
+                return fmt.Errorf("DB_MAX_IDLE_CONNS cannot exceed DB_MAX_OPEN_CONNS")
+        }</span>
+        <span class="cov1" title="1">if c.Security.BcryptCost &lt; 4 || c.Security.BcryptCost &gt; 31 </span><span class="cov0" title="0">{
+                return fmt.Errorf("BCRYPT_COST must be between 4 and 31")
+        }</span>
+        <span class="cov1" title="1">return nil</span>
+}
+
+func getEnv(key, defaultValue string) string <span class="cov10" title="45">{
+        if value := os.Getenv(key); value != "" </span><span class="cov4" title="5">{
+                return value
+        }</span>
+        <span class="cov9" title="40">return defaultValue</span>
+}
+
+func getEnvAsInt(key string, defaultValue int) int <span class="cov8" title="25">{
+        if value := os.Getenv(key); value != "" </span><span class="cov2" title="2">{
+                if intValue, err := strconv.Atoi(value); err == nil </span><span class="cov1" title="1">{
+                        return intValue
+                }</span>
+        }
+        <span class="cov8" title="24">return defaultValue</span>
+}
+
+func getEnvAsBool(key string, defaultValue bool) bool <span class="cov5" title="7">{
+        if value := os.Getenv(key); value != "" </span><span class="cov2" title="2">{
+                if boolValue, err := strconv.ParseBool(value); err == nil </span><span class="cov1" title="1">{
+                        return boolValue
+                }</span>
+        }
+        <span class="cov5" title="6">return defaultValue</span>
+}
+
+func getEnvAsDuration(key string, defaultValue time.Duration) time.Duration <span class="cov9" title="34">{
+        if value := os.Getenv(key); value != "" </span><span class="cov1" title="1">{
+                if durationValue, err := time.ParseDuration(value); err == nil </span><span class="cov0" title="0">{
+                        return durationValue
+                }</span>
+        }
+        <span class="cov9" title="34">return defaultValue</span>
+}
+
+func getEnvAsSlice(key string, defaultValue []string) []string <span class="cov6" title="10">{
+        valueStr := os.Getenv(key)
+        if valueStr == "" </span><span class="cov6" title="9">{
+                return defaultValue
+        }</span>
+
+        <span class="cov1" title="1">parts := strings.Split(valueStr, ",")
+        result := make([]string, 0, len(parts))
+        for _, part := range parts </span><span class="cov2" title="2">{
+                trimmedPart := strings.TrimSpace(part)
+                if trimmedPart != "" </span><span class="cov2" title="2">{
+                        result = append(result, trimmedPart)
+                }</span>
+        }
+        <span class="cov1" title="1">return result</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package database
+
+import (
+        "context"
+        "database/sql"
+        "fmt"
+        "time"
+
+        _ "github.com/go-sql-driver/mysql"
+        "github.com/waqasmani/go-boilerplate/internal/config"
+)
+
+type DB struct {
+        *sql.DB
+}
+
+func NewMariaDB(ctx context.Context, cfg *config.DatabaseConfig) (*DB, error) <span class="cov10" title="2">{
+        dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&amp;charset=utf8mb4&amp;collation=utf8mb4_unicode_ci&amp;maxAllowedPacket=67108864&amp;interpolateParams=true",
+                cfg.User,
+                cfg.Password,
+                cfg.Host,
+                cfg.Port,
+                cfg.Name,
+        )
+
+        db, err := sql.Open("mysql", dsn)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to open database: %w", err)
+        }</span>
+
+        <span class="cov10" title="2">db.SetMaxOpenConns(cfg.MaxOpenConns)
+        db.SetMaxIdleConns(cfg.MaxIdleConns)
+        db.SetConnMaxLifetime(cfg.ConnMaxLifetime)
+        db.SetConnMaxIdleTime(cfg.ConnMaxIdleTime)
+
+        ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+        defer cancel()
+
+        if err := db.PingContext(ctx); err != nil </span><span class="cov10" title="2">{
+                db.Close()
+                return nil, fmt.Errorf("failed to ping database: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return &amp;DB{DB: db}, nil</span>
+}
+
+type TxFunc func(*sql.Tx) error
+
+func (db *DB) WithTx(ctx context.Context, fn TxFunc) error <span class="cov0" title="0">{
+        tx, err := db.BeginTx(ctx, &amp;sql.TxOptions{
+                Isolation: sql.LevelReadCommitted,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to begin transaction: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">defer func() </span><span class="cov0" title="0">{
+                if p := recover(); p != nil </span><span class="cov0" title="0">{
+                        _ = tx.Rollback()
+                        panic(p)</span>
+                }
+        }()
+
+        <span class="cov0" title="0">if err := fn(tx); err != nil </span><span class="cov0" title="0">{
+                if rbErr := tx.Rollback(); rbErr != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("transaction failed: %w, rollback failed: %v", err, rbErr)
+                }</span>
+                <span class="cov0" title="0">return err</span>
+        }
+
+        <span class="cov0" title="0">if err := tx.Commit(); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to commit transaction: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}</pre>
+		
+		<pre class="file" id="file7" style="display: none">package observability
+
+import (
+        "context"
+
+        "go.uber.org/zap"
+)
+
+type AuditLogger struct {
+        logger *Logger
+}
+
+type SecurityEvent struct {
+        Type      string
+        Action    string
+        UserID    uint64
+        Resource  string
+        Success   bool
+        IPAddress string
+}
+
+func NewAuditLogger(logger *Logger) *AuditLogger <span class="cov8" title="1">{
+        return &amp;AuditLogger{
+                logger: logger,
+        }
+}</span>
+
+func (a *AuditLogger) LogSecurityEvent(ctx context.Context, event SecurityEvent) <span class="cov8" title="1">{
+        a.logger.Info(ctx, "AUDIT",
+                zap.String("event_type", event.Type),
+                zap.Uint64("user_id", event.UserID),
+                zap.String("action", event.Action),
+                zap.String("resource", event.Resource),
+                zap.Bool("success", event.Success),
+                zap.String("ip_address", event.IPAddress),
+        )
+}</span>
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package observability
+
+import (
+        "context"
+        "runtime"
+
+        "go.uber.org/zap"
+        "go.uber.org/zap/zapcore"
+)
+
+type contextKey string
+
+const (
+        RequestIDKey contextKey = "request_id"
+        UserIDKey    contextKey = "user_id"
+        TraceIDKey   contextKey = "trace_id"
+        SessionIDKey contextKey = "session_id"
+)
+
+type Logger struct {
+        zap *zap.Logger
+}
+
+func NewLogger(level string, encoding string) (*Logger, error) <span class="cov10" title="13">{
+        cfg := zap.NewProductionConfig()
+
+        if encoding == "console" </span><span class="cov4" title="3">{
+                cfg.Encoding = "console"
+                cfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+                cfg.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+        }</span>
+
+        <span class="cov10" title="13">var zapLevel zapcore.Level
+        if err := zapLevel.UnmarshalText([]byte(level)); err != nil </span><span class="cov1" title="1">{
+                zapLevel = zapcore.InfoLevel
+        }</span>
+        <span class="cov10" title="13">cfg.Level.SetLevel(zapLevel)
+
+        cfg.EncoderConfig.CallerKey = "caller"
+        cfg.EncoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
+
+        logger, err := cfg.Build(zap.AddCallerSkip(1))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov10" title="13">return &amp;Logger{zap: logger}, nil</span>
+}
+
+func (l *Logger) Info(ctx context.Context, msg string, fields ...zap.Field) <span class="cov4" title="3">{
+        l.zap.Info(msg, append(l.contextFields(ctx), fields...)...)
+}</span>
+
+func (l *Logger) Error(ctx context.Context, msg string, fields ...zap.Field) <span class="cov1" title="1">{
+        fields = append(fields, zap.Stack("stack"))
+        l.zap.Error(msg, append(l.contextFields(ctx), fields...)...)
+}</span>
+
+func (l *Logger) Warn(ctx context.Context, msg string, fields ...zap.Field) <span class="cov0" title="0">{
+        l.zap.Warn(msg, append(l.contextFields(ctx), fields...)...)
+}</span>
+
+func (l *Logger) Debug(ctx context.Context, msg string, fields ...zap.Field) <span class="cov0" title="0">{
+        l.zap.Debug(msg, append(l.contextFields(ctx), fields...)...)
+}</span>
+
+func (l *Logger) Fatal(ctx context.Context, msg string, fields ...zap.Field) <span class="cov0" title="0">{
+        l.zap.Fatal(msg, append(l.contextFields(ctx), fields...)...)
+}</span>
+
+func (l *Logger) WithContext(ctx context.Context, keysAndValues ...interface{}) context.Context <span class="cov0" title="0">{
+        for i := 0; i &lt; len(keysAndValues); i += 2 </span><span class="cov0" title="0">{
+                if i+1 &lt; len(keysAndValues) </span><span class="cov0" title="0">{
+                        key, ok := keysAndValues[i].(contextKey)
+                        if ok </span><span class="cov0" title="0">{
+                                ctx = context.WithValue(ctx, key, keysAndValues[i+1])
+                        }</span>
+                }
+        }
+        <span class="cov0" title="0">return ctx</span>
+}
+
+func (l *Logger) contextFields(ctx context.Context) []zap.Field <span class="cov5" title="4">{
+        fields := make([]zap.Field, 0, 5)
+
+        if requestID, ok := ctx.Value(RequestIDKey).(string); ok </span><span class="cov3" title="2">{
+                fields = append(fields, zap.String("request_id", requestID))
+        }</span>
+
+        <span class="cov5" title="4">if userID, ok := ctx.Value(UserIDKey).(uint64); ok </span><span class="cov3" title="2">{
+                fields = append(fields, zap.Uint64("user_id", userID))
+        }</span>
+
+        <span class="cov5" title="4">if traceID, ok := ctx.Value(TraceIDKey).(string); ok </span><span class="cov0" title="0">{
+                fields = append(fields, zap.String("trace_id", traceID))
+        }</span>
+
+        <span class="cov5" title="4">if sessionID, ok := ctx.Value(SessionIDKey).(string); ok </span><span class="cov0" title="0">{
+                fields = append(fields, zap.String("session_id", sessionID))
+        }</span>
+
+        <span class="cov5" title="4">pc, file, line, ok := runtime.Caller(2)
+        if ok </span><span class="cov5" title="4">{
+                funcName := runtime.FuncForPC(pc).Name()
+                fields = append(fields, zap.String("caller", funcName))
+                fields = append(fields, zap.String("file", file))
+                fields = append(fields, zap.Int("line", line))
+        }</span>
+
+        <span class="cov5" title="4">return fields</span>
+}
+
+func (l *Logger) Sync() error <span class="cov3" title="2">{
+        return l.zap.Sync()
+}</span>
+
+func (l *Logger) Field(key string, value interface{}) zap.Field <span class="cov0" title="0">{
+        return zap.Any(key, value)
+}</pre>
+		
+		<pre class="file" id="file9" style="display: none">package observability
+
+import (
+        "sync"
+        "time"
+
+        "github.com/prometheus/client_golang/prometheus"
+        "github.com/prometheus/client_golang/prometheus/promauto"
+)
+
+var (
+        metrics     *Metrics
+        metricsOnce sync.Once
+)
+
+type Metrics struct {
+        HttpRequestsTotal       *prometheus.CounterVec
+        HttpRequestDuration     *prometheus.HistogramVec
+        HttpRequestSize         *prometheus.HistogramVec
+        HttpResponseSize        *prometheus.HistogramVec
+        DatabaseQueryDuration   *prometheus.HistogramVec
+        DatabaseQuerySuccess    *prometheus.CounterVec
+        DatabaseQueryErrors     *prometheus.CounterVec
+        DatabaseConnections     *prometheus.GaugeVec
+        CacheHits               *prometheus.CounterVec
+        CacheMisses             *prometheus.CounterVec
+        AuthenticationAttempts  *prometheus.CounterVec
+        AuthenticationFailures  *prometheus.CounterVec
+        TokenRefreshes          *prometheus.CounterVec
+        CSRFValidations         *prometheus.CounterVec
+        RateLimitHits           *prometheus.CounterVec
+        ActiveSessions          prometheus.Gauge
+        BackgroundJobDuration   *prometheus.HistogramVec
+        BackgroundJobErrors     *prometheus.CounterVec
+}
+
+func NewMetrics() *Metrics <span class="cov8" title="1">{
+        metricsOnce.Do(func() </span><span class="cov8" title="1">{
+                metrics = &amp;Metrics{
+                        HttpRequestsTotal: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "http_requests_total",
+                                        Help: "Total number of HTTP requests",
+                                },
+                                []string{"method", "path", "status"},
+                        ),
+                        HttpRequestDuration: promauto.NewHistogramVec(
+                                prometheus.HistogramOpts{
+                                        Name:    "http_request_duration_seconds",
+                                        Help:    "Duration of HTTP requests in seconds",
+                                        Buckets: []float64{.001, .005, .01, .025, .05, .1, .25, .5, 1, 2.5, 5, 10},
+                                },
+                                []string{"method", "path"},
+                        ),
+                        HttpRequestSize: promauto.NewHistogramVec(
+                                prometheus.HistogramOpts{
+                                        Name:    "http_request_size_bytes",
+                                        Help:    "Size of HTTP requests in bytes",
+                                        Buckets: prometheus.ExponentialBuckets(100, 10, 8),
+                                },
+                                []string{"method", "path"},
+                        ),
+                        HttpResponseSize: promauto.NewHistogramVec(
+                                prometheus.HistogramOpts{
+                                        Name:    "http_response_size_bytes",
+                                        Help:    "Size of HTTP responses in bytes",
+                                        Buckets: prometheus.ExponentialBuckets(100, 10, 8),
+                                },
+                                []string{"method", "path"},
+                        ),
+                        DatabaseQueryDuration: promauto.NewHistogramVec(
+                                prometheus.HistogramOpts{
+                                        Name:    "database_query_duration_seconds",
+                                        Help:    "Duration of database queries in seconds",
+                                        Buckets: []float64{.001, .005, .01, .025, .05, .1, .25, .5, 1},
+                                },
+                                []string{"query_type", "table"},
+                        ),
+                        DatabaseQuerySuccess: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "database_query_success_total",
+                                        Help: "Total number of successful database queries",
+                                },
+                                []string{"query_type", "table"},
+                        ),
+                        DatabaseQueryErrors: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "database_query_errors_total",
+                                        Help: "Total number of database query errors",
+                                },
+                                []string{"query_type", "table", "error_type"},
+                        ),
+                        DatabaseConnections: promauto.NewGaugeVec(
+                                prometheus.GaugeOpts{
+                                        Name: "database_connections",
+                                        Help: "Number of active database connections",
+                                },
+                                []string{"state"},
+                        ),
+                        CacheHits: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "cache_hits_total",
+                                        Help: "Total number of cache hits",
+                                },
+                                []string{"cache_name"},
+                        ),
+                        CacheMisses: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "cache_misses_total",
+                                        Help: "Total number of cache misses",
+                                },
+                                []string{"cache_name"},
+                        ),
+                        AuthenticationAttempts: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "authentication_attempts_total",
+                                        Help: "Total number of authentication attempts",
+                                },
+                                []string{"method"},
+                        ),
+                        AuthenticationFailures: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "authentication_failures_total",
+                                        Help: "Total number of authentication failures",
+                                },
+                                []string{"method", "reason"},
+                        ),
+                        TokenRefreshes: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "token_refreshes_total",
+                                        Help: "Total number of token refreshes",
+                                },
+                                []string{"status"},
+                        ),
+                        CSRFValidations: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "csrf_validations_total",
+                                        Help: "Total number of CSRF validations",
+                                },
+                                []string{"status"},
+                        ),
+                        RateLimitHits: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "rate_limit_hits_total",
+                                        Help: "Total number of rate limit hits",
+                                },
+                                []string{"route", "identifier"},
+                        ),
+                        ActiveSessions: promauto.NewGauge(
+                                prometheus.GaugeOpts{
+                                        Name: "active_sessions",
+                                        Help: "Number of active user sessions",
+                                },
+                        ),
+                        BackgroundJobDuration: promauto.NewHistogramVec(
+                                prometheus.HistogramOpts{
+                                        Name:    "background_job_duration_seconds",
+                                        Help:    "Duration of background jobs in seconds",
+                                        Buckets: []float64{.1, .5, 1, 5, 10, 30, 60, 300},
+                                },
+                                []string{"job_name"},
+                        ),
+                        BackgroundJobErrors: promauto.NewCounterVec(
+                                prometheus.CounterOpts{
+                                        Name: "background_job_errors_total",
+                                        Help: "Total number of background job errors",
+                                },
+                                []string{"job_name", "error_type"},
+                        ),
+                }
+        }</span>)
+        <span class="cov8" title="1">return metrics</span>
+}
+
+func (m *Metrics) RecordDatabaseStats(openConns, inUse, idle int) <span class="cov0" title="0">{
+        m.DatabaseConnections.WithLabelValues("open").Set(float64(openConns))
+        m.DatabaseConnections.WithLabelValues("in_use").Set(float64(inUse))
+        m.DatabaseConnections.WithLabelValues("idle").Set(float64(idle))
+}</span>
+
+func (m *Metrics) RecordBackgroundJob(jobName string, duration time.Duration, err error) <span class="cov0" title="0">{
+        m.BackgroundJobDuration.WithLabelValues(jobName).Observe(duration.Seconds())
+        if err != nil </span><span class="cov0" title="0">{
+                m.BackgroundJobErrors.WithLabelValues(jobName, "error").Inc()
+        }</span>
+}</pre>
+		
+		<pre class="file" id="file10" style="display: none">package observability
+
+import (
+        "context"
+
+        "go.opentelemetry.io/otel"
+        "go.opentelemetry.io/otel/trace"
+)
+
+type Tracer struct {
+        tracer trace.Tracer
+}
+
+func NewTracer(serviceName string) *Tracer <span class="cov8" title="1">{
+        return &amp;Tracer{
+                tracer: otel.Tracer(serviceName),
+        }
+}</span>
+
+func (t *Tracer) Start(ctx context.Context, spanName string) (context.Context, trace.Span) <span class="cov8" title="1">{
+        return t.tracer.Start(ctx, spanName)
+}</pre>
+		
+		<pre class="file" id="file11" style="display: none">package security
+
+import (
+        "context"
+        "crypto/rand"
+        "encoding/base64"
+        "fmt"
+        "sync"
+        "time"
+
+        "github.com/redis/go-redis/v9"
+)
+
+// CSRFManager defines the interface for CSRF token operations [cite: 35]
+type CSRFManager interface {
+        Generate(userID uint64) (string, error)
+        Validate(token string, userID uint64) bool
+        Delete(token string)
+        Cleanup()
+}
+
+// --- In-Memory Implementation (Default) ---
+
+type InMemoryCSRFManager struct {
+        tokens map[string]*CSRFToken
+        mu     sync.RWMutex
+        ttl    time.Duration
+}
+
+type CSRFToken struct {
+        Token     string
+        UserID    uint64
+        ExpiresAt time.Time
+}
+
+func NewInMemoryCSRFManager(ttl time.Duration) *InMemoryCSRFManager <span class="cov7" title="7">{
+        manager := &amp;InMemoryCSRFManager{
+                tokens: make(map[string]*CSRFToken),
+                ttl:    ttl,
+        }
+        go manager.cleanupLoop()
+        return manager
+}</span>
+
+func (m *InMemoryCSRFManager) Generate(userID uint64) (string, error) <span class="cov9" title="16">{
+        b := make([]byte, 32)
+        if _, err := rand.Read(b); err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov9" title="16">token := base64.URLEncoding.EncodeToString(b)
+
+        m.mu.Lock()
+        defer m.mu.Unlock()
+
+        m.tokens[token] = &amp;CSRFToken{
+                Token:     token,
+                UserID:    userID,
+                ExpiresAt: time.Now().Add(m.ttl),
+        }
+        return token, nil</span>
+}
+
+func (m *InMemoryCSRFManager) Validate(token string, userID uint64) bool <span class="cov10" title="18">{
+        m.mu.RLock()
+        defer m.mu.RUnlock()
+
+        csrfToken, exists := m.tokens[token]
+        if !exists </span><span class="cov4" title="3">{
+                return false
+        }</span>
+        <span class="cov9" title="15">if time.Now().After(csrfToken.ExpiresAt) </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov9" title="14">return csrfToken.UserID == userID</span>
+}
+
+func (m *InMemoryCSRFManager) Delete(token string) <span class="cov1" title="1">{
+        m.mu.Lock()
+        defer m.mu.Unlock()
+        delete(m.tokens, token)
+}</span>
+
+func (m *InMemoryCSRFManager) Cleanup() <span class="cov1" title="1">{
+        m.mu.Lock()
+        defer m.mu.Unlock()
+        now := time.Now()
+        for token, csrfToken := range m.tokens </span><span class="cov3" title="2">{
+                if now.After(csrfToken.ExpiresAt) </span><span class="cov1" title="1">{
+                        delete(m.tokens, token)
+                }</span>
+        }
+}
+
+func (m *InMemoryCSRFManager) cleanupLoop() <span class="cov7" title="7">{
+        ticker := time.NewTicker(5 * time.Minute)
+        defer ticker.Stop()
+        for range ticker.C </span><span class="cov0" title="0">{
+                m.Cleanup()
+        }</span>
+}
+
+// --- Redis Implementation (Production) ---
+
+type RedisCSRFManager struct {
+        client *redis.Client
+        ttl    time.Duration
+        prefix string
+}
+
+func NewRedisCSRFManager(client *redis.Client, ttl time.Duration) *RedisCSRFManager <span class="cov0" title="0">{
+        return &amp;RedisCSRFManager{
+                client: client,
+                ttl:    ttl,
+                prefix: "csrf:",
+        }
+}</span>
+
+func (m *RedisCSRFManager) Generate(userID uint64) (string, error) <span class="cov0" title="0">{
+        b := make([]byte, 32)
+        if _, err := rand.Read(b); err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">token := base64.URLEncoding.EncodeToString(b)
+
+        key := m.prefix + token
+
+        // Store userID in Redis with the token as key and set TTL
+        if err := m.client.Set(context.Background(), key, userID, m.ttl).Err(); err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("redis set failed: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return token, nil</span>
+}
+
+func (m *RedisCSRFManager) Validate(token string, userID uint64) bool <span class="cov0" title="0">{
+        key := m.prefix + token
+
+        val, err := m.client.Get(context.Background(), key).Uint64()
+        if err != nil </span><span class="cov0" title="0">{
+                // Key does not exist (expired or never created) or connection error
+                return false
+        }</span>
+
+        <span class="cov0" title="0">return val == userID</span>
+}
+
+func (m *RedisCSRFManager) Delete(token string) <span class="cov0" title="0">{
+        key := m.prefix + token
+        // Best-effort delete; error ignored as functionality isn't compromised if delete fails
+        _ = m.client.Del(context.Background(), key)
+}</span>
+
+func (m *RedisCSRFManager) Cleanup() {<span class="cov0" title="0">
+        // No-op: Redis handles TTL expiration automatically
+}</span>
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package security
+
+import (
+        "context"
+        stderrors "errors"
+        "fmt"
+        "slices"
+        "time"
+
+        "github.com/golang-jwt/jwt/v5"
+        "github.com/google/uuid"
+        "github.com/waqasmani/go-boilerplate/internal/config"
+        "github.com/waqasmani/go-boilerplate/internal/shared/errors"
+)
+
+type JWTService struct {
+        accessSecret  []byte
+        refreshSecret []byte
+        accessExpiry  time.Duration
+        refreshExpiry time.Duration
+        issuer        string
+        audience      string
+}
+
+type Claims struct {
+        UserID uint64 `json:"user_id"`
+        Email  string `json:"email"`
+        Role   string `json:"role,omitempty"`
+        jwt.RegisteredClaims
+}
+
+func NewJWTService(cfg *config.JWTConfig) *JWTService <span class="cov4" title="2">{
+        return &amp;JWTService{
+                accessSecret:  []byte(cfg.AccessSecret),
+                refreshSecret: []byte(cfg.RefreshSecret),
+                accessExpiry:  cfg.AccessExpiry,
+                refreshExpiry: cfg.RefreshExpiry,
+                issuer:        "api-boilerplate",
+                audience:      "api-boilerplate-users",
+        }
+}</span>
+
+func (j *JWTService) GenerateAccessToken(ctx context.Context, userID uint64, email, role string) (string, error) <span class="cov1" title="1">{
+        jti, _ := uuid.NewRandom()
+        claims := &amp;Claims{
+                UserID: userID,
+                Email:  email,
+                Role:   role,
+                RegisteredClaims: jwt.RegisteredClaims{
+                        ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.accessExpiry)),
+                        IssuedAt:  jwt.NewNumericDate(time.Now()),
+                        NotBefore: jwt.NewNumericDate(time.Now()),
+                        ID:        jti.String(),
+                        Issuer:    j.issuer,
+                        Audience:  jwt.ClaimStrings{j.audience},
+                },
+        }
+        token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+        return token.SignedString(j.accessSecret)
+}</span>
+
+func (j *JWTService) GenerateRefreshToken(ctx context.Context, userID uint64, userEmail string) (string, error) <span class="cov1" title="1">{
+        jti, _ := uuid.NewRandom()
+        claims := &amp;Claims{
+                UserID: userID,
+                Email:  userEmail,
+                RegisteredClaims: jwt.RegisteredClaims{
+                        ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.refreshExpiry)),
+                        IssuedAt:  jwt.NewNumericDate(time.Now()),
+                        NotBefore: jwt.NewNumericDate(time.Now()),
+                        ID:        jti.String(),
+                        Issuer:    j.issuer,
+                        Audience:  jwt.ClaimStrings{j.audience},
+                },
+        }
+        token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+        return token.SignedString(j.refreshSecret)
+}</span>
+
+func (j *JWTService) ValidateAccessToken(ctx context.Context, tokenString string) (*Claims, error) <span class="cov7" title="3">{
+        return j.validateToken(tokenString, j.accessSecret)
+}</span>
+
+func (j *JWTService) ValidateRefreshToken(ctx context.Context, tokenString string) (*Claims, error) <span class="cov4" title="2">{
+        return j.validateToken(tokenString, j.refreshSecret)
+}</span>
+
+func (j *JWTService) validateToken(tokenString string, secret []byte) (*Claims, error) <span class="cov10" title="5">{
+        token, err := jwt.ParseWithClaims(tokenString, &amp;Claims{}, func(token *jwt.Token) (any, error) </span><span class="cov8" title="4">{
+                if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+                }</span>
+                <span class="cov8" title="4">return secret, nil</span>
+        })
+        <span class="cov10" title="5">if err != nil </span><span class="cov7" title="3">{
+                if stderrors.Is(err, jwt.ErrTokenExpired) </span><span class="cov1" title="1">{
+                        return nil, errors.New(errors.ErrCodeExpiredToken, "Token expired")
+                }</span>
+                <span class="cov4" title="2">return nil, errors.New(errors.ErrCodeInvalidToken, "Authentication failed")</span>
+        }
+
+        <span class="cov4" title="2">if !token.Valid </span><span class="cov0" title="0">{
+                return nil, errors.New(errors.ErrCodeInvalidToken, "Authentication failed")
+        }</span>
+
+        <span class="cov4" title="2">claims, ok := token.Claims.(*Claims)
+        if !ok </span><span class="cov0" title="0">{
+                return nil, errors.New(errors.ErrCodeInvalidToken, "Invalid token claims")
+        }</span>
+
+        <span class="cov4" title="2">if claims.Issuer != j.issuer </span><span class="cov0" title="0">{
+                return nil, errors.New(errors.ErrCodeInvalidToken, "Invalid token issuer")
+        }</span>
+
+        <span class="cov4" title="2">validAudience := slices.Contains(claims.Audience, j.audience)
+        if !validAudience </span><span class="cov0" title="0">{
+                return nil, errors.New(errors.ErrCodeInvalidToken, "Invalid token audience")
+        }</span>
+
+        <span class="cov4" title="2">return claims, nil</span>
+}
+
+func (j *JWTService) GetRefreshExpiry() time.Duration <span class="cov0" title="0">{
+        return j.refreshExpiry
+}</span>
+
+func (j *JWTService) GetAccessExpiry() time.Duration <span class="cov0" title="0">{
+        return j.accessExpiry
+}</span>
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package security
+
+import (
+        "context"
+        "crypto/sha256"
+        "fmt"
+        "regexp"
+        "strings"
+
+        "golang.org/x/crypto/bcrypt"
+)
+
+type PasswordService struct {
+        cost                 int
+        minLength            int
+        requireUppercase     bool
+        requireLowercase     bool
+        requireDigit         bool
+        requireSpecialChar   bool
+        maxConsecutiveChars  int
+        commonPasswordsCache map[string]bool
+}
+
+func NewPasswordService(cost int) *PasswordService <span class="cov1" title="1">{
+        return &amp;PasswordService{
+                cost:                cost,
+                minLength:           8,
+                requireUppercase:    true,
+                requireLowercase:    true,
+                requireDigit:        true,
+                requireSpecialChar:  true,
+                maxConsecutiveChars: 3,
+                commonPasswordsCache: map[string]bool{
+                        "password": true, "12345678": true, "qwerty": true,
+                        "admin": true, "letmein": true, "welcome": true,
+                },
+        }
+}</span>
+
+type PasswordValidationError struct {
+        Errors []string
+}
+
+func (e *PasswordValidationError) Error() string <span class="cov0" title="0">{
+        return strings.Join(e.Errors, "; ")
+}</span>
+
+func (p *PasswordService) Validate(password string) error <span class="cov1" title="1">{
+        var errors []string
+
+        if len(password) &lt; p.minLength </span><span class="cov0" title="0">{
+                errors = append(errors, fmt.Sprintf("password must be at least %d characters", p.minLength))
+        }</span>
+
+        <span class="cov1" title="1">if len(password) &gt; 128 </span><span class="cov0" title="0">{
+                errors = append(errors, "password must not exceed 128 characters")
+        }</span>
+
+        <span class="cov1" title="1">if p.requireUppercase &amp;&amp; !regexp.MustCompile(`[A-Z]`).MatchString(password) </span><span class="cov0" title="0">{
+                errors = append(errors, "password must contain at least one uppercase letter")
+        }</span>
+
+        <span class="cov1" title="1">if p.requireLowercase &amp;&amp; !regexp.MustCompile(`[a-z]`).MatchString(password) </span><span class="cov0" title="0">{
+                errors = append(errors, "password must contain at least one lowercase letter")
+        }</span>
+
+        <span class="cov1" title="1">if p.requireDigit &amp;&amp; !regexp.MustCompile(`[0-9]`).MatchString(password) </span><span class="cov0" title="0">{
+                errors = append(errors, "password must contain at least one digit")
+        }</span>
+
+        <span class="cov1" title="1">if p.requireSpecialChar &amp;&amp; !regexp.MustCompile(`[!@#$%^&amp;*()_+\-=\[\]{};':"\\|,.&lt;&gt;\/?]`).MatchString(password) </span><span class="cov0" title="0">{
+                errors = append(errors, "password must contain at least one special character")
+        }</span>
+
+        <span class="cov1" title="1">if p.hasConsecutiveChars(password, p.maxConsecutiveChars) </span><span class="cov0" title="0">{
+                errors = append(errors, fmt.Sprintf("password must not contain more than %d consecutive identical characters", p.maxConsecutiveChars))
+        }</span>
+
+        <span class="cov1" title="1">lowerPassword := strings.ToLower(password)
+        if p.commonPasswordsCache[lowerPassword] </span><span class="cov0" title="0">{
+                errors = append(errors, "password is too common")
+        }</span>
+
+        <span class="cov1" title="1">if len(errors) &gt; 0 </span><span class="cov0" title="0">{
+                return &amp;PasswordValidationError{Errors: errors}
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (p *PasswordService) hasConsecutiveChars(password string, max int) bool <span class="cov1" title="1">{
+        if len(password) &lt; max </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov1" title="1">count := 1
+        for i := 1; i &lt; len(password); i++ </span><span class="cov10" title="13">{
+                if password[i] == password[i-1] </span><span class="cov1" title="1">{
+                        count++
+                        if count &gt;= max </span><span class="cov0" title="0">{
+                                return true
+                        }</span>
+                } else<span class="cov9" title="12"> {
+                        count = 1
+                }</span>
+        }
+        <span class="cov1" title="1">return false</span>
+}
+
+func (p *PasswordService) Hash(ctx context.Context, password string) (string, error) <span class="cov1" title="1">{
+        if err := p.Validate(password); err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+
+        <span class="cov1" title="1">hash, err := bcrypt.GenerateFromPassword([]byte(password), p.cost)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("failed to hash password: %w", err)
+        }</span>
+        <span class="cov1" title="1">return string(hash), nil</span>
+}
+
+func (p *PasswordService) Compare(ctx context.Context, hashedPassword, password string) error <span class="cov3" title="2">{
+        return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}</span>
+
+func (p *PasswordService) HashToken(token string) string <span class="cov0" title="0">{
+        hash := sha256.Sum256([]byte(token))
+        return fmt.Sprintf("%x", hash)
+}</pre>
+		
+		<pre class="file" id="file14" style="display: none">package security
+
+import (
+        "context"
+        "fmt"
+        "net/http"
+        "sync"
+        "time"
+
+        "github.com/gin-gonic/gin"
+        "github.com/redis/go-redis/v9"
+)
+
+type RateLimiter interface {
+        Allow(ctx context.Context, identifier string, limit int, window time.Duration) (bool, error)
+        Reset(ctx context.Context, identifier string) error
+        GetRemaining(ctx context.Context, identifier string, limit int, window time.Duration) (int, error)
+}
+
+type InMemoryRateLimiter struct {
+        mu       sync.Mutex
+        requests map[string]*bucketInfo
+}
+
+type bucketInfo struct {
+        timestamps []time.Time
+        resetAt    time.Time
+}
+
+func NewInMemoryRateLimiter() *InMemoryRateLimiter <span class="cov1" title="1">{
+        limiter := &amp;InMemoryRateLimiter{
+                requests: make(map[string]*bucketInfo),
+        }
+        go limiter.cleanup()
+        return limiter
+}</span>
+
+func (rl *InMemoryRateLimiter) cleanup() <span class="cov1" title="1">{
+        ticker := time.NewTicker(time.Minute)
+        defer ticker.Stop()
+
+        for range ticker.C </span><span class="cov0" title="0">{
+                rl.mu.Lock()
+                now := time.Now()
+                for key, bucket := range rl.requests </span><span class="cov0" title="0">{
+                        if now.After(bucket.resetAt) </span><span class="cov0" title="0">{
+                                delete(rl.requests, key)
+                        }</span>
+                }
+                <span class="cov0" title="0">rl.mu.Unlock()</span>
+        }
+}
+
+func (rl *InMemoryRateLimiter) Allow(ctx context.Context, identifier string, limit int, window time.Duration) (bool, error) <span class="cov8" title="4">{
+        rl.mu.Lock()
+        defer rl.mu.Unlock()
+
+        now := time.Now()
+        windowStart := now.Add(-window)
+
+        bucket, exists := rl.requests[identifier]
+        if !exists </span><span class="cov1" title="1">{
+                bucket = &amp;bucketInfo{
+                        timestamps: []time.Time{now},
+                        resetAt:    now.Add(window),
+                }
+                rl.requests[identifier] = bucket
+                return true, nil
+        }</span>
+
+        <span class="cov7" title="3">var validRequests []time.Time
+        for _, t := range bucket.timestamps </span><span class="cov10" title="5">{
+                if t.After(windowStart) </span><span class="cov7" title="3">{
+                        validRequests = append(validRequests, t)
+                }</span>
+        }
+
+        <span class="cov7" title="3">if len(validRequests) &gt;= limit </span><span class="cov1" title="1">{
+                return false, nil
+        }</span>
+
+        <span class="cov4" title="2">bucket.timestamps = append(validRequests, now)
+        bucket.resetAt = now.Add(window)
+        return true, nil</span>
+}
+
+func (rl *InMemoryRateLimiter) Reset(ctx context.Context, identifier string) error <span class="cov0" title="0">{
+        rl.mu.Lock()
+        defer rl.mu.Unlock()
+        delete(rl.requests, identifier)
+        return nil
+}</span>
+
+func (rl *InMemoryRateLimiter) GetRemaining(ctx context.Context, identifier string, limit int, window time.Duration) (int, error) <span class="cov0" title="0">{
+        rl.mu.Lock()
+        defer rl.mu.Unlock()
+
+        now := time.Now()
+        windowStart := now.Add(-window)
+
+        bucket, exists := rl.requests[identifier]
+        if !exists </span><span class="cov0" title="0">{
+                return limit, nil
+        }</span>
+
+        <span class="cov0" title="0">var validRequests []time.Time
+        for _, t := range bucket.timestamps </span><span class="cov0" title="0">{
+                if t.After(windowStart) </span><span class="cov0" title="0">{
+                        validRequests = append(validRequests, t)
+                }</span>
+        }
+
+        <span class="cov0" title="0">remaining := limit - len(validRequests)
+        if remaining &lt; 0 </span><span class="cov0" title="0">{
+                remaining = 0
+        }</span>
+        <span class="cov0" title="0">return remaining, nil</span>
+}
+
+type RedisRateLimiter struct {
+        client *redis.Client
+        prefix string
+}
+
+func NewRedisRateLimiter(client *redis.Client) *RedisRateLimiter <span class="cov1" title="1">{
+        return &amp;RedisRateLimiter{
+                client: client,
+                prefix: "rl:",
+        }
+}</span>
+
+func (rl *RedisRateLimiter) Allow(ctx context.Context, identifier string, limit int, window time.Duration) (bool, error) <span class="cov8" title="4">{
+        key := fmt.Sprintf("%s%s", rl.prefix, identifier)
+
+        pipe := rl.client.Pipeline()
+        incr := pipe.Incr(ctx, key)
+        pipe.Expire(ctx, key, window)
+
+        if _, err := pipe.Exec(ctx); err != nil </span><span class="cov1" title="1">{
+                return false, fmt.Errorf("redis pipeline failed: %w", err)
+        }</span>
+
+        <span class="cov7" title="3">count, err := incr.Result()
+        if err != nil </span><span class="cov0" title="0">{
+                return false, fmt.Errorf("redis incr failed: %w", err)
+        }</span>
+
+        <span class="cov7" title="3">return count &lt;= int64(limit), nil</span>
+}
+
+func (rl *RedisRateLimiter) Reset(ctx context.Context, identifier string) error <span class="cov0" title="0">{
+        key := fmt.Sprintf("%s%s", rl.prefix, identifier)
+        return rl.client.Del(ctx, key).Err()
+}</span>
+
+func (rl *RedisRateLimiter) GetRemaining(ctx context.Context, identifier string, limit int, window time.Duration) (int, error) <span class="cov0" title="0">{
+        key := fmt.Sprintf("%s%s", rl.prefix, identifier)
+
+        count, err := rl.client.Get(ctx, key).Int()
+        if err == redis.Nil </span><span class="cov0" title="0">{
+                return limit, nil
+        }</span>
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return 0, fmt.Errorf("redis get failed: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">remaining := limit - count
+        if remaining &lt; 0 </span><span class="cov0" title="0">{
+                remaining = 0
+        }</span>
+        <span class="cov0" title="0">return remaining, nil</span>
+}
+
+func RouteRateLimitMiddleware(rl RateLimiter, limit int, window time.Duration) gin.HandlerFunc <span class="cov0" title="0">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                identifier := c.ClientIP()
+
+                allowed, err := rl.Allow(c.Request.Context(), identifier, limit, window)
+                if err != nil </span><span class="cov0" title="0">{
+                        c.Next()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">remaining, _ := rl.GetRemaining(c.Request.Context(), identifier, limit, window)
+
+                c.Header("X-RateLimit-Limit", fmt.Sprintf("%d", limit))
+                c.Header("X-RateLimit-Remaining", fmt.Sprintf("%d", remaining))
+                c.Header("X-RateLimit-Reset", fmt.Sprintf("%d", time.Now().Add(window).Unix()))
+
+                if !allowed </span><span class="cov0" title="0">{
+                        c.Header("Retry-After", fmt.Sprintf("%d", int(window.Seconds())))
+                        c.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{
+                                "success": false,
+                                "error": gin.H{
+                                        "code":    "TOO_MANY_REQUESTS",
+                                        "message": "Rate limit exceeded. Please try again later.",
+                                },
+                        })
+                        return
+                }</span>
+
+                <span class="cov0" title="0">c.Next()</span>
+        }
+}</pre>
+		
+		<pre class="file" id="file15" style="display: none">package security
+
+import "context"
+
+type contextKey string
+
+const (
+        UserIDKey    contextKey = "user_id"
+        UserRoleKey  contextKey = "user_role"
+        UserEmailKey contextKey = "user_email"
+)
+
+// ContextWithUserID adds the user ID to the context
+func ContextWithUserID(ctx context.Context, userID uint64) context.Context <span class="cov0" title="0">{
+        return context.WithValue(ctx, UserIDKey, userID)
+}</span>
+
+// ContextWithUserRole adds the user role to the context
+func ContextWithUserRole(ctx context.Context, role string) context.Context <span class="cov0" title="0">{
+        return context.WithValue(ctx, UserRoleKey, role)
+}</span>
+
+// ContextWithUserEmail adds the user email to the context
+func ContextWithUserEmail(ctx context.Context, email string) context.Context <span class="cov0" title="0">{
+        return context.WithValue(ctx, UserEmailKey, email)
+}</span>
+
+// UserIDFromContext retrieves the user ID from context
+func UserIDFromContext(ctx context.Context) (uint64, bool) <span class="cov0" title="0">{
+        userID, ok := ctx.Value(UserIDKey).(uint64)
+        return userID, ok
+}</span>
+
+// UserRoleFromContext retrieves the user role from context
+func UserRoleFromContext(ctx context.Context) (string, bool) <span class="cov0" title="0">{
+        role, ok := ctx.Value(UserRoleKey).(string)
+        return role, ok
+}</span>
+
+// UserEmailFromContext retrieves the user email from context
+func UserEmailFromContext(ctx context.Context) (string, bool) <span class="cov0" title="0">{
+        email, ok := ctx.Value(UserEmailKey).(string)
+        return email, ok
+}</span>
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package auth
+
+import (
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/observability"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
+        "github.com/waqasmani/go-boilerplate/internal/modules/users"
+        "github.com/waqasmani/go-boilerplate/internal/shared/errors"
+        "github.com/waqasmani/go-boilerplate/internal/shared/utils"
+        "github.com/waqasmani/go-boilerplate/internal/shared/validator"
+)
+
+type Handler struct {
+        service      *AuthService
+        v            *validator.Validator
+        isProduction bool
+        auditLogger  *observability.AuditLogger
+        csrfManager  security.CSRFManager
+        metrics      *observability.Metrics
+}
+
+func NewHandler(service *AuthService, v *validator.Validator, isProduction bool, auditLogger *observability.AuditLogger, csrfManager security.CSRFManager, metrics *observability.Metrics) *Handler <span class="cov0" title="0">{
+        return &amp;Handler{
+                service:      service,
+                v:            v,
+                isProduction: isProduction,
+                auditLogger:  auditLogger,
+                csrfManager:  csrfManager,
+                metrics:      metrics,
+        }
+}</span>
+
+type loginRequest struct {
+        Email    string `json:"email" validate:"required,email"`
+        Password string `json:"password" validate:"required,min=8"`
+}
+
+// @Summary User login
+// @Description Authenticate user and get access and refresh tokens
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body loginRequest true "Login credentials"
+// @Success 200 {object} map[string]string "Contains access_token and csrf_token"
+// @Failure 400 {object} utils.Response
+// @Failure 401 {object} utils.Response
+// @Router /auth/login [post]
+func (h *Handler) Login(c *gin.Context) <span class="cov0" title="0">{
+        clientIP := c.ClientIP()
+        h.metrics.AuthenticationAttempts.WithLabelValues("password").Inc()
+
+        var req loginRequest
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                h.metrics.AuthenticationFailures.WithLabelValues("password", "invalid_request").Inc()
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid request body"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := h.v.Validate(req); err != nil </span><span class="cov0" title="0">{
+                h.metrics.AuthenticationFailures.WithLabelValues("password", "validation_failed").Inc()
+                utils.Error(c, errors.WithDetails(errors.ErrCodeValidation, "Validation failed", validator.TranslateValidationErrors(err)))
+                return
+        }</span>
+
+        <span class="cov0" title="0">tokens, userID, err := h.service.Login(c.Request.Context(), LoginRequest{
+                Email:    req.Email,
+                Password: req.Password,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                h.auditLogger.LogSecurityEvent(c.Request.Context(), observability.SecurityEvent{
+                        Type:      "authentication",
+                        Action:    "login_failed",
+                        UserID:    userID,
+                        Success:   false,
+                        IPAddress: clientIP,
+                })
+                h.metrics.AuthenticationFailures.WithLabelValues("password", "invalid_credentials").Inc()
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">h.auditLogger.LogSecurityEvent(c.Request.Context(), observability.SecurityEvent{
+                Type:      "authentication",
+                Action:    "login_success",
+                UserID:    userID,
+                Success:   true,
+                IPAddress: clientIP,
+        })
+
+        h.setRefreshTokenCookie(c, tokens.RefreshToken)
+
+        csrfToken, err := h.csrfManager.Generate(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                h.metrics.CSRFValidations.WithLabelValues("generation_failed").Inc()
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeInternal, "Failed to generate CSRF token"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">h.metrics.CSRFValidations.WithLabelValues("generated").Inc()
+        h.metrics.ActiveSessions.Inc()
+
+        utils.Success(c, http.StatusOK, gin.H{
+                "access_token": tokens.AccessToken,
+                "csrf_token":   csrfToken,
+        })</span>
+}
+
+// @Summary User registration
+// @Description Register a new user account
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body users.CreateUserRequest true "Registration details"
+// @Success 201 {object} users.UserResponse
+// @Failure 400 {object} utils.Response
+// @Failure 409 {object} utils.Response
+// @Router /auth/register [post]
+// @Summary User registration
+// @Description Register a new user account
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body registerRequest true "Registration details"
+// @Success 201 {object} UserResponse
+// @Failure 400 {object} utils.Response
+// @Failure 409 {object} utils.Response
+// @Router /api/v1/auth/register [post]
+func (h *Handler) Register(c *gin.Context) <span class="cov0" title="0">{
+        clientIP := c.ClientIP()
+        var req users.CreateUserRequest
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid request body"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := h.v.Validate(req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.WithDetails(errors.ErrCodeValidation, "Validation failed", validator.TranslateValidationErrors(err)))
+                return
+        }</span>
+
+        <span class="cov0" title="0">user, err := h.service.Register(c.Request.Context(), users.CreateUserRequest{
+                Email:     req.Email,
+                Password:  req.Password,
+                FirstName: req.FirstName,
+                LastName:  req.LastName,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                if h.auditLogger != nil </span><span class="cov0" title="0">{
+                        // FIX: Handle nil user safely
+                        var userID uint64
+                        if user != nil </span><span class="cov0" title="0">{
+                                userID = user.ID
+                        }</span>
+                        <span class="cov0" title="0">h.auditLogger.LogSecurityEvent(c.Request.Context(), observability.SecurityEvent{
+                                Type:      "registration",
+                                Action:    "registration_failed",
+                                UserID:    userID,
+                                Success:   false,
+                                IPAddress: clientIP,
+                        })</span>
+                }
+                <span class="cov0" title="0">utils.Error(c, err)
+                return</span>
+        }
+
+        <span class="cov0" title="0">if user == nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.New(errors.ErrCodeInternal, "Registration succeeded but user data is missing"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if h.auditLogger != nil </span><span class="cov0" title="0">{
+                h.auditLogger.LogSecurityEvent(c.Request.Context(), observability.SecurityEvent{
+                        Type:      "registration",
+                        Action:    "user_registered",
+                        UserID:    user.ID,
+                        Success:   true,
+                        IPAddress: clientIP,
+                })
+        }</span>
+
+        <span class="cov0" title="0">utils.Success(c, http.StatusCreated, user)</span>
+}
+
+// @Summary Refresh tokens
+// @Description Get new access token using refresh token from cookie
+// @Tags auth
+// @Produce json
+// @Success 200 {object} map[string]string "Contains access_token and csrf_token"
+// @Failure 401 {object} utils.Response
+// @Router /auth/refresh [post]
+func (h *Handler) RefreshTokens(c *gin.Context) <span class="cov0" title="0">{
+        h.metrics.TokenRefreshes.WithLabelValues("attempted").Inc()
+
+        refreshToken := h.getRefreshTokenFromCookie(c)
+        if refreshToken == "" </span><span class="cov0" title="0">{
+                h.metrics.TokenRefreshes.WithLabelValues("missing_token").Inc()
+                utils.Error(c, errors.ErrInvalidToken)
+                return
+        }</span>
+
+        <span class="cov0" title="0">tokens, userID, err := h.service.RefreshTokens(c.Request.Context(), refreshToken)
+        if err != nil </span><span class="cov0" title="0">{
+                h.metrics.TokenRefreshes.WithLabelValues("failed").Inc()
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">h.setRefreshTokenCookie(c, tokens.RefreshToken)
+
+        csrfToken, err := h.csrfManager.Generate(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                h.metrics.CSRFValidations.WithLabelValues("generation_failed").Inc()
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeInternal, "Failed to generate CSRF token"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">h.metrics.TokenRefreshes.WithLabelValues("success").Inc()
+        h.metrics.CSRFValidations.WithLabelValues("generated").Inc()
+
+        utils.Success(c, http.StatusOK, gin.H{
+                "access_token": tokens.AccessToken,
+                "csrf_token":   csrfToken,
+        })</span>
+}
+
+// @Summary User logout
+// @Description Revoke refresh token and clear cookies
+// @Tags auth
+// @Produce json
+// @Success 200 {object} map[string]string
+// @Failure 401 {object} utils.Response
+// @Router /auth/logout [post]
+func (h *Handler) Logout(c *gin.Context) <span class="cov0" title="0">{
+        refreshToken := h.getRefreshTokenFromCookie(c)
+        if refreshToken == "" </span><span class="cov0" title="0">{
+                utils.Error(c, errors.ErrInvalidToken)
+                return
+        }</span>
+
+        <span class="cov0" title="0">csrfToken := c.GetHeader("X-CSRF-Token")
+        if csrfToken != "" </span><span class="cov0" title="0">{
+                h.csrfManager.Delete(csrfToken)
+        }</span>
+
+        <span class="cov0" title="0">if err := h.service.Logout(c.Request.Context(), refreshToken); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">h.clearRefreshTokenCookie(c)
+        h.metrics.ActiveSessions.Dec()
+
+        h.auditLogger.LogSecurityEvent(c.Request.Context(), observability.SecurityEvent{
+                Type:      "authentication",
+                Action:    "logout_success",
+                Success:   true,
+                IPAddress: c.ClientIP(),
+        })
+
+        utils.Success(c, http.StatusOK, gin.H{"message": "Successfully logged out"})</span>
+}
+
+func (h *Handler) setRefreshTokenCookie(c *gin.Context, refreshToken string) <span class="cov0" title="0">{
+        refreshExpiry := h.service.jwtService.GetRefreshExpiry()
+
+        cookie := &amp;http.Cookie{
+                Name:     "refresh_token",
+                Value:    refreshToken,
+                MaxAge:   int(refreshExpiry.Seconds()),
+                HttpOnly: true,
+                Secure:   h.isProduction,
+                SameSite: http.SameSiteStrictMode,
+                Path:     "/api/v1/auth",
+        }
+        http.SetCookie(c.Writer, cookie)
+}</span>
+
+func (h *Handler) clearRefreshTokenCookie(c *gin.Context) <span class="cov0" title="0">{
+        cookie := &amp;http.Cookie{
+                Name:     "refresh_token",
+                Value:    "",
+                MaxAge:   -1,
+                HttpOnly: true,
+                Secure:   h.isProduction,
+                SameSite: http.SameSiteStrictMode,
+                Path:     "/api/v1/auth",
+        }
+        http.SetCookie(c.Writer, cookie)
+}</span>
+
+func (h *Handler) getRefreshTokenFromCookie(c *gin.Context) string <span class="cov0" title="0">{
+        cookie, err := c.Cookie("refresh_token")
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov0" title="0">return cookie</span>
+}
+
+// @Summary Get CSRF token
+// @Description Get a new CSRF token for state-changing requests
+// @Tags auth
+// @Param Authorization header string true "Bearer &lt;access_token&gt;"
+// @Produce json
+// @Success 200 {object} map[string]string "Contains csrf_token"
+// @Failure 401 {object} utils.Response
+// @Router /auth/csrf-token [get]
+func (h *Handler) GetCSRFToken(c *gin.Context) <span class="cov0" title="0">{
+        userIDVal, exists := c.Get(string(security.UserIDKey))
+        if !exists </span><span class="cov0" title="0">{
+                utils.Error(c, errors.ErrUnauthorized)
+                return
+        }</span>
+
+        <span class="cov0" title="0">userID, ok := userIDVal.(uint64)
+        if !ok </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeInternal, "Invalid user ID type"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">token, err := h.csrfManager.Generate(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                h.metrics.CSRFValidations.WithLabelValues("generation_failed").Inc()
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeInternal, "Failed to generate CSRF token"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">h.metrics.CSRFValidations.WithLabelValues("generated").Inc()
+        utils.Success(c, http.StatusOK, gin.H{"csrf_token": token})</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package auth
+
+import (
+        "context"
+        "strings"
+
+        "github.com/gin-gonic/gin"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
+        "github.com/waqasmani/go-boilerplate/internal/shared/errors"
+        "github.com/waqasmani/go-boilerplate/internal/shared/utils"
+)
+
+type AuthMiddleware struct {
+        jwtService  *security.JWTService
+        csrfManager security.CSRFManager
+}
+
+func NewAuthMiddleware(jwtService *security.JWTService, csrfManager security.CSRFManager) *AuthMiddleware <span class="cov0" title="0">{
+        return &amp;AuthMiddleware{
+                jwtService:  jwtService,
+                csrfManager: csrfManager,
+        }
+}</span>
+
+func (m *AuthMiddleware) Authenticate() gin.HandlerFunc <span class="cov0" title="0">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                authHeader := c.GetHeader("Authorization")
+                if authHeader == "" </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.ErrUnauthorized)
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+                if tokenString == authHeader </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeUnauthorized, "Invalid authorization header format"))
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">claims, err := m.jwtService.ValidateAccessToken(c.Request.Context(), tokenString)
+                if err != nil </span><span class="cov0" title="0">{
+                        utils.Error(c, err)
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">ctx := context.WithValue(c.Request.Context(), security.UserIDKey, claims.UserID)
+                ctx = context.WithValue(ctx, security.UserRoleKey, claims.Role)
+                ctx = context.WithValue(ctx, security.UserEmailKey, claims.Email)
+                c.Request = c.Request.WithContext(ctx)
+
+                c.Set(string(security.UserIDKey), claims.UserID)
+                c.Set(string(security.UserRoleKey), claims.Role)
+                c.Set(string(security.UserEmailKey), claims.Email)
+
+                c.Next()</span>
+        }
+}
+
+func (m *AuthMiddleware) Authorize(allowedRoles ...string) gin.HandlerFunc <span class="cov0" title="0">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                userRole, exists := c.Get(string(security.UserRoleKey))
+                if !exists </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.ErrForbidden)
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">role, ok := userRole.(string)
+                if !ok </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.Wrap(errors.ErrForbidden, errors.ErrCodeInternal, "Invalid role type in context"))
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">hasPermission := false
+                for _, allowedRole := range allowedRoles </span><span class="cov0" title="0">{
+                        if role == allowedRole </span><span class="cov0" title="0">{
+                                hasPermission = true
+                                break</span>
+                        }
+                }
+
+                <span class="cov0" title="0">if !hasPermission </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.ErrForbidden)
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">c.Next()</span>
+        }
+}
+
+func (m *AuthMiddleware) CSRFProtection() gin.HandlerFunc <span class="cov0" title="0">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                if c.Request.Method == "GET" || c.Request.Method == "HEAD" || c.Request.Method == "OPTIONS" </span><span class="cov0" title="0">{
+                        c.Next()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">csrfToken := c.GetHeader("X-CSRF-Token")
+                if csrfToken == "" </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.Wrap(errors.ErrForbidden, errors.ErrCodeForbidden, "Missing CSRF token"))
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">userIDVal, exists := c.Get(string(security.UserIDKey))
+                if !exists </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.ErrUnauthorized)
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">userID, ok := userIDVal.(uint64)
+                if !ok </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeInternal, "Invalid user ID type"))
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if !m.csrfManager.Validate(csrfToken, userID) </span><span class="cov0" title="0">{
+                        utils.Error(c, errors.Wrap(errors.ErrForbidden, errors.ErrCodeForbidden, "Invalid CSRF token"))
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">c.Next()</span>
+        }
+}
+
+func GetCurrentUserID(c *gin.Context) (uint64, error) <span class="cov0" title="0">{
+        userID, exists := c.Get(string(security.UserIDKey))
+        if !exists </span><span class="cov0" title="0">{
+                return 0, errors.ErrUnauthorized
+        }</span>
+
+        <span class="cov0" title="0">id, ok := userID.(uint64)
+        if !ok </span><span class="cov0" title="0">{
+                return 0, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeInternal, "Invalid user ID type in context")
+        }</span>
+
+        <span class="cov0" title="0">return id, nil</span>
+}
+
+func GetCurrentUserRole(c *gin.Context) (string, error) <span class="cov0" title="0">{
+        userRole, exists := c.Get(string(security.UserRoleKey))
+        if !exists </span><span class="cov0" title="0">{
+                return "", errors.ErrUnauthorized
+        }</span>
+
+        <span class="cov0" title="0">role, ok := userRole.(string)
+        if !ok </span><span class="cov0" title="0">{
+                return "", errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeInternal, "Invalid role type in context")
+        }</span>
+
+        <span class="cov0" title="0">return role, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package auth
+
+import (
+        "time"
+
+        "github.com/gin-gonic/gin"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
+)
+
+func RegisterRoutes(router *gin.Engine, h *Handler, authMiddleware *AuthMiddleware, rl security.RateLimiter) <span class="cov0" title="0">{
+        authGroup := router.Group("/api/v1/auth")
+        </span><span class="cov0" title="0">{
+                authGroup.POST("/register", security.RouteRateLimitMiddleware(rl, 5, time.Minute), h.Register)
+                authGroup.POST("/login", security.RouteRateLimitMiddleware(rl, 5, time.Minute), h.Login)
+
+                // Refresh can be slightly more relaxed
+                authGroup.POST("/refresh", security.RouteRateLimitMiddleware(rl, 20, time.Minute), h.RefreshTokens)
+
+                // Logout doesn't strictly need a heavy rate limit but can be capped
+                authGroup.POST("/logout", h.Logout)
+        }</span>
+
+        <span class="cov0" title="0">csrfGroup := router.Group("/api/v1/auth")
+        csrfGroup.Use(authMiddleware.Authenticate())
+        </span><span class="cov0" title="0">{
+                csrfGroup.GET("/csrf-token", h.GetCSRFToken)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package auth
+
+import (
+        "context"
+        "database/sql"
+        "time"
+
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/sqlc"
+        "github.com/waqasmani/go-boilerplate/internal/modules/users"
+        "github.com/waqasmani/go-boilerplate/internal/shared/errors"
+)
+
+func NewAuthService(queries sqlc.Querier, repo *sqlc.Repository, jwtService *security.JWTService, passwordService *security.PasswordService) *AuthService <span class="cov10" title="6">{
+        return &amp;AuthService{
+                queries:         queries,
+                repo:            repo,
+                jwtService:      jwtService,
+                passwordService: passwordService,
+        }
+}</span>
+
+func (s *AuthService) Login(ctx context.Context, req LoginRequest) (*Tokens, uint64, error) <span class="cov9" title="5">{
+        user, err := s.queries.GetUserByEmail(ctx, req.Email)
+        if err != nil </span><span class="cov4" title="2">{
+                if err == sql.ErrNoRows </span><span class="cov1" title="1">{
+                        return nil, 0, errors.ErrInvalidCredentials
+                }</span>
+                <span class="cov1" title="1">return nil, 0, errors.Wrap(err, errors.ErrCodeInternal, "Failed to find user")</span>
+        }
+
+        <span class="cov6" title="3">if !user.IsActive </span><span class="cov1" title="1">{
+                return nil, 0, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeUnauthorized, "Account is inactive")
+        }</span>
+
+        <span class="cov4" title="2">if err := s.passwordService.Compare(ctx, user.PasswordHash, req.Password); err != nil </span><span class="cov1" title="1">{
+                return nil, 0, errors.ErrInvalidCredentials
+        }</span>
+
+        <span class="cov1" title="1">accessToken, err := s.jwtService.GenerateAccessToken(ctx, user.ID, user.Email, user.Role)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, 0, errors.Wrap(err, errors.ErrCodeInternal, "Failed to generate access token")
+        }</span>
+
+        <span class="cov1" title="1">refreshToken, err := s.jwtService.GenerateRefreshToken(ctx, user.ID, user.Email)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, 0, errors.Wrap(err, errors.ErrCodeInternal, "Failed to generate refresh token")
+        }</span>
+
+        <span class="cov1" title="1">tokenHash := s.passwordService.HashToken(refreshToken)
+
+        expiresAt := time.Now().Add(s.jwtService.GetRefreshExpiry())
+        err = s.queries.CreateRefreshToken(ctx, sqlc.CreateRefreshTokenParams{
+                UserID:    user.ID,
+                TokenHash: tokenHash,
+                ExpiresAt: expiresAt,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, 0, errors.Wrap(err, errors.ErrCodeInternal, "Failed to store refresh token")
+        }</span>
+
+        <span class="cov1" title="1">return &amp;Tokens{
+                AccessToken:  accessToken,
+                RefreshToken: refreshToken,
+        }, user.ID, nil</span>
+}
+
+func (s *AuthService) Register(ctx context.Context, req users.CreateUserRequest) (*users.UserResponse, error) <span class="cov6" title="3">{
+        // Check if user already exists
+        _, err := s.queries.GetUserByEmail(ctx, req.Email)
+        if err == nil </span><span class="cov1" title="1">{
+                return nil, errors.ErrConflict
+        }</span>
+        <span class="cov4" title="2">if err != sql.ErrNoRows </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to check user existence")
+        }</span>
+
+        // Hash the password
+        <span class="cov4" title="2">passwordHash, err := s.passwordService.Hash(ctx, req.Password)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to hash password")
+        }</span>
+
+        // Create the user with default role "user"
+        <span class="cov4" title="2">result, err := s.queries.CreateUser(ctx, sqlc.CreateUserParams{
+                Email:        req.Email,
+                PasswordHash: passwordHash,
+                FirstName:    req.FirstName,
+                LastName:     req.LastName,
+                Role:         "user", // Default role for new registrations
+                IsActive:     true,
+        })
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to create user")
+        }</span>
+
+        // Get the newly created user ID
+        <span class="cov1" title="1">userID, err := result.LastInsertId()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to get user ID")
+        }</span>
+
+        // Fetch the created user
+        <span class="cov1" title="1">user, err := s.queries.GetUserByID(ctx, uint64(userID))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to fetch created user")
+        }</span>
+
+        // Return user response without sensitive information
+        <span class="cov1" title="1">return &amp;users.UserResponse{
+                ID:        user.ID,
+                Email:     user.Email,
+                FirstName: user.FirstName,
+                LastName:  user.LastName,
+                Role:      user.Role,
+                CreatedAt: user.CreatedAt,
+                UpdatedAt: user.UpdatedAt,
+        }, nil</span>
+}
+
+func (s *AuthService) RefreshTokens(ctx context.Context, refreshToken string) (*Tokens, uint64, error) <span class="cov10" title="6">{
+        claims, err := s.jwtService.ValidateRefreshToken(ctx, refreshToken)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, 0, err
+        }</span>
+
+        <span class="cov9" title="5">tokenHash := s.passwordService.HashToken(refreshToken)
+        var tokens *Tokens
+        var userID uint64
+        // Use transaction to prevent concurrent token usage
+        err = s.repo.WithTransaction(ctx, func(q *sqlc.Queries) error </span><span class="cov9" title="5">{
+                tokenRecord, err := q.GetRefreshToken(ctx, tokenHash)
+                if err != nil </span><span class="cov1" title="1">{
+                        if err == sql.ErrNoRows </span><span class="cov1" title="1">{
+                                return errors.ErrInvalidToken
+                        }</span>
+                        <span class="cov0" title="0">return errors.Wrap(err, errors.ErrCodeInternal, "Failed to get refresh token from database")</span>
+                }
+
+                <span class="cov7" title="4">if tokenRecord.ExpiresAt.Before(time.Now()) </span><span class="cov1" title="1">{
+                        return errors.ErrExpiredToken
+                }</span>
+
+                <span class="cov6" title="3">if tokenRecord.UserID != claims.UserID </span><span class="cov1" title="1">{
+                        return errors.ErrInvalidToken
+                }</span>
+
+                <span class="cov4" title="2">user, err := q.GetUserByID(ctx, claims.UserID)
+                if err != nil </span><span class="cov1" title="1">{
+                        if err == sql.ErrNoRows </span><span class="cov0" title="0">{
+                                return errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeUnauthorized, "User not found")
+                        }</span>
+                        <span class="cov1" title="1">return errors.Wrap(err, errors.ErrCodeInternal, "Failed to fetch user")</span>
+                }
+
+                <span class="cov1" title="1">if !user.IsActive </span><span class="cov0" title="0">{
+                        return errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeUnauthorized, "Account is inactive")
+                }</span>
+
+                // Revoke the token within the same transaction
+                <span class="cov1" title="1">if err := q.RevokeRefreshToken(ctx, tokenHash); err != nil </span><span class="cov0" title="0">{
+                        return errors.Wrap(err, errors.ErrCodeInternal, "Failed to revoke refresh token")
+                }</span>
+
+                <span class="cov1" title="1">accessToken, err := s.jwtService.GenerateAccessToken(ctx, user.ID, user.Email, user.Role)
+                if err != nil </span><span class="cov0" title="0">{
+                        return errors.Wrap(err, errors.ErrCodeInternal, "Failed to generate access token")
+                }</span>
+
+                <span class="cov1" title="1">newRefreshToken, err := s.jwtService.GenerateRefreshToken(ctx, user.ID, user.Email)
+                if err != nil </span><span class="cov0" title="0">{
+                        return errors.Wrap(err, errors.ErrCodeInternal, "Failed to generate refresh token")
+                }</span>
+
+                <span class="cov1" title="1">newTokenHash := s.passwordService.HashToken(newRefreshToken)
+                expiresAt := time.Now().Add(s.jwtService.GetRefreshExpiry())
+
+                if err := q.CreateRefreshToken(ctx, sqlc.CreateRefreshTokenParams{
+                        UserID:    user.ID,
+                        TokenHash: newTokenHash,
+                        ExpiresAt: expiresAt,
+                }); err != nil </span><span class="cov0" title="0">{
+                        return errors.Wrap(err, errors.ErrCodeInternal, "Failed to store new refresh token")
+                }</span>
+
+                <span class="cov1" title="1">tokens = &amp;Tokens{
+                        AccessToken:  accessToken,
+                        RefreshToken: newRefreshToken,
+                }
+                userID = user.ID
+                return nil</span>
+        })
+
+        <span class="cov9" title="5">if err != nil </span><span class="cov7" title="4">{
+                return nil, 0, err
+        }</span>
+
+        <span class="cov1" title="1">return tokens, userID, nil</span>
+}
+
+func (s *AuthService) Logout(ctx context.Context, refreshToken string) error <span class="cov4" title="2">{
+        tokenHash := s.passwordService.HashToken(refreshToken)
+
+        if err := s.queries.RevokeRefreshToken(ctx, tokenHash); err != nil </span><span class="cov1" title="1">{
+                return errors.Wrap(err, errors.ErrCodeInternal, "Failed to revoke refresh token")
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package health
+
+import (
+        "context"
+        "database/sql"
+        "net/http"
+        "runtime"
+        "time"
+
+        "github.com/gin-gonic/gin"
+        "github.com/waqasmani/go-boilerplate/internal/shared/utils"
+)
+
+type Handler struct {
+        db        *sql.DB
+        startTime time.Time
+}
+
+func NewHandler(db *sql.DB) *Handler <span class="cov1" title="1">{
+        return &amp;Handler{
+                db:        db,
+                startTime: time.Now(),
+        }
+}</span>
+
+type HealthResponse struct {
+        Status   string         `json:"status"`
+        Version  string         `json:"version"`
+        Uptime   string         `json:"uptime"`
+        Database DatabaseHealth `json:"database"`
+        System   SystemHealth   `json:"system"`
+}
+
+type DatabaseHealth struct {
+        Status          string `json:"status"`
+        OpenConnections int    `json:"open_connections"`
+        InUse           int    `json:"in_use"`
+        Idle            int    `json:"idle"`
+        MaxOpenConns    int    `json:"max_open_conns"`
+}
+
+type SystemHealth struct {
+        NumGoroutine int    `json:"num_goroutine"`
+        MemAllocMB   uint64 `json:"mem_alloc_mb"`
+        NumCPU       int    `json:"num_cpu"`
+}
+
+// @Summary Check API health
+// @Description Get comprehensive health status of the API including database connectivity and system metrics
+// @Tags health
+// @Produce json
+// @Success 200 {object} HealthResponse
+// @Router /health [get]
+func (h *Handler) Health(c *gin.Context) <span class="cov1" title="1">{
+        dbHealth := h.getDatabaseHealth(c.Request.Context())
+        systemHealth := h.getSystemHealth()
+
+        overallStatus := "ok"
+        if dbHealth.Status != "ok" </span><span class="cov0" title="0">{
+                overallStatus = "degraded"
+        }</span>
+
+        <span class="cov1" title="1">utils.Success(c, http.StatusOK, HealthResponse{
+                Status:   overallStatus,
+                Version:  "1.0.0",
+                Uptime:   time.Since(h.startTime).String(),
+                Database: dbHealth,
+                System:   systemHealth,
+        })</span>
+}
+
+// @Summary Check API readiness
+// @Description Check if API is ready to serve traffic (database connectivity check)
+// @Tags health
+// @Produce json
+// @Success 200 {object} HealthResponse
+// @Failure 503 {object} HealthResponse
+// @Router /ready [get]
+func (h *Handler) Ready(c *gin.Context) <span class="cov1" title="1">{
+        dbStatus := h.checkDatabase(c.Request.Context())
+        if dbStatus != "ok" </span><span class="cov1" title="1">{
+                utils.Success(c, http.StatusServiceUnavailable, HealthResponse{
+                        Status: "not ready",
+                        Database: DatabaseHealth{
+                                Status: dbStatus,
+                        },
+                })
+                return
+        }</span>
+        <span class="cov0" title="0">utils.Success(c, http.StatusOK, HealthResponse{
+                Status: "ready",
+                Database: DatabaseHealth{
+                        Status: "ok",
+                },
+        })</span>
+}
+
+// @Summary Check API liveness
+// @Description Lightweight check to verify API process is running
+// @Tags health
+// @Produce json
+// @Success 200 {object} map[string]string
+// @Router /alive [get]
+func (h *Handler) Alive(c *gin.Context) <span class="cov0" title="0">{
+        utils.Success(c, http.StatusOK, gin.H{
+                "status": "alive",
+        })
+}</span>
+
+func (h *Handler) checkDatabase(ctx context.Context) string <span class="cov10" title="2">{
+        dbCtx, cancel := context.WithTimeout(ctx, 2*time.Second)
+        defer cancel()
+
+        if err := h.db.PingContext(dbCtx); err != nil </span><span class="cov1" title="1">{
+                return "error"
+        }</span>
+        <span class="cov1" title="1">return "ok"</span>
+}
+
+func (h *Handler) getDatabaseHealth(ctx context.Context) DatabaseHealth <span class="cov1" title="1">{
+        status := h.checkDatabase(ctx)
+        stats := h.db.Stats()
+
+        return DatabaseHealth{
+                Status:          status,
+                OpenConnections: stats.OpenConnections,
+                InUse:           stats.InUse,
+                Idle:            stats.Idle,
+                MaxOpenConns:    stats.MaxOpenConnections,
+        }
+}</span>
+
+func (h *Handler) getSystemHealth() SystemHealth <span class="cov1" title="1">{
+        var m runtime.MemStats
+        runtime.ReadMemStats(&amp;m)
+
+        return SystemHealth{
+                NumGoroutine: runtime.NumGoroutine(),
+                MemAllocMB:   m.Alloc / 1024 / 1024,
+                NumCPU:       runtime.NumCPU(),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package health
+
+import (
+        "github.com/gin-gonic/gin"
+)
+
+func RegisterRoutes(router *gin.Engine, handler *Handler) <span class="cov0" title="0">{
+        healthGroup := router.Group("/api/v1")
+        healthGroup.GET("/health", handler.Health)
+        healthGroup.GET("/ready", handler.Ready)
+        healthGroup.GET("/alive", handler.Alive)
+}</span>
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package users
+
+// @Summary List users
+// @Description Get paginated list of users (admin only)
+// @Tags users
+// @Produce json
+// @Security Bearer
+// @Security X-CSRF-Token
+// @Param page query int false "Page number" default(1)
+// @Param page_size query int false "Items per page" default(10) maximum(100)
+// @Success 200 {object} ListUsersResponse
+// @Failure 401 {object} utils.Response
+// @Failure 403 {object} utils.Response
+// @Router /users/ [get]
+
+import (
+        "net/http"
+        "strconv"
+
+        "github.com/gin-gonic/gin"
+        "github.com/waqasmani/go-boilerplate/internal/shared/errors"
+        "github.com/waqasmani/go-boilerplate/internal/shared/utils"
+        "github.com/waqasmani/go-boilerplate/internal/shared/validator"
+)
+
+type Handler struct {
+        service *UsersService
+        v       *validator.Validator
+}
+
+func NewHandler(service *UsersService, v *validator.Validator) *Handler <span class="cov0" title="0">{
+        return &amp;Handler{
+                service: service,
+                v:       v,
+        }
+}</span>
+
+// Middleware to get user ID from context (set by auth middleware)
+func getUserIDFromContext(c *gin.Context) (uint64, error) <span class="cov0" title="0">{
+        userID, exists := c.Get("user_id")
+        if !exists </span><span class="cov0" title="0">{
+                return 0, errors.ErrUnauthorized
+        }</span>
+
+        <span class="cov0" title="0">id, ok := userID.(uint64)
+        if !ok </span><span class="cov0" title="0">{
+                return 0, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeInternal, "Invalid user ID type in context")
+        }</span>
+
+        <span class="cov0" title="0">return id, nil</span>
+}
+
+// @Summary Create user
+// @Description Create a new user (admin only)
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Security X-CSRF-Token
+// @Param user body CreateUserRequest true "User creation details"
+// @Success 201 {object} UserResponse
+// @Failure 400 {object} utils.Response
+// @Failure 401 {object} utils.Response
+// @Failure 403 {object} utils.Response
+// @Failure 409 {object} utils.Response
+// @Router /users/ [post]
+func (h *Handler) CreateUser(c *gin.Context) <span class="cov0" title="0">{
+        var req struct {
+                Email     string `json:"email" validate:"required,email"`
+                Password  string `json:"password" validate:"required,min=8"`
+                FirstName string `json:"first_name" validate:"required,min=2,max=100"`
+                LastName  string `json:"last_name" validate:"required,min=2,max=100"`
+                Role      string `json:"role" validate:"required,oneof=user admin"`
+        }
+
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid request body"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := h.v.Validate(req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.WithDetails(errors.ErrCodeValidation, "Validation failed", validator.TranslateValidationErrors(err)))
+                return
+        }</span>
+
+        <span class="cov0" title="0">user, err := h.service.CreateUser(c.Request.Context(), CreateUserRequest{
+                Email:     req.Email,
+                Password:  req.Password,
+                FirstName: req.FirstName,
+                LastName:  req.LastName,
+                Role:      req.Role,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">utils.Success(c, http.StatusCreated, user)</span>
+}
+
+// @Summary Get user by ID
+// @Description Get user profile by ID
+// @Tags users
+// @Produce json
+// @Security Bearer
+// @Param id path string true "User ID"
+// @Success 200 {object} UserResponse
+// @Failure 400 {object} utils.Response
+// @Failure 401 {object} utils.Response
+// @Failure 404 {object} utils.Response
+// @Router /users/{id} [get]
+func (h *Handler) GetUserByID(c *gin.Context) <span class="cov0" title="0">{
+        userID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid user ID"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">user, err := h.service.GetUserByID(c.Request.Context(), userID)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">utils.Success(c, http.StatusOK, user)</span>
+}
+
+// @Summary Update user
+// @Description Update user profile (own profile or admin can update any)
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Security X-CSRF-Token
+// @Param id path string true "User ID"
+// @Param user body UpdateUserRequest true "Updated user details"
+// @Success 200 {object} UserResponse
+// @Failure 400 {object} utils.Response
+// @Failure 401 {object} utils.Response
+// @Failure 403 {object} utils.Response
+// @Failure 404 {object} utils.Response
+// @Router /users/{id} [put]
+func (h *Handler) UpdateUser(c *gin.Context) <span class="cov0" title="0">{
+        // Get user ID from URL param
+        userID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid user ID"))
+                return
+        }</span>
+
+        // Get authenticated user ID from context
+        <span class="cov0" title="0">authUserID, err := getUserIDFromContext(c)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        // Only allow users to update their own profile or admins to update any profile
+        <span class="cov0" title="0">user, err := h.service.GetUserByID(c.Request.Context(), authUserID)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if authUserID != userID &amp;&amp; user.Role != "admin" </span><span class="cov0" title="0">{
+                utils.Error(c, errors.ErrForbidden)
+                return
+        }</span>
+
+        <span class="cov0" title="0">var req struct {
+                FirstName string `json:"first_name" validate:"required,min=2,max=100"`
+                LastName  string `json:"last_name" validate:"required,min=2,max=100"`
+        }
+
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid request body"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := h.v.Validate(req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.WithDetails(errors.ErrCodeValidation, "Validation failed", validator.TranslateValidationErrors(err)))
+                return
+        }</span>
+
+        <span class="cov0" title="0">updatedUser, err := h.service.UpdateUser(c.Request.Context(), userID, UpdateUserRequest{
+                FirstName: req.FirstName,
+                LastName:  req.LastName,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">utils.Success(c, http.StatusOK, updatedUser)</span>
+}
+
+// @Summary Change password
+// @Description Change user password
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Security X-CSRF-Token
+// @Param id path string true "User ID"
+// @Param password body ChangePasswordRequest true "Password change details"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} utils.Response
+// @Failure 401 {object} utils.Response
+// @Failure 404 {object} utils.Response
+// @Router /users/{id}/password [put]
+func (h *Handler) ChangePassword(c *gin.Context) <span class="cov0" title="0">{
+        // Get authenticated user ID from context
+        userID, err := getUserIDFromContext(c)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">var req struct {
+                CurrentPassword string `json:"current_password" validate:"required,min=8"`
+                NewPassword     string `json:"new_password" validate:"required,min=8"`
+        }
+
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid request body"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := h.v.Validate(req); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.WithDetails(errors.ErrCodeValidation, "Validation failed", validator.TranslateValidationErrors(err)))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := h.service.ChangePassword(c.Request.Context(), userID, ChangePasswordRequest{
+                CurrentPassword: req.CurrentPassword,
+                NewPassword:     req.NewPassword,
+        }); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">utils.Success(c, http.StatusOK, gin.H{"message": "Password updated successfully"})</span>
+}
+
+// @Summary Deactivate user
+// @Description Deactivate user account (admin only)
+// @Tags users
+// @Security Bearer
+// @Security X-CSRF-Token
+// @Param id path string true "User ID"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} utils.Response
+// @Failure 401 {object} utils.Response
+// @Failure 403 {object} utils.Response
+// @Failure 404 {object} utils.Response
+// @Router /users/{id} [delete]
+func (h *Handler) DeactivateUser(c *gin.Context) <span class="cov0" title="0">{
+        // Get authenticated user ID from context
+        authUserID, err := getUserIDFromContext(c)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        // Check if authenticated user is admin
+        <span class="cov0" title="0">authUser, err := h.service.GetUserByID(c.Request.Context(), authUserID)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if authUser.Role != "admin" </span><span class="cov0" title="0">{
+                utils.Error(c, errors.ErrForbidden)
+                return
+        }</span>
+
+        // Get user ID from URL param
+        <span class="cov0" title="0">userID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, errors.Wrap(err, errors.ErrCodeBadRequest, "Invalid user ID"))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := h.service.DeactivateUser(c.Request.Context(), userID); err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">utils.Success(c, http.StatusOK, gin.H{"message": "User deactivated successfully"})</span>
+}
+
+// @Summary List users
+// @Description Get paginated list of users (admin only)
+// @Tags users
+// @Produce json
+// @Security Bearer
+// @Security X-CSRF-Token
+// @Param page query int false "Page number" default(1)
+// @Param page_size query int false "Items per page" default(10) maximum(100)
+// @Success 200 {object} ListUsersResponse
+// @Failure 401 {object} utils.Response
+// @Failure 403 {object} utils.Response
+// @Router /users/ [get]
+func (h *Handler) ListUsers(c *gin.Context) <span class="cov0" title="0">{
+        // Get authenticated user ID from context
+        authUserID, err := getUserIDFromContext(c)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        // Check if authenticated user is admin
+        <span class="cov0" title="0">authUser, err := h.service.GetUserByID(c.Request.Context(), authUserID)
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if authUser.Role != "admin" </span><span class="cov0" title="0">{
+                utils.Error(c, errors.ErrForbidden)
+                return
+        }</span>
+
+        // Parse pagination parameters
+        <span class="cov0" title="0">page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
+        if err != nil || page &lt; 1 </span><span class="cov0" title="0">{
+                page = 1
+        }</span>
+
+        <span class="cov0" title="0">pageSize, err := strconv.Atoi(c.DefaultQuery("page_size", "10"))
+        if err != nil || pageSize &lt; 1 || pageSize &gt; 100 </span><span class="cov0" title="0">{
+                pageSize = 10
+        }</span>
+
+        <span class="cov0" title="0">users, err := h.service.ListUsers(c.Request.Context(), ListUsersParams{
+                Page:     page,
+                PageSize: pageSize,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                utils.Error(c, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">utils.Success(c, http.StatusOK, users)</span>
+}
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package users
+
+import (
+        "context"
+        "database/sql"
+
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
+        "github.com/waqasmani/go-boilerplate/internal/infrastructure/sqlc"
+        "github.com/waqasmani/go-boilerplate/internal/shared/errors"
+)
+
+func NewUsersService(queries sqlc.Querier, passwordService *security.PasswordService, repo *sqlc.Repository) *UsersService <span class="cov10" title="3">{
+        return &amp;UsersService{
+                queries:         queries,
+                passwordService: passwordService,
+                repo:            repo,
+        }
+}</span>
+
+func (s *UsersService) CreateUser(ctx context.Context, req CreateUserRequest) (*UserResponse, error) <span class="cov1" title="1">{
+        _, err := s.queries.GetUserByEmail(ctx, req.Email)
+        if err == nil </span><span class="cov0" title="0">{
+                return nil, errors.ErrConflict
+        }</span>
+
+        <span class="cov1" title="1">if err != sql.ErrNoRows </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to check user existence")
+        }</span>
+
+        <span class="cov1" title="1">passwordHash, err := s.passwordService.Hash(ctx, req.Password)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to hash password")
+        }</span>
+
+        <span class="cov1" title="1">result, err := s.queries.CreateUser(ctx, sqlc.CreateUserParams{
+                Email:        req.Email,
+                PasswordHash: passwordHash,
+                FirstName:    req.FirstName,
+                LastName:     req.LastName,
+                Role:         req.Role,
+                IsActive:     true,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to create user")
+        }</span>
+
+        <span class="cov1" title="1">userID, err := result.LastInsertId()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to create user")
+        }</span>
+        <span class="cov1" title="1">user, err := s.queries.GetUserByID(ctx, uint64(userID))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to fetch created user")
+        }</span>
+
+        <span class="cov1" title="1">return &amp;UserResponse{
+                ID:        user.ID,
+                Email:     user.Email,
+                FirstName: user.FirstName,
+                LastName:  user.LastName,
+                Role:      user.Role,
+                CreatedAt: user.CreatedAt,
+                UpdatedAt: user.UpdatedAt,
+        }, nil</span>
+}
+
+func (s *UsersService) GetUserByID(ctx context.Context, userID uint64) (*UserResponse, error) <span class="cov0" title="0">{
+        user, err := s.queries.GetUserByID(ctx, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                if err == sql.ErrNoRows </span><span class="cov0" title="0">{
+                        return nil, errors.ErrNotFound
+                }</span>
+                <span class="cov0" title="0">return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to get user")</span>
+        }
+
+        <span class="cov0" title="0">return &amp;UserResponse{
+                ID:        user.ID,
+                Email:     user.Email,
+                FirstName: user.FirstName,
+                LastName:  user.LastName,
+                Role:      user.Role,
+                CreatedAt: user.CreatedAt,
+                UpdatedAt: user.UpdatedAt,
+        }, nil</span>
+}
+
+func (s *UsersService) UpdateUser(ctx context.Context, userID uint64, req UpdateUserRequest) (*UserResponse, error) <span class="cov1" title="1">{
+        var updatedUser sqlc.User
+
+        err := s.repo.WithTransaction(ctx, func(q *sqlc.Queries) error </span><span class="cov1" title="1">{
+                _, err := q.GetUserByID(ctx, userID)
+                if err != nil </span><span class="cov0" title="0">{
+                        if err == sql.ErrNoRows </span><span class="cov0" title="0">{
+                                return errors.ErrNotFound
+                        }</span>
+                        <span class="cov0" title="0">return errors.Wrap(err, errors.ErrCodeInternal, "Failed to get user")</span>
+                }
+
+                <span class="cov1" title="1">err = q.UpdateUser(ctx, sqlc.UpdateUserParams{
+                        FirstName: req.FirstName,
+                        LastName:  req.LastName,
+                        ID:        userID,
+                })
+                if err != nil </span><span class="cov0" title="0">{
+                        return errors.Wrap(err, errors.ErrCodeInternal, "Failed to update user")
+                }</span>
+
+                <span class="cov1" title="1">updatedUser, err = q.GetUserByID(ctx, userID)
+                if err != nil </span><span class="cov0" title="0">{
+                        return errors.Wrap(err, errors.ErrCodeInternal, "Failed to fetch updated user")
+                }</span>
+
+                <span class="cov1" title="1">return nil</span>
+        })
+
+        <span class="cov1" title="1">if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov1" title="1">return &amp;UserResponse{
+                ID:        updatedUser.ID,
+                Email:     updatedUser.Email,
+                FirstName: updatedUser.FirstName,
+                LastName:  updatedUser.LastName,
+                Role:      updatedUser.Role,
+                CreatedAt: updatedUser.CreatedAt,
+                UpdatedAt: updatedUser.UpdatedAt,
+        }, nil</span>
+}
+
+func (s *UsersService) ChangePassword(ctx context.Context, userID uint64, req ChangePasswordRequest) error <span class="cov6" title="2">{
+        user, err := s.queries.GetUserByID(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                if err == sql.ErrNoRows </span><span class="cov1" title="1">{
+                        return errors.ErrNotFound
+                }</span>
+                <span class="cov0" title="0">return errors.Wrap(err, errors.ErrCodeInternal, "Failed to get user")</span>
+        }
+
+        <span class="cov1" title="1">if err := s.passwordService.Compare(ctx, user.PasswordHash, req.CurrentPassword); err != nil </span><span class="cov0" title="0">{
+                return errors.ErrInvalidCredentials
+        }</span>
+
+        <span class="cov1" title="1">newPasswordHash, err := s.passwordService.Hash(ctx, req.NewPassword)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, errors.ErrCodeInternal, "Failed to hash new password")
+        }</span>
+
+        <span class="cov1" title="1">if err := s.queries.UpdateUserPassword(ctx, sqlc.UpdateUserPasswordParams{
+                PasswordHash: newPasswordHash,
+                ID:           userID,
+        }); err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, errors.ErrCodeInternal, "Failed to update password")
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (s *UsersService) DeactivateUser(ctx context.Context, userID uint64) error <span class="cov0" title="0">{
+        _, err := s.queries.GetUserByID(ctx, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                if err == sql.ErrNoRows </span><span class="cov0" title="0">{
+                        return errors.ErrNotFound
+                }</span>
+                <span class="cov0" title="0">return errors.Wrap(err, errors.ErrCodeInternal, "Failed to get user")</span>
+        }
+
+        <span class="cov0" title="0">if err := s.queries.DeactivateUser(ctx, userID); err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, errors.ErrCodeInternal, "Failed to deactivate user")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+type ListUsersParams struct {
+        Page     int
+        PageSize int
+}
+
+type ListUsersResponse struct {
+        Users      []UserResponse `json:"users"`
+        TotalCount int64          `json:"total_count"`
+        Page       int            `json:"page"`
+        PageSize   int            `json:"page_size"`
+}
+
+func (s *UsersService) ListUsers(ctx context.Context, params ListUsersParams) (*ListUsersResponse, error) <span class="cov0" title="0">{
+        limit := int32(params.PageSize)
+        offset := int32((params.Page - 1) * params.PageSize)
+
+        users, err := s.queries.ListUsers(ctx, sqlc.ListUsersParams{
+                Limit:  limit,
+                Offset: offset,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to list users")
+        }</span>
+
+        <span class="cov0" title="0">totalCount, err := s.queries.CountUsers(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, errors.Wrap(err, errors.ErrCodeInternal, "Failed to count users")
+        }</span>
+
+        <span class="cov0" title="0">userResponses := make([]UserResponse, len(users))
+        for i, user := range users </span><span class="cov0" title="0">{
+                userResponses[i] = UserResponse{
+                        ID:        user.ID,
+                        Email:     user.Email,
+                        FirstName: user.FirstName,
+                        LastName:  user.LastName,
+                        Role:      user.Role,
+                        CreatedAt: user.CreatedAt,
+                        UpdatedAt: user.UpdatedAt,
+                }
+        }</span>
+
+        <span class="cov0" title="0">return &amp;ListUsersResponse{
+                Users:      userResponses,
+                TotalCount: totalCount,
+                Page:       params.Page,
+                PageSize:   params.PageSize,
+        }, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package errors
+
+import (
+        "errors"
+        "fmt"
+)
+
+type ErrorCode string
+
+const (
+        ErrCodeInternal           ErrorCode = "INTERNAL_ERROR"
+        ErrCodeNotFound           ErrorCode = "NOT_FOUND"
+        ErrCodeBadRequest         ErrorCode = "BAD_REQUEST"
+        ErrCodeUnauthorized       ErrorCode = "UNAUTHORIZED"
+        ErrCodeForbidden          ErrorCode = "FORBIDDEN"
+        ErrCodeConflict           ErrorCode = "CONFLICT"
+        ErrCodeValidation         ErrorCode = "VALIDATION_ERROR"
+        ErrCodeInvalidToken       ErrorCode = "INVALID_TOKEN"
+        ErrCodeExpiredToken       ErrorCode = "EXPIRED_TOKEN"
+        ErrCodeRevokedToken       ErrorCode = "REVOKED_TOKEN"
+        ErrCodeInvalidCredentials ErrorCode = "INVALID_CREDENTIALS"
+        ErrCodeTooManyRequests    ErrorCode = "TOO_MANY_REQUESTS"
+        ErrCodeTimeout            ErrorCode = "TIMEOUT"
+        ErrCodeDatabaseError      ErrorCode = "DATABASE_ERROR"
+)
+
+type AppError struct {
+        Code       ErrorCode
+        Message    string
+        Details    any
+        Err        error
+        StatusCode int
+        Retryable  bool
+}
+
+func (e *AppError) Error() string <span class="cov4" title="3">{
+        if e.Err != nil </span><span class="cov3" title="2">{
+                return fmt.Sprintf("%s: %s (%v)", e.Code, e.Message, e.Err)
+        }</span>
+        <span class="cov1" title="1">return fmt.Sprintf("%s: %s", e.Code, e.Message)</span>
+}
+
+func (e *AppError) Unwrap() error <span class="cov1" title="1">{
+        return e.Err
+}</span>
+
+func (e *AppError) Is(target error) bool <span class="cov0" title="0">{
+        t, ok := target.(*AppError)
+        if !ok </span><span class="cov0" title="0">{
+                return false
+        }</span>
+        <span class="cov0" title="0">return e.Code == t.Code</span>
+}
+
+func New(code ErrorCode, message string) *AppError <span class="cov10" title="12">{
+        return &amp;AppError{
+                Code:      code,
+                Message:   message,
+                Retryable: false,
+        }
+}</span>
+
+func Wrap(err error, code ErrorCode, message string) *AppError <span class="cov1" title="1">{
+        return &amp;AppError{
+                Code:      code,
+                Message:   message,
+                Err:       err,
+                Retryable: false,
+        }
+}</span>
+
+func WithDetails(code ErrorCode, message string, details interface{}) *AppError <span class="cov1" title="1">{
+        return &amp;AppError{
+                Code:    code,
+                Message: message,
+                Details: details,
+        }
+}</span>
+
+func AsAppError(err error) (*AppError, bool) <span class="cov0" title="0">{
+        var appErr *AppError
+        if errors.As(err, &amp;appErr) </span><span class="cov0" title="0">{
+                return appErr, true
+        }</span>
+        <span class="cov0" title="0">return nil, false</span>
+}
+
+var (
+        ErrInternal           = New(ErrCodeInternal, "Internal server error")
+        ErrNotFound           = New(ErrCodeNotFound, "Resource not found")
+        ErrBadRequest         = New(ErrCodeBadRequest, "Bad request")
+        ErrUnauthorized       = New(ErrCodeUnauthorized, "Unauthorized")
+        ErrForbidden          = New(ErrCodeForbidden, "Forbidden")
+        ErrConflict           = New(ErrCodeConflict, "Resource already exists")
+        ErrInvalidCredentials = New(ErrCodeInvalidCredentials, "Invalid credentials")
+        ErrInvalidToken       = New(ErrCodeInvalidToken, "Invalid token")
+        ErrExpiredToken       = New(ErrCodeExpiredToken, "Token expired")
+        ErrRevokedToken       = New(ErrCodeRevokedToken, "Token revoked")
+        ErrTimeout            = New(ErrCodeTimeout, "Request timeout")
+)</pre>
+		
+		<pre class="file" id="file25" style="display: none">package utils
+
+import (
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/waqasmani/go-boilerplate/internal/shared/errors"
+)
+
+type Response struct {
+        Success bool           `json:"success"`
+        Data    any            `json:"data,omitempty"`
+        Error   *ErrorResponse `json:"error,omitempty"`
+}
+
+type ErrorResponse struct {
+        Code    string `json:"code"`
+        Message string `json:"message"`
+        Details any    `json:"details,omitempty"`
+}
+
+func Success(c *gin.Context, statusCode int, data any) <span class="cov1" title="1">{
+        c.JSON(statusCode, Response{
+                Success: true,
+                Data:    data,
+        })
+}</span>
+
+func Error(c *gin.Context, err error) <span class="cov10" title="2">{
+        appErr, ok := err.(*errors.AppError)
+        if !ok </span><span class="cov1" title="1">{
+                appErr = errors.Wrap(err, errors.ErrCodeInternal, "An unexpected error occurred")
+        }</span>
+
+        <span class="cov10" title="2">statusCode := getHTTPStatusCode(appErr.Code)
+
+        c.JSON(statusCode, Response{
+                Success: false,
+                Error: &amp;ErrorResponse{
+                        Code:    string(appErr.Code),
+                        Message: appErr.Message,
+                        Details: appErr.Details,
+                },
+        })</span>
+}
+
+func getHTTPStatusCode(code errors.ErrorCode) int <span class="cov10" title="2">{
+        switch code </span>{
+        case errors.ErrCodeNotFound:<span class="cov1" title="1">
+                return http.StatusNotFound</span>
+        case errors.ErrCodeBadRequest, errors.ErrCodeValidation:<span class="cov0" title="0">
+                return http.StatusBadRequest</span>
+        case errors.ErrCodeUnauthorized, errors.ErrCodeInvalidToken, errors.ErrCodeExpiredToken, errors.ErrCodeRevokedToken, errors.ErrCodeInvalidCredentials:<span class="cov0" title="0">
+                return http.StatusUnauthorized</span>
+        case errors.ErrCodeForbidden:<span class="cov0" title="0">
+                return http.StatusForbidden</span>
+        case errors.ErrCodeConflict:<span class="cov0" title="0">
+                return http.StatusConflict</span>
+        default:<span class="cov1" title="1">
+                return http.StatusInternalServerError</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package validator
+
+import (
+        "github.com/go-playground/validator/v10"
+)
+
+type Validator struct {
+        validate *validator.Validate
+}
+
+func New() *Validator <span class="cov1" title="1">{
+        return &amp;Validator{
+                validate: validator.New(),
+        }
+}</span>
+
+func (v *Validator) Validate(i interface{}) error <span class="cov10" title="2">{
+        return v.validate.Struct(i)
+}</span>
+
+func (v *Validator) ValidateVar(field interface{}, tag string) error <span class="cov0" title="0">{
+        return v.validate.Var(field, tag)
+}</span>
+
+type ValidationError struct {
+        Field   string `json:"field"`
+        Message string `json:"message"`
+}
+
+func TranslateValidationErrors(err error) []ValidationError <span class="cov1" title="1">{
+        var errors []ValidationError
+
+        if validationErrs, ok := err.(validator.ValidationErrors); ok </span><span class="cov1" title="1">{
+                for _, e := range validationErrs </span><span class="cov10" title="2">{
+                        errors = append(errors, ValidationError{
+                                Field:   e.Field(),
+                                Message: getErrorMessage(e),
+                        })
+                }</span>
+        }
+
+        <span class="cov1" title="1">return errors</span>
+}
+
+func getErrorMessage(e validator.FieldError) string <span class="cov10" title="2">{
+        switch e.Tag() </span>{
+        case "required":<span class="cov0" title="0">
+                return "This field is required"</span>
+        case "email":<span class="cov1" title="1">
+                return "Invalid email format"</span>
+        case "min":<span class="cov0" title="0">
+                return "Value is too short"</span>
+        case "max":<span class="cov0" title="0">
+                return "Value is too long"</span>
+        case "gte":<span class="cov1" title="1">
+                return "Value must be greater than or equal to " + e.Param()</span>
+        case "lte":<span class="cov0" title="0">
+                return "Value must be less than or equal to " + e.Param()</span>
+        default:<span class="cov0" title="0">
+                return "Invalid value"</span>
+        }
+}</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

@@ -1,0 +1,600 @@
+definitions:
+  github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      password:
+        minLength: 8
+        type: string
+      role:
+        enum:
+        - user
+        - admin
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - role
+    type: object
+  github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse:
+    properties:
+      code:
+        type: string
+      details: {}
+      message:
+        type: string
+    type: object
+  github_com_waqasmani_api-boilerplate_internal_shared_utils.Response:
+    properties:
+      data: {}
+      error:
+        $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse'
+      success:
+        type: boolean
+    type: object
+  internal_modules_auth.loginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_modules_health.DatabaseHealth:
+    properties:
+      idle:
+        type: integer
+      in_use:
+        type: integer
+      max_open_conns:
+        type: integer
+      open_connections:
+        type: integer
+      status:
+        type: string
+    type: object
+  internal_modules_health.HealthResponse:
+    properties:
+      database:
+        $ref: '#/definitions/internal_modules_health.DatabaseHealth'
+      status:
+        type: string
+      system:
+        $ref: '#/definitions/internal_modules_health.SystemHealth'
+      uptime:
+        type: string
+      version:
+        type: string
+    type: object
+  internal_modules_health.SystemHealth:
+    properties:
+      mem_alloc_mb:
+        type: integer
+      num_cpu:
+        type: integer
+      num_goroutine:
+        type: integer
+    type: object
+  internal_modules_users.ChangePasswordRequest:
+    properties:
+      current_password:
+        minLength: 8
+        type: string
+      new_password:
+        minLength: 8
+        type: string
+    required:
+    - current_password
+    - new_password
+    type: object
+  internal_modules_users.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      password:
+        minLength: 8
+        type: string
+      role:
+        enum:
+        - user
+        - admin
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - role
+    type: object
+  internal_modules_users.ListUsersResponse:
+    properties:
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_count:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/internal_modules_users.UserResponse'
+        type: array
+    type: object
+  internal_modules_users.UpdateUserRequest:
+    properties:
+      first_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+    required:
+    - first_name
+    - last_name
+    type: object
+  internal_modules_users.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /alive:
+    get:
+      description: Lightweight check to verify API process is running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Check API liveness
+      tags:
+      - health
+  /auth/csrf-token:
+    get:
+      description: Get a new CSRF token for state-changing requests
+      parameters:
+      - description: Bearer <access_token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Contains csrf_token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      summary: Get CSRF token
+      tags:
+      - auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and get access and refresh tokens
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_auth.loginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Contains access_token and csrf_token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      summary: User login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      description: Revoke refresh token and clear cookies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      summary: User logout
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      description: Get new access token using refresh token from cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Contains access_token and csrf_token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      summary: Refresh tokens
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user account
+      parameters:
+      - description: Registration details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      summary: User registration
+      tags:
+      - auth
+  /health:
+    get:
+      description: Get comprehensive health status of the API including database connectivity
+        and system metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_modules_health.HealthResponse'
+      summary: Check API health
+      tags:
+      - health
+  /ready:
+    get:
+      description: Check if API is ready to serve traffic (database connectivity check)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_modules_health.HealthResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/internal_modules_health.HealthResponse'
+      summary: Check API readiness
+      tags:
+      - health
+  /users/:
+    get:
+      description: Get paginated list of users (admin only)
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        maximum: 100
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_modules_users.ListUsersResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      - X-CSRF-Token: []
+      summary: List users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user (admin only)
+      parameters:
+      - description: User creation details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_users.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_modules_users.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      - X-CSRF-Token: []
+      summary: Create user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Deactivate user account (admin only)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      - X-CSRF-Token: []
+      summary: Deactivate user
+      tags:
+      - users
+    get:
+      description: Get user profile by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_modules_users.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Get user by ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update user profile (own profile or admin can update any)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated user details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_users.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_modules_users.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      - X-CSRF-Token: []
+      summary: Update user
+      tags:
+      - users
+  /users/{id}/password:
+    put:
+      consumes:
+      - application/json
+      description: Change user password
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Password change details
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_users.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      - X-CSRF-Token: []
+      summary: Change password
+      tags:
+      - users
+swagger: "2.0"
