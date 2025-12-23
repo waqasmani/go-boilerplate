@@ -34,7 +34,6 @@ jobs:
       mariadb:
         image: mariadb:10.11
         env:
-          MYSQL_ROOT_PASSWORD: root_password
           MYSQL_DATABASE: auth_test_db
           MYSQL_USER: auth_user
           MYSQL_PASSWORD: your_secure_password

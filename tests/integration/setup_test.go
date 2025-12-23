@@ -55,7 +55,7 @@ func SetupTestEnvironment(t *testing.T) *TestContext {
 
 	testDBUser := os.Getenv("TEST_DB_USER")
 	if testDBUser == "" {
-		testDBUser = "vms_user"
+		testDBUser = "auth_user"
 	}
 
 	testDBPassword := os.Getenv("TEST_DB_PASSWORD")
