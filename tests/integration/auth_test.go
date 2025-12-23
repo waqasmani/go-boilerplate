@@ -208,44 +208,61 @@ func TestAuthFlow_CompleteJourney(t *testing.T) {
 }
 
 func TestAuthFlow_TokenExpiration(t *testing.T) {
-	// Set the environment variable BEFORE calling SetupTestEnvironment
-	t.Setenv("JWT_ACCESS_EXPIRY", "100ms")
-
+	// Set a slightly longer expiration time to avoid race conditions
+	t.Setenv("JWT_ACCESS_EXPIRY", "200ms")
 	tc := SetupTestEnvironment(t)
 	defer tc.Cleanup(t)
 
 	testEmail := "expiry@example.com"
 	testPassword := "SecurePass123!"
-
 	tc.CreateTestUser(t, testEmail, testPassword, "user")
 
+	// Login request
 	loginPayload := map[string]string{
 		"email":    testEmail,
 		"password": testPassword,
 	}
 	body, _ := json.Marshal(loginPayload)
-
 	req := httptest.NewRequest("POST", "/api/v1/auth/login", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
-
 	tc.Router.ServeHTTP(w, req)
 
-	var response map[string]any
-	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response))
-	data := response["data"].(map[string]any)
-	accessToken := data["access_token"].(string)
+	// Verify login was successful before proceeding
+	assert.Equal(t, http.StatusOK, w.Code, "Login failed. Response: %s", w.Body.String())
 
-	// Wait for token to expire
-	time.Sleep(time.Millisecond * 200)
+	var response map[string]interface{}
+	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &response), "Failed to parse response")
 
+	// Check if login was actually successful
+	success, ok := response["success"].(bool)
+	assert.True(t, ok, "Response missing 'success' field")
+	assert.True(t, success, "Login was not successful: %v", response)
+
+	// Safely access data field
+	data, dataOk := response["data"].(map[string]interface{})
+	if !dataOk {
+		t.Fatalf("Response data is not a map or is nil. Full response: %v", response)
+	}
+
+	// Safely get access token
+	accessToken, tokenOk := data["access_token"].(string)
+	assert.True(t, tokenOk, "Access token not found in response")
+	assert.NotEmpty(t, accessToken, "Access token is empty")
+
+	// Wait for token to expire (longer than the expiration time)
+	time.Sleep(300 * time.Millisecond)
+
+	// Attempt to use the expired token
 	req2 := httptest.NewRequest("GET", "/api/v1/users/1", nil)
 	req2.Header.Set("Authorization", "Bearer "+accessToken)
 	w2 := httptest.NewRecorder()
-
 	tc.Router.ServeHTTP(w2, req2)
 
-	assert.Equal(t, http.StatusUnauthorized, w2.Code)
+	// Verify we get an unauthorized response
+	assert.Equal(t, http.StatusUnauthorized, w2.Code,
+		"Expected 401 Unauthorized after token expiration, got %d. Response: %s",
+		w2.Code, w2.Body.String())
 }
 
 func TestAuthFlow_InactiveUser(t *testing.T) {
