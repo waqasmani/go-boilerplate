@@ -6,16 +6,391 @@ package sqlc
 
 import (
 	"database/sql"
+	"database/sql/driver"
+	"fmt"
 	"time"
 )
 
+type AttendanceExceptionsExceptionType string
+
+const (
+	AttendanceExceptionsExceptionTypeLateCheckin     AttendanceExceptionsExceptionType = "late_checkin"
+	AttendanceExceptionsExceptionTypeEarlyCheckout   AttendanceExceptionsExceptionType = "early_checkout"
+	AttendanceExceptionsExceptionTypeMissingCheckout AttendanceExceptionsExceptionType = "missing_checkout"
+	AttendanceExceptionsExceptionTypeOvertime        AttendanceExceptionsExceptionType = "overtime"
+	AttendanceExceptionsExceptionTypeUnauthorized    AttendanceExceptionsExceptionType = "unauthorized"
+)
+
+func (e *AttendanceExceptionsExceptionType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = AttendanceExceptionsExceptionType(s)
+	case string:
+		*e = AttendanceExceptionsExceptionType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for AttendanceExceptionsExceptionType: %T", src)
+	}
+	return nil
+}
+
+type NullAttendanceExceptionsExceptionType struct {
+	AttendanceExceptionsExceptionType AttendanceExceptionsExceptionType `json:"attendance_exceptions_exception_type"`
+	Valid                             bool                              `json:"valid"` // Valid is true if AttendanceExceptionsExceptionType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullAttendanceExceptionsExceptionType) Scan(value interface{}) error {
+	if value == nil {
+		ns.AttendanceExceptionsExceptionType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.AttendanceExceptionsExceptionType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullAttendanceExceptionsExceptionType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.AttendanceExceptionsExceptionType), nil
+}
+
+type AttendanceExceptionsSeverity string
+
+const (
+	AttendanceExceptionsSeverityInfo     AttendanceExceptionsSeverity = "info"
+	AttendanceExceptionsSeverityWarning  AttendanceExceptionsSeverity = "warning"
+	AttendanceExceptionsSeverityCritical AttendanceExceptionsSeverity = "critical"
+)
+
+func (e *AttendanceExceptionsSeverity) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = AttendanceExceptionsSeverity(s)
+	case string:
+		*e = AttendanceExceptionsSeverity(s)
+	default:
+		return fmt.Errorf("unsupported scan type for AttendanceExceptionsSeverity: %T", src)
+	}
+	return nil
+}
+
+type NullAttendanceExceptionsSeverity struct {
+	AttendanceExceptionsSeverity AttendanceExceptionsSeverity `json:"attendance_exceptions_severity"`
+	Valid                        bool                         `json:"valid"` // Valid is true if AttendanceExceptionsSeverity is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullAttendanceExceptionsSeverity) Scan(value interface{}) error {
+	if value == nil {
+		ns.AttendanceExceptionsSeverity, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.AttendanceExceptionsSeverity.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullAttendanceExceptionsSeverity) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.AttendanceExceptionsSeverity), nil
+}
+
+type AttendanceRecordsStatus string
+
+const (
+	AttendanceRecordsStatusPresent AttendanceRecordsStatus = "present"
+	AttendanceRecordsStatusOnLeave AttendanceRecordsStatus = "on_leave"
+	AttendanceRecordsStatusAbsent  AttendanceRecordsStatus = "absent"
+	AttendanceRecordsStatusManual  AttendanceRecordsStatus = "manual"
+)
+
+func (e *AttendanceRecordsStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = AttendanceRecordsStatus(s)
+	case string:
+		*e = AttendanceRecordsStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for AttendanceRecordsStatus: %T", src)
+	}
+	return nil
+}
+
+type NullAttendanceRecordsStatus struct {
+	AttendanceRecordsStatus AttendanceRecordsStatus `json:"attendance_records_status"`
+	Valid                   bool                    `json:"valid"` // Valid is true if AttendanceRecordsStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullAttendanceRecordsStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.AttendanceRecordsStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.AttendanceRecordsStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullAttendanceRecordsStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.AttendanceRecordsStatus), nil
+}
+
+type LeaveAccrualsLeaveType string
+
+const (
+	LeaveAccrualsLeaveTypeSick     LeaveAccrualsLeaveType = "sick"
+	LeaveAccrualsLeaveTypeVacation LeaveAccrualsLeaveType = "vacation"
+	LeaveAccrualsLeaveTypePersonal LeaveAccrualsLeaveType = "personal"
+)
+
+func (e *LeaveAccrualsLeaveType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = LeaveAccrualsLeaveType(s)
+	case string:
+		*e = LeaveAccrualsLeaveType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for LeaveAccrualsLeaveType: %T", src)
+	}
+	return nil
+}
+
+type NullLeaveAccrualsLeaveType struct {
+	LeaveAccrualsLeaveType LeaveAccrualsLeaveType `json:"leave_accruals_leave_type"`
+	Valid                  bool                   `json:"valid"` // Valid is true if LeaveAccrualsLeaveType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullLeaveAccrualsLeaveType) Scan(value interface{}) error {
+	if value == nil {
+		ns.LeaveAccrualsLeaveType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.LeaveAccrualsLeaveType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullLeaveAccrualsLeaveType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.LeaveAccrualsLeaveType), nil
+}
+
+type TimeOffRequestsLeaveType string
+
+const (
+	TimeOffRequestsLeaveTypeSick     TimeOffRequestsLeaveType = "sick"
+	TimeOffRequestsLeaveTypeVacation TimeOffRequestsLeaveType = "vacation"
+	TimeOffRequestsLeaveTypePersonal TimeOffRequestsLeaveType = "personal"
+	TimeOffRequestsLeaveTypeUnpaid   TimeOffRequestsLeaveType = "unpaid"
+)
+
+func (e *TimeOffRequestsLeaveType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = TimeOffRequestsLeaveType(s)
+	case string:
+		*e = TimeOffRequestsLeaveType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for TimeOffRequestsLeaveType: %T", src)
+	}
+	return nil
+}
+
+type NullTimeOffRequestsLeaveType struct {
+	TimeOffRequestsLeaveType TimeOffRequestsLeaveType `json:"time_off_requests_leave_type"`
+	Valid                    bool                     `json:"valid"` // Valid is true if TimeOffRequestsLeaveType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullTimeOffRequestsLeaveType) Scan(value interface{}) error {
+	if value == nil {
+		ns.TimeOffRequestsLeaveType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.TimeOffRequestsLeaveType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullTimeOffRequestsLeaveType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.TimeOffRequestsLeaveType), nil
+}
+
+type TimeOffRequestsStatus string
+
+const (
+	TimeOffRequestsStatusPending  TimeOffRequestsStatus = "pending"
+	TimeOffRequestsStatusApproved TimeOffRequestsStatus = "approved"
+	TimeOffRequestsStatusRejected TimeOffRequestsStatus = "rejected"
+)
+
+func (e *TimeOffRequestsStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = TimeOffRequestsStatus(s)
+	case string:
+		*e = TimeOffRequestsStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for TimeOffRequestsStatus: %T", src)
+	}
+	return nil
+}
+
+type NullTimeOffRequestsStatus struct {
+	TimeOffRequestsStatus TimeOffRequestsStatus `json:"time_off_requests_status"`
+	Valid                 bool                  `json:"valid"` // Valid is true if TimeOffRequestsStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullTimeOffRequestsStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.TimeOffRequestsStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.TimeOffRequestsStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullTimeOffRequestsStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.TimeOffRequestsStatus), nil
+}
+
+type AttendanceException struct {
+	ID            uint64                            `json:"id"`
+	AttendanceID  uint64                            `json:"attendance_id"`
+	ExceptionType AttendanceExceptionsExceptionType `json:"exception_type"`
+	Severity      AttendanceExceptionsSeverity      `json:"severity"`
+	AutoFlagged   bool                              `json:"auto_flagged"`
+	Resolved      bool                              `json:"resolved"`
+	ResolvedBy    sql.NullInt64                     `json:"resolved_by"`
+	ResolvedAt    sql.NullTime                      `json:"resolved_at"`
+	CreatedAt     time.Time                         `json:"created_at"`
+}
+
+type AttendanceNote struct {
+	ID           uint64    `json:"id"`
+	AttendanceID uint64    `json:"attendance_id"`
+	AddedBy      uint64    `json:"added_by"`
+	Note         string    `json:"note"`
+	CreatedAt    time.Time `json:"created_at"`
+}
+
+type AttendanceRecord struct {
+	ID               uint64                  `json:"id"`
+	UserID           uint64                  `json:"user_id"`
+	ShiftID          sql.NullInt64           `json:"shift_id"`
+	CheckInAt        time.Time               `json:"check_in_at"`
+	CheckOutAt       sql.NullTime            `json:"check_out_at"`
+	DurationSeconds  sql.NullInt32           `json:"duration_seconds"`
+	OvertimeSeconds  sql.NullInt32           `json:"overtime_seconds"`
+	Status           AttendanceRecordsStatus `json:"status"`
+	CheckInLat       sql.NullString          `json:"check_in_lat"`
+	CheckInLng       sql.NullString          `json:"check_in_lng"`
+	CheckOutLat      sql.NullString          `json:"check_out_lat"`
+	CheckOutLng      sql.NullString          `json:"check_out_lng"`
+	ClientCheckInAt  sql.NullTime            `json:"client_check_in_at"`
+	ClientCheckOutAt sql.NullTime            `json:"client_check_out_at"`
+	IsLate           bool                    `json:"is_late"`
+	IsEarlyLeave     bool                    `json:"is_early_leave"`
+	CreatedAt        time.Time               `json:"created_at"`
+	UpdatedAt        time.Time               `json:"updated_at"`
+}
+
+type EmployeeShift struct {
+	ID            uint64       `json:"id"`
+	UserID        uint64       `json:"user_id"`
+	ShiftID       uint64       `json:"shift_id"`
+	EffectiveDate time.Time    `json:"effective_date"`
+	EndDate       sql.NullTime `json:"end_date"`
+	CreatedAt     time.Time    `json:"created_at"`
+	UpdatedAt     time.Time    `json:"updated_at"`
+}
+
+type FailedLoginAttempt struct {
+	ID          uint64        `json:"id"`
+	UserID      sql.NullInt64 `json:"user_id"`
+	Email       string        `json:"email"`
+	IpAddress   string        `json:"ip_address"`
+	AttemptTime time.Time     `json:"attempt_time"`
+}
+
+type Holiday struct {
+	ID          uint64         `json:"id"`
+	Name        string         `json:"name"`
+	Date        time.Time      `json:"date"`
+	IsPaid      bool           `json:"is_paid"`
+	Description sql.NullString `json:"description"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+}
+
+type LeaveAccrual struct {
+	ID            uint64                 `json:"id"`
+	UserID        uint64                 `json:"user_id"`
+	LeaveType     LeaveAccrualsLeaveType `json:"leave_type"`
+	AccruedDays   string                 `json:"accrued_days"`
+	UsedDays      string                 `json:"used_days"`
+	CarryoverDays string                 `json:"carryover_days"`
+	Year          uint32                 `json:"year"`
+	CreatedAt     time.Time              `json:"created_at"`
+	UpdatedAt     time.Time              `json:"updated_at"`
+}
+
 type RefreshToken struct {
-	ID        uint64       `json:"id"`
-	UserID    uint64       `json:"user_id"`
-	TokenHash string       `json:"token_hash"`
-	ExpiresAt time.Time    `json:"expires_at"`
-	RevokedAt sql.NullTime `json:"revoked_at"`
-	CreatedAt time.Time    `json:"created_at"`
+	ID        uint64         `json:"id"`
+	UserID    uint64         `json:"user_id"`
+	TokenHash string         `json:"token_hash"`
+	CsrfHash  string         `json:"csrf_hash"`
+	ClientIp  sql.NullString `json:"client_ip"`
+	UserAgent sql.NullString `json:"user_agent"`
+	ExpiresAt time.Time      `json:"expires_at"`
+	RevokedAt sql.NullTime   `json:"revoked_at"`
+	CreatedAt time.Time      `json:"created_at"`
+}
+
+type Shift struct {
+	ID           uint64    `json:"id"`
+	Name         string    `json:"name"`
+	StartTime    time.Time `json:"start_time"`
+	EndTime      time.Time `json:"end_time"`
+	BreakMinutes uint32    `json:"break_minutes"`
+	IsActive     bool      `json:"is_active"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+}
+
+type TimeOffRequest struct {
+	ID         uint64                   `json:"id"`
+	UserID     uint64                   `json:"user_id"`
+	LeaveType  TimeOffRequestsLeaveType `json:"leave_type"`
+	StartDate  time.Time                `json:"start_date"`
+	EndDate    time.Time                `json:"end_date"`
+	DaysCount  string                   `json:"days_count"`
+	Reason     sql.NullString           `json:"reason"`
+	Status     TimeOffRequestsStatus    `json:"status"`
+	ReviewedBy sql.NullInt64            `json:"reviewed_by"`
+	ReviewedAt sql.NullTime             `json:"reviewed_at"`
+	ReviewNote sql.NullString           `json:"review_note"`
+	CreatedAt  time.Time                `json:"created_at"`
+	UpdatedAt  time.Time                `json:"updated_at"`
 }
 
 type User struct {

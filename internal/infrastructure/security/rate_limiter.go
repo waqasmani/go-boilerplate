@@ -2,7 +2,9 @@ package security
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"hash/fnv"
 	"net/http"
 	"sync"
 	"time"
@@ -11,112 +13,184 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+// RateLimiter defines the interface for rate limiting strategies
 type RateLimiter interface {
 	Allow(ctx context.Context, identifier string, limit int, window time.Duration) (bool, error)
 	Reset(ctx context.Context, identifier string) error
 	GetRemaining(ctx context.Context, identifier string, limit int, window time.Duration) (int, error)
 }
 
-type InMemoryRateLimiter struct {
-	mu       sync.Mutex
+// Configuration for sharded in-memory limiter
+const (
+	// Total max clients across all shards to prevent OOM
+	MaxTrackedClients = 100000
+	// ShardCount determines the granularity of locking (Power of 2 is preferred)
+	ShardCount = 32
+	// Per-shard limit
+	MaxTrackedClientsPerShard = MaxTrackedClients / ShardCount
+)
+
+// bucketInfo holds the rate limit state for a single client using Fixed Window
+type bucketInfo struct {
+	count   int
+	resetAt time.Time
+}
+
+// rateLimitShard represents a slice of the rate limiter with its own lock
+type rateLimitShard struct {
+	mu       sync.RWMutex
 	requests map[string]*bucketInfo
 }
 
-type bucketInfo struct {
-	timestamps []time.Time
-	resetAt    time.Time
+// InMemoryRateLimiter implements a thread-safe, sharded fixed-window limiter
+type InMemoryRateLimiter struct {
+	shards []*rateLimitShard
+	stopCh chan struct{}
 }
 
+// NewInMemoryRateLimiter initializes the sharded limiter and starts the cleanup routine
 func NewInMemoryRateLimiter() *InMemoryRateLimiter {
-	limiter := &InMemoryRateLimiter{
-		requests: make(map[string]*bucketInfo),
+	rl := &InMemoryRateLimiter{
+		shards: make([]*rateLimitShard, ShardCount),
+		stopCh: make(chan struct{}),
 	}
-	go limiter.cleanup()
-	return limiter
+
+	// Initialize shards
+	for i := 0; i < ShardCount; i++ {
+		rl.shards[i] = &rateLimitShard{
+			requests: make(map[string]*bucketInfo),
+		}
+	}
+
+	go rl.cleanup()
+	return rl
 }
 
+// getShard maps an identifier to a specific shard index using FNV hashing
+func (rl *InMemoryRateLimiter) getShard(identifier string) *rateLimitShard {
+	h := fnv.New32a()
+	_, _ = h.Write([]byte(identifier))
+	idx := h.Sum32() % uint32(ShardCount)
+	return rl.shards[idx]
+}
+
+// cleanup runs in the background to remove expired entries
 func (rl *InMemoryRateLimiter) cleanup() {
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()
 
-	for range ticker.C {
-		rl.mu.Lock()
-		now := time.Now()
-		for key, bucket := range rl.requests {
-			if now.After(bucket.resetAt) {
-				delete(rl.requests, key)
+	for {
+		select {
+		case <-ticker.C:
+			now := time.Now()
+			for _, shard := range rl.shards {
+				// Lock only this shard for cleanup
+				shard.mu.Lock()
+				for key, bucket := range shard.requests {
+					if now.After(bucket.resetAt) {
+						delete(shard.requests, key)
+					}
+				}
+				shard.mu.Unlock()
 			}
+		case <-rl.stopCh:
+			return // Graceful shutdown
 		}
-		rl.mu.Unlock()
 	}
 }
 
+// Allow checks if the request is allowed within the rate limit
 func (rl *InMemoryRateLimiter) Allow(ctx context.Context, identifier string, limit int, window time.Duration) (bool, error) {
-	rl.mu.Lock()
-	defer rl.mu.Unlock()
+	shard := rl.getShard(identifier)
+
+	shard.mu.Lock()
+	defer shard.mu.Unlock()
 
 	now := time.Now()
-	windowStart := now.Add(-window)
+	bucket, exists := shard.requests[identifier]
 
-	bucket, exists := rl.requests[identifier]
+	// Handle new clients
 	if !exists {
+		// Enforce memory bounds per shard
+		if len(shard.requests) >= MaxTrackedClientsPerShard {
+			// Prune expired entries in this shard immediately
+			rl.pruneShard(shard, now)
+
+			// If still full, fail closed to protect memory
+			if len(shard.requests) >= MaxTrackedClientsPerShard {
+				return false, errors.New("rate limit capacity exceeded")
+			}
+		}
+
 		bucket = &bucketInfo{
-			timestamps: []time.Time{now},
-			resetAt:    now.Add(window),
+			count:   0,
+			resetAt: now.Add(window),
 		}
-		rl.requests[identifier] = bucket
-		return true, nil
+		shard.requests[identifier] = bucket
 	}
 
-	var validRequests []time.Time
-	for _, t := range bucket.timestamps {
-		if t.After(windowStart) {
-			validRequests = append(validRequests, t)
-		}
+	// Fixed Window Logic: Reset if the window has expired
+	if now.After(bucket.resetAt) {
+		bucket.count = 0
+		bucket.resetAt = now.Add(window)
 	}
 
-	if len(validRequests) >= limit {
+	if bucket.count >= limit {
 		return false, nil
 	}
 
-	bucket.timestamps = append(validRequests, now)
-	bucket.resetAt = now.Add(window)
+	bucket.count++
 	return true, nil
 }
 
+// pruneShard removes expired entries from a specific shard
+// Caller must hold the shard lock
+func (rl *InMemoryRateLimiter) pruneShard(shard *rateLimitShard, now time.Time) {
+	for key, bucket := range shard.requests {
+		if now.After(bucket.resetAt) {
+			delete(shard.requests, key)
+		}
+	}
+}
+
+// Reset clears the rate limit for a specific identifier
 func (rl *InMemoryRateLimiter) Reset(ctx context.Context, identifier string) error {
-	rl.mu.Lock()
-	defer rl.mu.Unlock()
-	delete(rl.requests, identifier)
+	shard := rl.getShard(identifier)
+
+	shard.mu.Lock()
+	defer shard.mu.Unlock()
+
+	delete(shard.requests, identifier)
 	return nil
 }
 
+// GetRemaining calculates remaining requests for an identifier
 func (rl *InMemoryRateLimiter) GetRemaining(ctx context.Context, identifier string, limit int, window time.Duration) (int, error) {
-	rl.mu.Lock()
-	defer rl.mu.Unlock()
+	shard := rl.getShard(identifier)
 
-	now := time.Now()
-	windowStart := now.Add(-window)
+	shard.mu.RLock()
+	defer shard.mu.RUnlock()
 
-	bucket, exists := rl.requests[identifier]
+	bucket, exists := shard.requests[identifier]
 	if !exists {
 		return limit, nil
 	}
 
-	var validRequests []time.Time
-	for _, t := range bucket.timestamps {
-		if t.After(windowStart) {
-			validRequests = append(validRequests, t)
-		}
+	now := time.Now()
+
+	// If window expired, full limit is available
+	if now.After(bucket.resetAt) {
+		return limit, nil
 	}
 
-	remaining := limit - len(validRequests)
+	remaining := limit - bucket.count
 	if remaining < 0 {
-		remaining = 0
+		return 0, nil
 	}
 	return remaining, nil
 }
 
+// RedisRateLimiter implementation (Unchanged)
 type RedisRateLimiter struct {
 	client *redis.Client
 	prefix string
@@ -171,12 +245,14 @@ func (rl *RedisRateLimiter) GetRemaining(ctx context.Context, identifier string,
 	return remaining, nil
 }
 
+// RouteRateLimitMiddleware applies rate limiting to a gin route
 func RouteRateLimitMiddleware(rl RateLimiter, limit int, window time.Duration) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		identifier := c.ClientIP()
 
 		allowed, err := rl.Allow(c.Request.Context(), identifier, limit, window)
 		if err != nil {
+			// Fail open on internal error to allow traffic, or log error
 			c.Next()
 			return
 		}
@@ -201,4 +277,8 @@ func RouteRateLimitMiddleware(rl RateLimiter, limit int, window time.Duration) g
 
 		c.Next()
 	}
+}
+
+func (rl *InMemoryRateLimiter) Stop() {
+	close(rl.stopCh)
 }

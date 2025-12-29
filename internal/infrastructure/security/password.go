@@ -2,12 +2,16 @@ package security
 
 import (
 	"context"
-	"crypto/sha256"
 	"fmt"
 	"regexp"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
+)
+
+const (
+	// PolicyVersion indicates the current version of the password policy
+	PolicyVersion = "v1"
 )
 
 type PasswordService struct {
@@ -19,6 +23,7 @@ type PasswordService struct {
 	requireSpecialChar   bool
 	maxConsecutiveChars  int
 	commonPasswordsCache map[string]bool
+	version              string
 }
 
 func NewPasswordService(cost int) *PasswordService {
@@ -34,6 +39,7 @@ func NewPasswordService(cost int) *PasswordService {
 			"password": true, "12345678": true, "qwerty": true,
 			"admin": true, "letmein": true, "welcome": true,
 		},
+		version: PolicyVersion,
 	}
 }
 
@@ -121,9 +127,4 @@ func (p *PasswordService) Hash(ctx context.Context, password string) (string, er
 
 func (p *PasswordService) Compare(ctx context.Context, hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-}
-
-func (p *PasswordService) HashToken(token string) string {
-	hash := sha256.Sum256([]byte(token))
-	return fmt.Sprintf("%x", hash)
 }

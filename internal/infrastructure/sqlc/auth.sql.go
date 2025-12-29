@@ -7,53 +7,140 @@ package sqlc
 
 import (
 	"context"
+	"database/sql"
 	"time"
 )
+
+const cleanupOldFailedLoginAttempts = `-- name: CleanupOldFailedLoginAttempts :execresult
+DELETE FROM failed_login_attempts
+WHERE attempt_time < DATE_SUB(NOW(), INTERVAL 24 HOUR)
+LIMIT ?
+`
+
+func (q *Queries) CleanupOldFailedLoginAttempts(ctx context.Context, limit int32) (sql.Result, error) {
+	return q.db.ExecContext(ctx, cleanupOldFailedLoginAttempts, limit)
+}
+
+const clearFailedLoginAttempts = `-- name: ClearFailedLoginAttempts :exec
+DELETE FROM failed_login_attempts
+WHERE email = ?
+`
+
+func (q *Queries) ClearFailedLoginAttempts(ctx context.Context, email string) error {
+	_, err := q.db.ExecContext(ctx, clearFailedLoginAttempts, email)
+	return err
+}
 
 const createRefreshToken = `-- name: CreateRefreshToken :exec
 INSERT INTO refresh_tokens (
     user_id,
     token_hash,
+    csrf_hash,
+    client_ip,
+    user_agent,
     expires_at
 ) VALUES (
-    ?, ?, ?
+    ?, ?, ?, ?, ?, ?
 )
 `
 
 type CreateRefreshTokenParams struct {
-	UserID    uint64    `json:"user_id"`
-	TokenHash string    `json:"token_hash"`
-	ExpiresAt time.Time `json:"expires_at"`
+	UserID    uint64         `json:"user_id"`
+	TokenHash string         `json:"token_hash"`
+	CsrfHash  string         `json:"csrf_hash"`
+	ClientIp  sql.NullString `json:"client_ip"`
+	UserAgent sql.NullString `json:"user_agent"`
+	ExpiresAt time.Time      `json:"expires_at"`
 }
 
 func (q *Queries) CreateRefreshToken(ctx context.Context, arg CreateRefreshTokenParams) error {
-	_, err := q.db.ExecContext(ctx, createRefreshToken, arg.UserID, arg.TokenHash, arg.ExpiresAt)
+	_, err := q.db.ExecContext(ctx, createRefreshToken,
+		arg.UserID,
+		arg.TokenHash,
+		arg.CsrfHash,
+		arg.ClientIp,
+		arg.UserAgent,
+		arg.ExpiresAt,
+	)
 	return err
 }
 
-const deleteExpiredRefreshTokens = `-- name: DeleteExpiredRefreshTokens :exec
+const deleteExpiredRefreshTokens = `-- name: DeleteExpiredRefreshTokens :execresult
 DELETE FROM refresh_tokens
 WHERE expires_at < NOW()
    OR revoked_at < DATE_SUB(NOW(), INTERVAL 7 DAY)
+LIMIT ?
 `
 
-func (q *Queries) DeleteExpiredRefreshTokens(ctx context.Context) error {
-	_, err := q.db.ExecContext(ctx, deleteExpiredRefreshTokens)
-	return err
+func (q *Queries) DeleteExpiredRefreshTokens(ctx context.Context, limit int32) (sql.Result, error) {
+	return q.db.ExecContext(ctx, deleteExpiredRefreshTokens, limit)
+}
+
+const getFailedLoginAttempts = `-- name: GetFailedLoginAttempts :many
+SELECT id, user_id, email, ip_address, attempt_time
+FROM failed_login_attempts
+WHERE email = ?
+AND attempt_time > DATE_SUB(NOW(), INTERVAL ? MINUTE)
+ORDER BY attempt_time DESC
+`
+
+type GetFailedLoginAttemptsParams struct {
+	Email   string      `json:"email"`
+	DATESUB interface{} `json:"DATE_SUB"`
+}
+
+func (q *Queries) GetFailedLoginAttempts(ctx context.Context, arg GetFailedLoginAttemptsParams) ([]FailedLoginAttempt, error) {
+	rows, err := q.db.QueryContext(ctx, getFailedLoginAttempts, arg.Email, arg.DATESUB)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []FailedLoginAttempt{}
+	for rows.Next() {
+		var i FailedLoginAttempt
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Email,
+			&i.IpAddress,
+			&i.AttemptTime,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getRefreshToken = `-- name: GetRefreshToken :one
-SELECT id, user_id, token_hash, expires_at, revoked_at, created_at
+SELECT id, user_id, token_hash, expires_at, revoked_at, created_at, client_ip, user_agent
 FROM refresh_tokens
 WHERE token_hash = ?
 AND revoked_at IS NULL
 LIMIT 1 FOR UPDATE
 `
 
+type GetRefreshTokenRow struct {
+	ID        uint64         `json:"id"`
+	UserID    uint64         `json:"user_id"`
+	TokenHash string         `json:"token_hash"`
+	ExpiresAt time.Time      `json:"expires_at"`
+	RevokedAt sql.NullTime   `json:"revoked_at"`
+	CreatedAt time.Time      `json:"created_at"`
+	ClientIp  sql.NullString `json:"client_ip"`
+	UserAgent sql.NullString `json:"user_agent"`
+}
+
 // We query by the hash of the token provided by the user
-func (q *Queries) GetRefreshToken(ctx context.Context, tokenHash string) (RefreshToken, error) {
+func (q *Queries) GetRefreshToken(ctx context.Context, tokenHash string) (GetRefreshTokenRow, error) {
 	row := q.db.QueryRowContext(ctx, getRefreshToken, tokenHash)
-	var i RefreshToken
+	var i GetRefreshTokenRow
 	err := row.Scan(
 		&i.ID,
 		&i.UserID,
@@ -61,8 +148,37 @@ func (q *Queries) GetRefreshToken(ctx context.Context, tokenHash string) (Refres
 		&i.ExpiresAt,
 		&i.RevokedAt,
 		&i.CreatedAt,
+		&i.ClientIp,
+		&i.UserAgent,
 	)
 	return i, err
+}
+
+const recordFailedLoginAttempt = `-- name: RecordFailedLoginAttempt :exec
+INSERT INTO failed_login_attempts (user_id, email, ip_address, attempt_time)
+VALUES (?, ?, ?, NOW())
+`
+
+type RecordFailedLoginAttemptParams struct {
+	UserID    sql.NullInt64 `json:"user_id"`
+	Email     string        `json:"email"`
+	IpAddress string        `json:"ip_address"`
+}
+
+func (q *Queries) RecordFailedLoginAttempt(ctx context.Context, arg RecordFailedLoginAttemptParams) error {
+	_, err := q.db.ExecContext(ctx, recordFailedLoginAttempt, arg.UserID, arg.Email, arg.IpAddress)
+	return err
+}
+
+const revokeAllUserRefreshTokens = `-- name: RevokeAllUserRefreshTokens :exec
+UPDATE refresh_tokens 
+SET revoked_at = CURRENT_TIMESTAMP 
+WHERE user_id = ? AND revoked_at IS NULL
+`
+
+func (q *Queries) RevokeAllUserRefreshTokens(ctx context.Context, userID uint64) error {
+	_, err := q.db.ExecContext(ctx, revokeAllUserRefreshTokens, userID)
+	return err
 }
 
 const revokeRefreshToken = `-- name: RevokeRefreshToken :exec
@@ -74,4 +190,47 @@ WHERE token_hash = ?
 func (q *Queries) RevokeRefreshToken(ctx context.Context, tokenHash string) error {
 	_, err := q.db.ExecContext(ctx, revokeRefreshToken, tokenHash)
 	return err
+}
+
+const validateRefreshToken = `-- name: ValidateRefreshToken :one
+SELECT id, user_id, token_hash, csrf_hash, expires_at, revoked_at, created_at, client_ip, user_agent
+FROM refresh_tokens
+WHERE token_hash = ?
+AND csrf_hash = ?
+AND expires_at > NOW()
+LIMIT 1 FOR UPDATE
+`
+
+type ValidateRefreshTokenParams struct {
+	TokenHash string `json:"token_hash"`
+	CsrfHash  string `json:"csrf_hash"`
+}
+
+type ValidateRefreshTokenRow struct {
+	ID        uint64         `json:"id"`
+	UserID    uint64         `json:"user_id"`
+	TokenHash string         `json:"token_hash"`
+	CsrfHash  string         `json:"csrf_hash"`
+	ExpiresAt time.Time      `json:"expires_at"`
+	RevokedAt sql.NullTime   `json:"revoked_at"`
+	CreatedAt time.Time      `json:"created_at"`
+	ClientIp  sql.NullString `json:"client_ip"`
+	UserAgent sql.NullString `json:"user_agent"`
+}
+
+func (q *Queries) ValidateRefreshToken(ctx context.Context, arg ValidateRefreshTokenParams) (ValidateRefreshTokenRow, error) {
+	row := q.db.QueryRowContext(ctx, validateRefreshToken, arg.TokenHash, arg.CsrfHash)
+	var i ValidateRefreshTokenRow
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.TokenHash,
+		&i.CsrfHash,
+		&i.ExpiresAt,
+		&i.RevokedAt,
+		&i.CreatedAt,
+		&i.ClientIp,
+		&i.UserAgent,
+	)
+	return i, err
 }

@@ -1,4 +1,4 @@
-package auth
+package middleware
 
 import (
 	"context"
@@ -11,14 +11,12 @@ import (
 )
 
 type AuthMiddleware struct {
-	jwtService  *security.JWTService
-	csrfManager security.CSRFManager
+	jwtService *security.JWTService
 }
 
-func NewAuthMiddleware(jwtService *security.JWTService, csrfManager security.CSRFManager) *AuthMiddleware {
+func NewAuthMiddleware(jwtService *security.JWTService) *AuthMiddleware {
 	return &AuthMiddleware{
-		jwtService:  jwtService,
-		csrfManager: csrfManager,
+		jwtService: jwtService,
 	}
 }
 
@@ -31,9 +29,15 @@ func (m *AuthMiddleware) Authenticate() gin.HandlerFunc {
 			return
 		}
 
-		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
-		if tokenString == authHeader {
+		const bearerPrefix = "Bearer "
+		if !strings.HasPrefix(authHeader, bearerPrefix) {
 			utils.Error(c, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeUnauthorized, "Invalid authorization header format"))
+			c.Abort()
+			return
+		}
+		tokenString := strings.TrimSpace(authHeader[len(bearerPrefix):])
+		if tokenString == "" {
+			utils.Error(c, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeUnauthorized, "Missing token"))
 			c.Abort()
 			return
 		}
@@ -92,44 +96,6 @@ func (m *AuthMiddleware) Authorize(allowedRoles ...string) gin.HandlerFunc {
 	}
 }
 
-func (m *AuthMiddleware) CSRFProtection() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		if c.Request.Method == "GET" || c.Request.Method == "HEAD" || c.Request.Method == "OPTIONS" {
-			c.Next()
-			return
-		}
-
-		csrfToken := c.GetHeader("X-CSRF-Token")
-		if csrfToken == "" {
-			utils.Error(c, errors.Wrap(errors.ErrForbidden, errors.ErrCodeForbidden, "Missing CSRF token"))
-			c.Abort()
-			return
-		}
-
-		userIDVal, exists := c.Get(string(security.UserIDKey))
-		if !exists {
-			utils.Error(c, errors.ErrUnauthorized)
-			c.Abort()
-			return
-		}
-
-		userID, ok := userIDVal.(uint64)
-		if !ok {
-			utils.Error(c, errors.Wrap(errors.ErrUnauthorized, errors.ErrCodeInternal, "Invalid user ID type"))
-			c.Abort()
-			return
-		}
-
-		if !m.csrfManager.Validate(csrfToken, userID) {
-			utils.Error(c, errors.Wrap(errors.ErrForbidden, errors.ErrCodeForbidden, "Invalid CSRF token"))
-			c.Abort()
-			return
-		}
-
-		c.Next()
-	}
-}
-
 func GetCurrentUserID(c *gin.Context) (uint64, error) {
 	userID, exists := c.Get(string(security.UserIDKey))
 	if !exists {
@@ -156,4 +122,55 @@ func GetCurrentUserRole(c *gin.Context) (string, error) {
 	}
 
 	return role, nil
+}
+
+// IsAdminOrOwner checks if the authenticated user is either an admin or the owner of the resource
+// Returns an error if authorization fails, nil if authorized
+func IsAdminOrOwner(c *gin.Context, targetID uint64) error {
+	authUserID, err := GetCurrentUserID(c)
+	if err != nil {
+		return errors.Wrap(err, errors.ErrCodeUnauthorized, "Failed to get user ID from context")
+	}
+
+	// Owner check - user can access their own resources
+	if authUserID == targetID {
+		return nil
+	}
+
+	// Admin check - admins can access any resource
+	role, err := GetCurrentUserRole(c)
+	if err != nil {
+		return errors.Wrap(err, errors.ErrCodeUnauthorized, "Failed to get user role from context")
+	}
+
+	if role == "admin" {
+		return nil
+	}
+
+	// Neither owner nor admin
+	return errors.New(errors.ErrCodeForbidden, "Access denied: insufficient permissions")
+}
+
+// IsAdmin checks if the authenticated user has admin role
+func IsAdmin(c *gin.Context) bool {
+	role, err := GetCurrentUserRole(c)
+	if err != nil {
+		return false
+	}
+	return role == "admin"
+}
+
+// RequireOwnership ensures the authenticated user is the owner of the resource
+// This is stricter than IsAdminOrOwner - even admins are not allowed
+func RequireOwnership(c *gin.Context, targetID uint64) error {
+	authUserID, err := GetCurrentUserID(c)
+	if err != nil {
+		return errors.Wrap(err, errors.ErrCodeUnauthorized, "Failed to get user ID from context")
+	}
+
+	if authUserID != targetID {
+		return errors.New(errors.ErrCodeForbidden, "Access denied: you can only access your own resources")
+	}
+
+	return nil
 }

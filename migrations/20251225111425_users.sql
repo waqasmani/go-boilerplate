@@ -1,4 +1,5 @@
--- Active: 1760198037679@@127.0.0.1@3306@auth_db
+-- +goose Up
+-- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -13,3 +14,9 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_role (role),
     INDEX idx_is_active (is_active)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP TABLE users;
+-- +goose StatementEnd

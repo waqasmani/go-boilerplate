@@ -1,32 +1,262 @@
 definitions:
-  github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest:
+  AttendanceResponse:
+    description: Attendance record response
+    properties:
+      check_in_at:
+        type: string
+      check_in_latitude:
+        type: number
+      check_in_longitude:
+        type: number
+      check_out_at:
+        type: string
+      check_out_latitude:
+        type: number
+      check_out_longitude:
+        type: number
+      created_at:
+        type: string
+      duration_seconds:
+        type: integer
+      id:
+        type: integer
+      is_early_leave:
+        type: boolean
+      is_late:
+        type: boolean
+      overtime_seconds:
+        type: integer
+      shift_id:
+        type: integer
+      status:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  CheckInRequest:
+    description: Check-in request with optional geolocation
+    properties:
+      client_timestamp:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  CheckOutRequest:
+    description: Check-out request with optional geolocation
+    properties:
+      attendance_id:
+        description: 'Optional: specify which session to close'
+        type: integer
+      client_timestamp:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  DailySummaryResponse:
+    properties:
+      absent_count:
+        type: integer
+      date:
+        type: string
+      late_count:
+        type: integer
+      on_leave_count:
+        type: integer
+      present_count:
+        type: integer
+      total_attendance:
+        type: integer
+      total_hours:
+        type: number
+      total_overtime_hours:
+        type: number
+    type: object
+  LeaveBalanceResponse:
+    properties:
+      accrued_days:
+        type: number
+      available_days:
+        type: number
+      carryover_days:
+        type: number
+      leave_type:
+        type: string
+      used_days:
+        type: number
+      year:
+        type: integer
+    type: object
+  ListAttendanceResponse:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      records:
+        items:
+          $ref: '#/definitions/AttendanceResponse'
+        type: array
+      total:
+        type: integer
+    type: object
+  ManualAttendanceRequest:
+    properties:
+      check_in_at:
+        type: string
+      check_out_at:
+        type: string
+      overtime_seconds:
+        type: integer
+      reason:
+        minLength: 10
+        type: string
+      user_id:
+        type: integer
+    required:
+    - check_in_at
+    - check_out_at
+    - reason
+    - user_id
+    type: object
+  ReviewTimeOffRequest:
+    properties:
+      review_note:
+        minLength: 5
+        type: string
+    required:
+    - review_note
+    type: object
+  TimeOffRequest:
+    properties:
+      end_date:
+        type: string
+      leave_type:
+        allOf:
+        - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_infrastructure_sqlc.TimeOffRequestsLeaveType'
+        enum:
+        - sick
+        - vacation
+        - personal
+        - unpaid
+      reason:
+        minLength: 10
+        type: string
+      start_date:
+        type: string
+    required:
+    - end_date
+    - leave_type
+    - reason
+    - start_date
+    type: object
+  TimeOffResponse:
+    properties:
+      created_at:
+        type: string
+      days_count:
+        type: number
+      email:
+        type: string
+      end_date:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      leave_type:
+        type: string
+      reason:
+        type: string
+      review_note:
+        type: string
+      reviewed_at:
+        type: string
+      reviewed_by:
+        type: integer
+      start_date:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_waqasmani_go-boilerplate_internal_infrastructure_sqlc.TimeOffRequestsLeaveType:
+    enum:
+    - sick
+    - vacation
+    - personal
+    - unpaid
+    type: string
+    x-enum-varnames:
+    - TimeOffRequestsLeaveTypeSick
+    - TimeOffRequestsLeaveTypeVacation
+    - TimeOffRequestsLeaveTypePersonal
+    - TimeOffRequestsLeaveTypeUnpaid
+  github_com_waqasmani_go-boilerplate_internal_shared_utils.ErrorResponse:
+    properties:
+      code:
+        type: string
+      details: {}
+      message:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_waqasmani_go-boilerplate_internal_shared_utils.Response:
+    properties:
+      data: {}
+      error:
+        $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.ErrorResponse'
+      success:
+        type: boolean
+      version:
+        type: string
+    type: object
+  internal_modules_auth.AuthResponse:
+    properties:
+      access_token:
+        type: string
+      user:
+        $ref: '#/definitions/internal_modules_auth.UserResponse'
+    type: object
+  internal_modules_auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_modules_auth.RegisterRequest:
     properties:
       email:
         type: string
       first_name:
-        maxLength: 100
-        minLength: 2
         type: string
       last_name:
-        maxLength: 100
-        minLength: 2
         type: string
       password:
         minLength: 8
-        type: string
-      role:
-        enum:
-        - user
-        - admin
         type: string
     required:
     - email
     - first_name
     - last_name
     - password
-    - role
     type: object
-  github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse:
+  internal_modules_auth.UserResponse:
     properties:
       created_at:
         type: string
@@ -40,35 +270,6 @@ definitions:
         type: string
       role:
         type: string
-      updated_at:
-        type: string
-    type: object
-  github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse:
-    properties:
-      code:
-        type: string
-      details: {}
-      message:
-        type: string
-    type: object
-  github_com_waqasmani_api-boilerplate_internal_shared_utils.Response:
-    properties:
-      data: {}
-      error:
-        $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse'
-      success:
-        type: boolean
-    type: object
-  internal_modules_auth.loginRequest:
-    properties:
-      email:
-        type: string
-      password:
-        minLength: 8
-        type: string
-    required:
-    - email
-    - password
     type: object
   internal_modules_health.DatabaseHealth:
     properties:
@@ -87,6 +288,8 @@ definitions:
     properties:
       database:
         $ref: '#/definitions/internal_modules_health.DatabaseHealth'
+      redis:
+        $ref: '#/definitions/internal_modules_health.RedisHealth'
       status:
         type: string
       system:
@@ -94,6 +297,13 @@ definitions:
       uptime:
         type: string
       version:
+        type: string
+    type: object
+  internal_modules_health.RedisHealth:
+    properties:
+      latency:
+        type: string
+      status:
         type: string
     type: object
   internal_modules_health.SystemHealth:
@@ -105,29 +315,13 @@ definitions:
       num_goroutine:
         type: integer
     type: object
-  internal_modules_users.ChangePasswordRequest:
-    properties:
-      current_password:
-        minLength: 8
-        type: string
-      new_password:
-        minLength: 8
-        type: string
-    required:
-    - current_password
-    - new_password
-    type: object
   internal_modules_users.CreateUserRequest:
     properties:
       email:
         type: string
       first_name:
-        maxLength: 100
-        minLength: 2
         type: string
       last_name:
-        maxLength: 100
-        minLength: 2
         type: string
       password:
         minLength: 8
@@ -146,26 +340,33 @@ definitions:
     type: object
   internal_modules_users.ListUsersResponse:
     properties:
+      limit:
+        type: integer
       page:
         type: integer
-      page_size:
-        type: integer
-      total_count:
+      total:
         type: integer
       users:
         items:
           $ref: '#/definitions/internal_modules_users.UserResponse'
         type: array
     type: object
+  internal_modules_users.UpdatePasswordRequest:
+    properties:
+      new_password:
+        minLength: 8
+        type: string
+      old_password:
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
   internal_modules_users.UpdateUserRequest:
     properties:
       first_name:
-        maxLength: 100
-        minLength: 2
         type: string
       last_name:
-        maxLength: 100
-        minLength: 2
         type: string
     required:
     - first_name
@@ -181,6 +382,8 @@ definitions:
         type: string
       id:
         type: integer
+      is_active:
+        type: boolean
       last_name:
         type: string
       role:
@@ -190,10 +393,15 @@ definitions:
     type: object
 info:
   contact: {}
+  description: This is an attendance and employee management server.
+  title: Go Boilerplate API
+  version: "1.0"
 paths:
   /alive:
     get:
-      description: Lightweight check to verify API process is running
+      consumes:
+      - application/json
+      description: Check if application is alive
       produces:
       - application/json
       responses:
@@ -203,138 +411,544 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Check API liveness
+      summary: Get liveness status
       tags:
-      - health
-  /auth/csrf-token:
+      - Health
+  /attendance:
     get:
-      description: Get a new CSRF token for state-changing requests
-      parameters:
-      - description: Bearer <access_token>
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Contains csrf_token
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
-      summary: Get CSRF token
-      tags:
-      - auth
-  /auth/login:
-    post:
       consumes:
       - application/json
-      description: Authenticate user and get access and refresh tokens
+      description: Retrieves attendance records with pagination and filters
       parameters:
-      - description: Login credentials
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/internal_modules_auth.loginRequest'
+      - description: User ID filter
+        in: query
+        name: user_id
+        type: integer
+      - description: Start date (RFC3339)
+        in: query
+        name: from
+        type: string
+      - description: End date (RFC3339)
+        in: query
+        name: to
+        type: string
+      - description: Status filter
+        enum:
+        - present
+        - on_leave
+        - absent
+        - manual
+        in: query
+        name: status
+        type: string
+      - description: Shift ID filter
+        in: query
+        name: shift_id
+        type: integer
+      - default: 20
+        description: Page size
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        minimum: 1
+        name: page
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: Contains access_token and csrf_token
+          description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/ListAttendanceResponse'
+              type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
-      summary: User login
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: List attendance records
       tags:
-      - auth
-  /auth/logout:
-    post:
-      description: Revoke refresh token and clear cookies
+      - Attendance
+  /attendance/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single attendance record by ID
+      parameters:
+      - description: Attendance ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/AttendanceResponse'
+              type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
-      summary: User logout
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Get attendance by ID
       tags:
-      - auth
-  /auth/refresh:
-    post:
-      description: Get new access token using refresh token from cookie
+      - Attendance
+  /attendance/{id}/manual:
+    put:
+      consumes:
+      - application/json
+      description: Allows managers to manually create or edit attendance records
+      parameters:
+      - description: Attendance ID (0 for new)
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Manual attendance data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ManualAttendanceRequest'
       produces:
       - application/json
       responses:
         "200":
-          description: Contains access_token and csrf_token
+          description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/AttendanceResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
-      summary: Refresh tokens
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Manually edit attendance (Admin/Manager only)
       tags:
-      - auth
-  /auth/register:
+      - Attendance
+  /attendance/check-in:
     post:
       consumes:
       - application/json
-      description: Register a new user account
+      description: Records employee check-in with optional geolocation
       parameters:
-      - description: Registration details
+      - description: Check-in details
         in: body
-        name: request
+        name: body
         required: true
         schema:
-          $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest'
+          $ref: '#/definitions/CheckInRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/AttendanceResponse'
+              type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "409":
           description: Conflict
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
-      summary: User registration
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Check in to work
       tags:
-      - auth
+      - Attendance
+  /attendance/check-out:
+    post:
+      consumes:
+      - application/json
+      description: Records employee check-out and calculates duration
+      parameters:
+      - description: Check-out details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CheckOutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/AttendanceResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Check out from work
+      tags:
+      - Attendance
+  /attendance/leave-balance:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves current leave balance for authenticated user
+      parameters:
+      - description: Leave type
+        enum:
+        - sick
+        - vacation
+        - personal
+        in: query
+        name: leave_type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/LeaveBalanceResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Get leave balance
+      tags:
+      - Attendance
+  /attendance/time-off:
+    post:
+      consumes:
+      - application/json
+      description: Employee submits a time off request
+      parameters:
+      - description: Time off request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/TimeOffRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/TimeOffResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Request time off
+      tags:
+      - Time Off
+  /attendance/time-off/{id}/approve:
+    patch:
+      consumes:
+      - application/json
+      description: Manager approves a pending time off request
+      parameters:
+      - description: Time off request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Review note
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ReviewTimeOffRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Approve time off (Manager only)
+      tags:
+      - Time Off
+  /attendance/time-off/{id}/reject:
+    patch:
+      consumes:
+      - application/json
+      description: Manager rejects a pending time off request
+      parameters:
+      - description: Time off request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Review note
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ReviewTimeOffRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Reject time off (Manager only)
+      tags:
+      - Time Off
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return access token
+      parameters:
+      - description: User credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_auth.AuthResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      summary: Login to get access token
+      tags:
+      - Authentication
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Invalidate refresh token
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Logout user
+      tags:
+      - Authentication
+  /auth/me:
+    get:
+      consumes:
+      - application/json
+      description: Get information about the currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_auth.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Get current user
+      tags:
+      - Authentication
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Get a new access token using refresh token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_auth.AuthResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - CsrfToken: []
+      summary: Refresh access token
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: User registration details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_auth.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      summary: Register a new user
+      tags:
+      - Authentication
   /health:
     get:
-      description: Get comprehensive health status of the API including database connectivity
-        and system metrics
+      consumes:
+      - application/json
+      description: Get comprehensive health status of the application
       produces:
       - application/json
       responses:
@@ -342,12 +956,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/internal_modules_health.HealthResponse'
-      summary: Check API health
+      summary: Get health status
       tags:
-      - health
+      - Health
   /ready:
     get:
-      description: Check if API is ready to serve traffic (database connectivity check)
+      consumes:
+      - application/json
+      description: Check if application is ready to serve traffic
       produces:
       - application/json
       responses:
@@ -359,23 +975,110 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/internal_modules_health.HealthResponse'
-      summary: Check API readiness
+      summary: Get readiness status
       tags:
-      - health
-  /users/:
+      - Health
+  /reports/daily-summary:
     get:
+      consumes:
+      - application/json
+      description: Retrieves attendance summary for a specific date
+      parameters:
+      - description: Date (YYYY-MM-DD format)
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/DailySummaryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Get daily attendance summary
+      tags:
+      - Reports
+  /reports/employee/{id}/export:
+    get:
+      consumes:
+      - application/json
+      description: Exports timesheet data for an employee for a specific period
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Start date (YYYY-MM-DD format)
+        in: query
+        name: start_date
+        required: true
+        type: string
+      - description: End date (YYYY-MM-DD format)
+        in: query
+        name: end_date
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Timesheet CSV file
+          schema:
+            type: file
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+      security:
+      - Bearer: []
+      summary: Export employee timesheet
+      tags:
+      - Reports
+  /users:
+    get:
+      consumes:
+      - application/json
       description: Get paginated list of users (admin only)
       parameters:
+      - default: 20
+        description: Page size
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
       - default: 1
         description: Page number
         in: query
+        minimum: 1
         name: page
-        type: integer
-      - default: 10
-        description: Items per page
-        in: query
-        maximum: 100
-        name: page_size
         type: integer
       produces:
       - application/json
@@ -383,21 +1086,25 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/internal_modules_users.ListUsersResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_users.ListUsersResponse'
+              type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
       security:
       - Bearer: []
-      - X-CSRF-Token: []
       summary: List users
       tags:
-      - users
+      - Users
     post:
       consumes:
       - application/json
@@ -405,7 +1112,7 @@ paths:
       parameters:
       - description: User creation details
         in: body
-        name: user
+        name: body
         required: true
         schema:
           $ref: '#/definitions/internal_modules_users.CreateUserRequest'
@@ -415,112 +1122,122 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/internal_modules_users.UserResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_users.UserResponse'
+              type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "409":
           description: Conflict
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
       security:
       - Bearer: []
-      - X-CSRF-Token: []
       summary: Create user
       tags:
-      - users
+      - Users
   /users/{id}:
     delete:
-      description: Deactivate user account (admin only)
+      consumes:
+      - application/json
+      description: Soft delete a user (admin only)
       parameters:
       - description: User ID
         in: path
         name: id
         required: true
-        type: string
+        type: integer
+      produces:
+      - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
+        "204":
+          description: No Content
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
       security:
       - Bearer: []
-      - X-CSRF-Token: []
-      summary: Deactivate user
+      summary: Delete user
       tags:
-      - users
+      - Users
     get:
-      description: Get user profile by ID
+      consumes:
+      - application/json
+      description: Get user details by ID
       parameters:
       - description: User ID
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/internal_modules_users.UserResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_users.UserResponse'
+              type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
       security:
       - Bearer: []
       summary: Get user by ID
       tags:
-      - users
+      - Users
     put:
       consumes:
       - application/json
-      description: Update user profile (own profile or admin can update any)
+      description: Update user's first and last name
       parameters:
       - description: User ID
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       - description: Updated user details
         in: body
-        name: user
+        name: body
         required: true
         schema:
           $ref: '#/definitions/internal_modules_users.UpdateUserRequest'
@@ -530,71 +1247,94 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/internal_modules_users.UserResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_users.UserResponse'
+              type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
       security:
       - Bearer: []
-      - X-CSRF-Token: []
-      summary: Update user
+      summary: Update user profile
       tags:
-      - users
+      - Users
   /users/{id}/password:
     put:
       consumes:
       - application/json
-      description: Change user password
+      description: Change user's password
       parameters:
       - description: User ID
         in: path
         name: id
         required: true
-        type: string
-      - description: Password change details
+        type: integer
+      - description: Password update details
         in: body
-        name: password
+        name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_users.ChangePasswordRequest'
+          $ref: '#/definitions/internal_modules_users.UpdatePasswordRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            allOf:
+            - $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: string
+                  type: object
+              type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response'
+            $ref: '#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response'
       security:
       - Bearer: []
-      - X-CSRF-Token: []
-      summary: Change password
+      summary: Update user password
       tags:
-      - users
+      - Users
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer <your_token>" (include the word Bearer and a space)
+    in: header
+    name: Authorization
+    type: apiKey
+  CsrfToken:
+    description: Enter your CSRF token
+    in: header
+    name: X-CSRF-TOKEN
+    type: apiKey
 swagger: "2.0"

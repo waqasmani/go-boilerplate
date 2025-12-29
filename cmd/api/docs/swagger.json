@@ -1,19 +1,25 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is an attendance and employee management server.",
+        "title": "Go Boilerplate API",
+        "contact": {},
+        "version": "1.0"
     },
     "paths": {
         "/alive": {
             "get": {
-                "description": "Lightweight check to verify API process is running",
+                "description": "Check if application is alive",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "health"
+                    "Health"
                 ],
-                "summary": "Check API liveness",
+                "summary": "Get liveness status",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -27,47 +33,14 @@
                 }
             }
         },
-        "/auth/csrf-token": {
+        "/attendance": {
             "get": {
-                "description": "Get a new CSRF token for state-changing requests",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Get CSRF token",
-                "parameters": [
+                "security": [
                     {
-                        "type": "string",
-                        "description": "Bearer \u003caccess_token\u003e",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "Bearer": []
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "Contains csrf_token",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/login": {
-            "post": {
-                "description": "Authenticate user and get access and refresh tokens",
+                "description": "Retrieves attendance records with pagination and filters",
                 "consumes": [
                     "application/json"
                 ],
@@ -75,106 +48,106 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Attendance"
                 ],
-                "summary": "User login",
+                "summary": "List attendance records",
                 "parameters": [
                     {
-                        "description": "Login credentials",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/internal_modules_auth.loginRequest"
-                        }
+                        "type": "integer",
+                        "description": "User ID filter",
+                        "name": "user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start date (RFC3339)",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date (RFC3339)",
+                        "name": "to",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "present",
+                            "on_leave",
+                            "absent",
+                            "manual"
+                        ],
+                        "type": "string",
+                        "description": "Status filter",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Shift ID filter",
+                        "name": "shift_id",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 20,
+                        "description": "Page size",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Contains access_token and csrf_token",
+                        "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/ListAttendanceResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
             }
         },
-        "/auth/logout": {
+        "/attendance/check-in": {
             "post": {
-                "description": "Revoke refresh token and clear cookies",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "User logout",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
-                        }
+                "security": [
+                    {
+                        "Bearer": []
                     }
-                }
-            }
-        },
-        "/auth/refresh": {
-            "post": {
-                "description": "Get new access token using refresh token from cookie",
-                "produces": [
-                    "application/json"
                 ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Refresh tokens",
-                "responses": {
-                    "200": {
-                        "description": "Contains access_token and csrf_token",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/register": {
-            "post": {
-                "description": "Register a new user account",
+                "description": "Records employee check-in with optional geolocation",
                 "consumes": [
                     "application/json"
                 ],
@@ -182,17 +155,17 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "Attendance"
                 ],
-                "summary": "User registration",
+                "summary": "Check in to work",
                 "parameters": [
                     {
-                        "description": "Registration details",
-                        "name": "request",
+                        "description": "Check-in details",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest"
+                            "$ref": "#/definitions/CheckInRequest"
                         }
                     }
                 ],
@@ -200,19 +173,735 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/AttendanceResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/check-out": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Records employee check-out and calculates duration",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Check out from work",
+                "parameters": [
+                    {
+                        "description": "Check-out details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CheckOutRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/AttendanceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/leave-balance": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves current leave balance for authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Get leave balance",
+                "parameters": [
+                    {
+                        "enum": [
+                            "sick",
+                            "vacation",
+                            "personal"
+                        ],
+                        "type": "string",
+                        "description": "Leave type",
+                        "name": "leave_type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/LeaveBalanceResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/time-off": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Employee submits a time off request",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time Off"
+                ],
+                "summary": "Request time off",
+                "parameters": [
+                    {
+                        "description": "Time off request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TimeOffRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/TimeOffResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/time-off/{id}/approve": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Manager approves a pending time off request",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time Off"
+                ],
+                "summary": "Approve time off (Manager only)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Time off request ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Review note",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ReviewTimeOffRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/time-off/{id}/reject": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Manager rejects a pending time off request",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time Off"
+                ],
+                "summary": "Reject time off (Manager only)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Time off request ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Review note",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ReviewTimeOffRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves a single attendance record by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Get attendance by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Attendance ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/AttendanceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/{id}/manual": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Allows managers to manually create or edit attendance records",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Manually edit attendance (Admin/Manager only)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Attendance ID (0 for new)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Manual attendance data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ManualAttendanceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/AttendanceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "Authenticate user and return access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login to get access token",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_auth.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_auth.AuthResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Invalidate refresh token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout user",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get information about the currently authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get current user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_auth.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "security": [
+                    {
+                        "CsrfToken": []
+                    }
+                ],
+                "description": "Get a new access token using refresh token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refresh access token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_auth.AuthResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Create a new user account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "parameters": [
+                    {
+                        "description": "User registration details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_auth.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_auth.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
@@ -220,14 +909,17 @@
         },
         "/health": {
             "get": {
-                "description": "Get comprehensive health status of the API including database connectivity and system metrics",
+                "description": "Get comprehensive health status of the application",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "health"
+                    "Health"
                 ],
-                "summary": "Check API health",
+                "summary": "Get health status",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -240,14 +932,17 @@
         },
         "/ready": {
             "get": {
-                "description": "Check if API is ready to serve traffic (database connectivity check)",
+                "description": "Check if application is ready to serve traffic",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "health"
+                    "Health"
                 ],
-                "summary": "Check API readiness",
+                "summary": "Get readiness status",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -264,38 +959,173 @@
                 }
             }
         },
-        "/users/": {
+        "/reports/daily-summary": {
             "get": {
                 "security": [
                     {
                         "Bearer": []
-                    },
-                    {
-                        "X-CSRF-Token": []
                     }
                 ],
-                "description": "Get paginated list of users (admin only)",
+                "description": "Retrieves attendance summary for a specific date",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "Reports"
+                ],
+                "summary": "Get daily attendance summary",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Date (YYYY-MM-DD format)",
+                        "name": "date",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/DailySummaryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/employee/{id}/export": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Exports timesheet data for an employee for a specific period",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Export employee timesheet",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Employee ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start date (YYYY-MM-DD format)",
+                        "name": "start_date",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date (YYYY-MM-DD format)",
+                        "name": "end_date",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Timesheet CSV file",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get paginated list of users (admin only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
                 ],
                 "summary": "List users",
                 "parameters": [
                     {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 20,
+                        "description": "Page size",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
                         "type": "integer",
                         "default": 1,
                         "description": "Page number",
                         "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "maximum": 100,
-                        "type": "integer",
-                        "default": 10,
-                        "description": "Items per page",
-                        "name": "page_size",
                         "in": "query"
                     }
                 ],
@@ -303,19 +1133,31 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_users.ListUsersResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_users.ListUsersResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
@@ -324,9 +1166,6 @@
                 "security": [
                     {
                         "Bearer": []
-                    },
-                    {
-                        "X-CSRF-Token": []
                     }
                 ],
                 "description": "Create a new user (admin only)",
@@ -337,13 +1176,13 @@
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "Users"
                 ],
                 "summary": "Create user",
                 "parameters": [
                     {
                         "description": "User creation details",
-                        "name": "user",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -355,31 +1194,43 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
@@ -392,17 +1243,20 @@
                         "Bearer": []
                     }
                 ],
-                "description": "Get user profile by ID",
+                "description": "Get user details by ID",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "Users"
                 ],
                 "summary": "Get user by ID",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "User ID",
                         "name": "id",
                         "in": "path",
@@ -413,25 +1267,37 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_users.UserResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
@@ -440,12 +1306,9 @@
                 "security": [
                     {
                         "Bearer": []
-                    },
-                    {
-                        "X-CSRF-Token": []
                     }
                 ],
-                "description": "Update user profile (own profile or admin can update any)",
+                "description": "Update user's first and last name",
                 "consumes": [
                     "application/json"
                 ],
@@ -453,12 +1316,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "Users"
                 ],
-                "summary": "Update user",
+                "summary": "Update user profile",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "User ID",
                         "name": "id",
                         "in": "path",
@@ -466,7 +1329,7 @@
                     },
                     {
                         "description": "Updated user details",
-                        "name": "user",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -478,31 +1341,43 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_users.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
@@ -511,19 +1386,22 @@
                 "security": [
                     {
                         "Bearer": []
-                    },
-                    {
-                        "X-CSRF-Token": []
                     }
                 ],
-                "description": "Deactivate user account (admin only)",
-                "tags": [
-                    "users"
+                "description": "Soft delete a user (admin only)",
+                "consumes": [
+                    "application/json"
                 ],
-                "summary": "Deactivate user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete user",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "User ID",
                         "name": "id",
                         "in": "path",
@@ -531,37 +1409,31 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
+                    "204": {
+                        "description": "No Content"
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
@@ -572,12 +1444,9 @@
                 "security": [
                     {
                         "Bearer": []
-                    },
-                    {
-                        "X-CSRF-Token": []
                     }
                 ],
-                "description": "Change user password",
+                "description": "Change user's password",
                 "consumes": [
                     "application/json"
                 ],
@@ -585,24 +1454,24 @@
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "Users"
                 ],
-                "summary": "Change password",
+                "summary": "Update user password",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "User ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Password change details",
-                        "name": "password",
+                        "description": "Password update details",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_users.ChangePasswordRequest"
+                            "$ref": "#/definitions/internal_modules_users.UpdatePasswordRequest"
                         }
                     }
                 ],
@@ -610,28 +1479,46 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.Response"
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.Response"
                         }
                     }
                 }
@@ -639,43 +1526,388 @@
         }
     },
     "definitions": {
-        "github_com_waqasmani_api-boilerplate_internal_modules_users.CreateUserRequest": {
+        "AttendanceResponse": {
+            "description": "Attendance record response",
+            "type": "object",
+            "properties": {
+                "check_in_at": {
+                    "type": "string"
+                },
+                "check_in_latitude": {
+                    "type": "number"
+                },
+                "check_in_longitude": {
+                    "type": "number"
+                },
+                "check_out_at": {
+                    "type": "string"
+                },
+                "check_out_latitude": {
+                    "type": "number"
+                },
+                "check_out_longitude": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "duration_seconds": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_early_leave": {
+                    "type": "boolean"
+                },
+                "is_late": {
+                    "type": "boolean"
+                },
+                "overtime_seconds": {
+                    "type": "integer"
+                },
+                "shift_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "CheckInRequest": {
+            "description": "Check-in request with optional geolocation",
+            "type": "object",
+            "properties": {
+                "client_timestamp": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                }
+            }
+        },
+        "CheckOutRequest": {
+            "description": "Check-out request with optional geolocation",
+            "type": "object",
+            "properties": {
+                "attendance_id": {
+                    "description": "Optional: specify which session to close",
+                    "type": "integer"
+                },
+                "client_timestamp": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                }
+            }
+        },
+        "DailySummaryResponse": {
+            "type": "object",
+            "properties": {
+                "absent_count": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "late_count": {
+                    "type": "integer"
+                },
+                "on_leave_count": {
+                    "type": "integer"
+                },
+                "present_count": {
+                    "type": "integer"
+                },
+                "total_attendance": {
+                    "type": "integer"
+                },
+                "total_hours": {
+                    "type": "number"
+                },
+                "total_overtime_hours": {
+                    "type": "number"
+                }
+            }
+        },
+        "LeaveBalanceResponse": {
+            "type": "object",
+            "properties": {
+                "accrued_days": {
+                    "type": "number"
+                },
+                "available_days": {
+                    "type": "number"
+                },
+                "carryover_days": {
+                    "type": "number"
+                },
+                "leave_type": {
+                    "type": "string"
+                },
+                "used_days": {
+                    "type": "number"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ListAttendanceResponse": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "records": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AttendanceResponse"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ManualAttendanceRequest": {
+            "type": "object",
+            "required": [
+                "check_in_at",
+                "check_out_at",
+                "reason",
+                "user_id"
+            ],
+            "properties": {
+                "check_in_at": {
+                    "type": "string"
+                },
+                "check_out_at": {
+                    "type": "string"
+                },
+                "overtime_seconds": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string",
+                    "minLength": 10
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ReviewTimeOffRequest": {
+            "type": "object",
+            "required": [
+                "review_note"
+            ],
+            "properties": {
+                "review_note": {
+                    "type": "string",
+                    "minLength": 5
+                }
+            }
+        },
+        "TimeOffRequest": {
+            "type": "object",
+            "required": [
+                "end_date",
+                "leave_type",
+                "reason",
+                "start_date"
+            ],
+            "properties": {
+                "end_date": {
+                    "type": "string"
+                },
+                "leave_type": {
+                    "enum": [
+                        "sick",
+                        "vacation",
+                        "personal",
+                        "unpaid"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_infrastructure_sqlc.TimeOffRequestsLeaveType"
+                        }
+                    ]
+                },
+                "reason": {
+                    "type": "string",
+                    "minLength": 10
+                },
+                "start_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "TimeOffResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "days_count": {
+                    "type": "number"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "leave_type": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "review_note": {
+                    "type": "string"
+                },
+                "reviewed_at": {
+                    "type": "string"
+                },
+                "reviewed_by": {
+                    "type": "integer"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_waqasmani_go-boilerplate_internal_infrastructure_sqlc.TimeOffRequestsLeaveType": {
+            "type": "string",
+            "enum": [
+                "sick",
+                "vacation",
+                "personal",
+                "unpaid"
+            ],
+            "x-enum-varnames": [
+                "TimeOffRequestsLeaveTypeSick",
+                "TimeOffRequestsLeaveTypeVacation",
+                "TimeOffRequestsLeaveTypePersonal",
+                "TimeOffRequestsLeaveTypeUnpaid"
+            ]
+        },
+        "github_com_waqasmani_go-boilerplate_internal_shared_utils.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "details": {},
+                "message": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_waqasmani_go-boilerplate_internal_shared_utils.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "$ref": "#/definitions/github_com_waqasmani_go-boilerplate_internal_shared_utils.ErrorResponse"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_modules_auth.AuthResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/internal_modules_auth.UserResponse"
+                }
+            }
+        },
+        "internal_modules_auth.LoginRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_modules_auth.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
                 "first_name",
                 "last_name",
-                "password",
-                "role"
+                "password"
             ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
                 "first_name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
+                    "type": "string"
                 },
                 "last_name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
+                    "type": "string"
                 },
                 "password": {
                     "type": "string",
                     "minLength": 8
-                },
-                "role": {
-                    "type": "string",
-                    "enum": [
-                        "user",
-                        "admin"
-                    ]
                 }
             }
         },
-        "github_com_waqasmani_api-boilerplate_internal_modules_users.UserResponse": {
+        "internal_modules_auth.UserResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -695,49 +1927,6 @@
                 },
                 "role": {
                     "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "details": {},
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_waqasmani_api-boilerplate_internal_shared_utils.Response": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "error": {
-                    "$ref": "#/definitions/github_com_waqasmani_api-boilerplate_internal_shared_utils.ErrorResponse"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "internal_modules_auth.loginRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 8
                 }
             }
         },
@@ -767,6 +1956,9 @@
                 "database": {
                     "$ref": "#/definitions/internal_modules_health.DatabaseHealth"
                 },
+                "redis": {
+                    "$ref": "#/definitions/internal_modules_health.RedisHealth"
+                },
                 "status": {
                     "type": "string"
                 },
@@ -777,6 +1969,17 @@
                     "type": "string"
                 },
                 "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_modules_health.RedisHealth": {
+            "type": "object",
+            "properties": {
+                "latency": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }
@@ -795,23 +1998,6 @@
                 }
             }
         },
-        "internal_modules_users.ChangePasswordRequest": {
-            "type": "object",
-            "required": [
-                "current_password",
-                "new_password"
-            ],
-            "properties": {
-                "current_password": {
-                    "type": "string",
-                    "minLength": 8
-                },
-                "new_password": {
-                    "type": "string",
-                    "minLength": 8
-                }
-            }
-        },
         "internal_modules_users.CreateUserRequest": {
             "type": "object",
             "required": [
@@ -826,14 +2012,10 @@
                     "type": "string"
                 },
                 "first_name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
+                    "type": "string"
                 },
                 "last_name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
+                    "type": "string"
                 },
                 "password": {
                     "type": "string",
@@ -851,13 +2033,13 @@
         "internal_modules_users.ListUsersResponse": {
             "type": "object",
             "properties": {
+                "limit": {
+                    "type": "integer"
+                },
                 "page": {
                     "type": "integer"
                 },
-                "page_size": {
-                    "type": "integer"
-                },
-                "total_count": {
+                "total": {
                     "type": "integer"
                 },
                 "users": {
@@ -865,6 +2047,22 @@
                     "items": {
                         "$ref": "#/definitions/internal_modules_users.UserResponse"
                     }
+                }
+            }
+        },
+        "internal_modules_users.UpdatePasswordRequest": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "old_password"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "old_password": {
+                    "type": "string"
                 }
             }
         },
@@ -876,14 +2074,10 @@
             ],
             "properties": {
                 "first_name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
+                    "type": "string"
                 },
                 "last_name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
+                    "type": "string"
                 }
             }
         },
@@ -902,6 +2096,9 @@
                 "id": {
                     "type": "integer"
                 },
+                "is_active": {
+                    "type": "boolean"
+                },
                 "last_name": {
                     "type": "string"
                 },
@@ -912,6 +2109,20 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Type \"Bearer \u003cyour_token\u003e\" (include the word Bearer and a space)",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "CsrfToken": {
+            "description": "Enter your CSRF token",
+            "type": "apiKey",
+            "name": "X-CSRF-TOKEN",
+            "in": "header"
         }
     }
 }

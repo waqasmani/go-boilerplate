@@ -6,8 +6,15 @@ import (
 )
 
 type ErrorCode string
+type ErrorType string
 
 const (
+	// Error Types
+	ErrorTypeClient  ErrorType = "client_error"
+	ErrorTypeServer  ErrorType = "server_error"
+	ErrorTypeNetwork ErrorType = "network_error"
+
+	// Error Codes
 	ErrCodeInternal           ErrorCode = "INTERNAL_ERROR"
 	ErrCodeNotFound           ErrorCode = "NOT_FOUND"
 	ErrCodeBadRequest         ErrorCode = "BAD_REQUEST"
@@ -22,6 +29,8 @@ const (
 	ErrCodeTooManyRequests    ErrorCode = "TOO_MANY_REQUESTS"
 	ErrCodeTimeout            ErrorCode = "TIMEOUT"
 	ErrCodeDatabaseError      ErrorCode = "DATABASE_ERROR"
+	ErrCodeServiceUnavailable ErrorCode = "SERVICE_UNAVAILABLE"
+	ErrInvalidStatus          ErrorCode = "INVALID_STATUS"
 )
 
 type AppError struct {
@@ -29,8 +38,10 @@ type AppError struct {
 	Message    string
 	Details    any
 	Err        error
+	ErrorType  ErrorType
 	StatusCode int
 	Retryable  bool
+	Version    string
 }
 
 func (e *AppError) Error() string {
@@ -52,11 +63,29 @@ func (e *AppError) Is(target error) bool {
 	return e.Code == t.Code
 }
 
+func (e *AppError) GetErrorType() ErrorType {
+	return e.ErrorType
+}
+
+func determineErrorType(code ErrorCode) ErrorType {
+	switch code {
+	case ErrCodeBadRequest, ErrCodeUnauthorized, ErrCodeForbidden,
+		ErrCodeNotFound, ErrCodeInvalidToken, ErrCodeExpiredToken,
+		ErrCodeValidation, ErrCodeInvalidCredentials, ErrCodeTooManyRequests:
+		return ErrorTypeClient
+	case ErrCodeServiceUnavailable, ErrCodeTimeout:
+		return ErrorTypeNetwork
+	default:
+		return ErrorTypeServer
+	}
+}
+
 func New(code ErrorCode, message string) *AppError {
 	return &AppError{
 		Code:      code,
 		Message:   message,
-		Retryable: false,
+		ErrorType: determineErrorType(code),
+		Version:   "v1",
 	}
 }
 
@@ -65,15 +94,18 @@ func Wrap(err error, code ErrorCode, message string) *AppError {
 		Code:      code,
 		Message:   message,
 		Err:       err,
-		Retryable: false,
+		ErrorType: determineErrorType(code),
+		Version:   "v1",
 	}
 }
 
 func WithDetails(code ErrorCode, message string, details interface{}) *AppError {
 	return &AppError{
-		Code:    code,
-		Message: message,
-		Details: details,
+		Code:      code,
+		Message:   message,
+		Details:   details,
+		ErrorType: determineErrorType(code),
+		Version:   "v1",
 	}
 }
 
@@ -97,4 +129,5 @@ var (
 	ErrExpiredToken       = New(ErrCodeExpiredToken, "Token expired")
 	ErrRevokedToken       = New(ErrCodeRevokedToken, "Token revoked")
 	ErrTimeout            = New(ErrCodeTimeout, "Request timeout")
+	ErrServiceUnavailable = New(ErrCodeServiceUnavailable, "Service unavailable")
 )

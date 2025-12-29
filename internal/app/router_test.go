@@ -20,12 +20,10 @@ func TestSetupRouter_ConfigVariations(t *testing.T) {
 			Redis:    config.RedisConfig{Enabled: false},
 			Security: config.SecurityConfig{BcryptCost: 4},
 			JWT: config.JWTConfig{
-				AccessSecret:  "12345678901234567890123456789012",
-				RefreshSecret: "12345678901234567890123456789012",
+				AccessSecret: "12345678901234567890123456789012",
 			},
 			CORS: config.CORSConfig{AllowedOrigins: []string{"*"}},
 		}
-
 		container := NewContainer(cfg, db, logger)
 		router := SetupRouter(container)
 		assert.NotNil(t, router)
@@ -34,12 +32,11 @@ func TestSetupRouter_ConfigVariations(t *testing.T) {
 	t.Run("Development Mode", func(t *testing.T) {
 		cfg := &config.Config{
 			Server:   config.ServerConfig{Env: "development"},
-			Metrics:  config.MetricsConfig{Enabled: false},
+			Metrics:  config.MetricsConfig{Enabled: true},
 			Redis:    config.RedisConfig{Enabled: false},
 			Security: config.SecurityConfig{BcryptCost: 4},
 			JWT: config.JWTConfig{
-				AccessSecret:  "12345678901234567890123456789012",
-				RefreshSecret: "12345678901234567890123456789012",
+				AccessSecret: "12345678901234567890123456789012",
 			},
 			CORS: config.CORSConfig{AllowedOrigins: []string{"*"}},
 		}

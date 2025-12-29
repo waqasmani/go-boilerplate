@@ -2,39 +2,22 @@ package database
 
 import (
 	"context"
+	"database/sql"
 	"testing"
 	"time"
 
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
 	"github.com/waqasmani/go-boilerplate/internal/config"
+	"github.com/waqasmani/go-boilerplate/internal/infrastructure/database/errors"
+	"github.com/waqasmani/go-boilerplate/internal/infrastructure/observability"
 )
 
-func TestNewMariaDB_Config(t *testing.T) {
-	// 1. Test invalid connection (Ping failure)
-	// We point to a port that shouldn't be open or a bad host to force a ping error
-	// without needing to mock the driver internals heavily for this specific function.
-	cfg := &config.DatabaseConfig{
-		Host:            "255.255.255.255", // Non-routable IP to force timeout/fail
-		Port:            "3306",
-		User:            "user",
-		Password:        "pass",
-		Name:            "db",
-		ConnMaxLifetime: time.Millisecond * 10,
-	}
+func TestNewMariaDB(t *testing.T) {
+	logger, _ := observability.NewLogger("info", "json")
+	metrics := observability.NewMetrics()
 
-	// Short timeout for test speed
-	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
-	defer cancel()
-
-	db, err := NewMariaDB(ctx, cfg)
-	assert.Error(t, err)
-	assert.Nil(t, db)
-	assert.Contains(t, err.Error(), "failed to ping database")
-}
-
-func TestNewMariaDB_DSN_Format(t *testing.T) {
-	// This test ensures the formatting logic in NewMariaDB doesn't panic
-	// even if the driver fails immediately.
 	cfg := &config.DatabaseConfig{
 		Host:     "localhost",
 		Port:     "3306",
@@ -43,20 +26,94 @@ func TestNewMariaDB_DSN_Format(t *testing.T) {
 		Name:     "testdb",
 	}
 
-	// We simply call NewMariaDB with this config.
-	// We expect an error (because no DB is running), but we verify
-	// that the DSN string formatting inside the function didn't panic.
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	_, err := NewMariaDB(ctx, cfg)
+	// Test successful connection
+	db, err := NewMariaDB(ctx, cfg, metrics, logger)
+	if err == nil {
+		defer db.Close()
+		assert.NotNil(t, db)
+	}
 
-	// We expect a ping error, but not a panic.
+	// Test connection failure
+	badCfg := &config.DatabaseConfig{
+		Host:     "invalidhost",
+		Port:     "3306",
+		User:     "testuser",
+		Password: "testpass",
+		Name:     "testdb",
+	}
+
+	db, err = NewMariaDB(ctx, badCfg, metrics, logger)
+	assert.Nil(t, db)
 	assert.Error(t, err)
 }
 
-func TestDB_Tx(t *testing.T) {
-	// Note: Detailed Transaction testing requires a mock or real DB.
-	// Since DB embeds *sql.DB, standard sql behavior is assumed.
-	// The WithTx wrapper is best tested in the Service layer tests using sqlmock.
+func TestWithTx(t *testing.T) {
+	logger, _ := observability.NewLogger("info", "json")
+	metrics := observability.NewMetrics()
+
+	// Create a mock database
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	mockDB := &DB{
+		DB:          db,
+		retryConfig: errors.DefaultRetryConfig(),
+		metrics:     metrics,
+		logger:      logger,
+	}
+
+	// Test successful transaction
+	mock.ExpectBegin()
+	mock.ExpectExec("INSERT INTO users").WillReturnResult(sqlmock.NewResult(1, 1))
+	mock.ExpectCommit()
+
+	err = mockDB.WithTx(context.Background(), func(tx *sql.Tx) error {
+		_, err := tx.Exec("INSERT INTO users (name) VALUES (?)", "test")
+		return err
+	})
+	assert.NoError(t, err)
+	assert.NoError(t, mock.ExpectationsWereMet())
+
+	// Test failed transaction
+	mock.ExpectBegin()
+	mock.ExpectExec("INSERT INTO users").WillReturnError(assert.AnError)
+	mock.ExpectRollback()
+
+	err = mockDB.WithTx(context.Background(), func(tx *sql.Tx) error {
+		_, err := tx.Exec("INSERT INTO users (name) VALUES (?)", "test")
+		return err
+	})
+	assert.Error(t, err)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestRetryOnTransientErrors(t *testing.T) {
+	logger, _ := observability.NewLogger("info", "json")
+	metrics := observability.NewMetrics()
+
+	// Create a mock database
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	mockDB := &DB{
+		DB:          db,
+		retryConfig: errors.DefaultRetryConfig(),
+		metrics:     metrics,
+		logger:      logger,
+	}
+
+	mock.ExpectQuery("SELECT \\* FROM users").WillReturnError(&mysql.MySQLError{Number: 1213})
+
+	// Second expectation: return successful result on retry
+	mock.ExpectQuery("SELECT \\* FROM users").WillReturnRows(sqlmock.NewRows([]string{"id", "name"}).AddRow(1, "test"))
+
+	rows, err := mockDB.QueryContext(context.Background(), "SELECT * FROM users")
+	assert.NoError(t, err)
+	assert.NotNil(t, rows)
+	assert.NoError(t, mock.ExpectationsWereMet())
 }

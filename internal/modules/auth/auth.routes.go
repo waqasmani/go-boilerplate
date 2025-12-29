@@ -4,25 +4,36 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/waqasmani/go-boilerplate/internal/infrastructure/middleware"
 	"github.com/waqasmani/go-boilerplate/internal/infrastructure/security"
 )
 
-func RegisterRoutes(router *gin.Engine, h *Handler, authMiddleware *AuthMiddleware, rl security.RateLimiter) {
+func RegisterRoutes(router *gin.Engine, handler *Handler, authMiddleware *middleware.AuthMiddleware, rateLimiter security.RateLimiter) {
 	authGroup := router.Group("/api/v1/auth")
 	{
-		authGroup.POST("/register", security.RouteRateLimitMiddleware(rl, 5, time.Minute), h.Register)
-		authGroup.POST("/login", security.RouteRateLimitMiddleware(rl, 5, time.Minute), h.Login)
+		authGroup.POST("/register",
+			security.RouteRateLimitMiddleware(rateLimiter, 5, time.Minute),
+			handler.Register,
+		)
 
-		// Refresh can be slightly more relaxed
-		authGroup.POST("/refresh", security.RouteRateLimitMiddleware(rl, 20, time.Minute), h.RefreshTokens)
+		authGroup.POST("/login",
+			security.RouteRateLimitMiddleware(rateLimiter, 5, time.Minute),
+			handler.Login,
+		)
 
-		// Logout doesn't strictly need a heavy rate limit but can be capped
-		authGroup.POST("/logout", h.Logout)
-	}
+		authGroup.POST("/refresh",
+			security.RouteRateLimitMiddleware(rateLimiter, 10, time.Minute),
+			handler.Refresh,
+		)
 
-	csrfGroup := router.Group("/api/v1/auth")
-	csrfGroup.Use(authMiddleware.Authenticate())
-	{
-		csrfGroup.GET("/csrf-token", h.GetCSRFToken)
+		authGroup.POST("/logout",
+			authMiddleware.Authenticate(),
+			handler.Logout,
+		)
+
+		authGroup.GET("/me",
+			authMiddleware.Authenticate(),
+			handler.Me,
+		)
 	}
 }

@@ -3,6 +3,7 @@ package sqlc
 import (
 	"context"
 	"database/sql"
+	"errors" // Import added
 )
 
 type Repository struct {
@@ -25,8 +26,9 @@ func (r *Repository) WithTransaction(ctx context.Context, fn func(*Queries) erro
 	q := r.Queries.WithTx(tx)
 	err = fn(q)
 	if err != nil {
+		// FIX: Use errors.Join to preserve both the original error AND the rollback error
 		if rbErr := tx.Rollback(); rbErr != nil {
-			return rbErr
+			return errors.Join(err, rbErr)
 		}
 		return err
 	}

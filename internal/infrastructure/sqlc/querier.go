@@ -7,22 +7,71 @@ package sqlc
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 type Querier interface {
+	AcquireLock(ctx context.Context, getLOCK string) error
+	ApproveTimeOff(ctx context.Context, arg ApproveTimeOffParams) error
+	AssignShiftToEmployee(ctx context.Context, arg AssignShiftToEmployeeParams) error
+	AutoCloseStaleAttendance(ctx context.Context, dateSUB interface{}) (sql.Result, error)
+	CleanupOldFailedLoginAttempts(ctx context.Context, limit int32) (sql.Result, error)
+	ClearFailedLoginAttempts(ctx context.Context, email string) error
+	CloseAttendance(ctx context.Context, arg CloseAttendanceParams) error
+	CountAttendance(ctx context.Context, arg CountAttendanceParams) (int64, error)
 	CountUsers(ctx context.Context) (int64, error)
+	// Attendance Records Queries
+	CreateAttendance(ctx context.Context, arg CreateAttendanceParams) (sql.Result, error)
+	// Exceptions
+	CreateAttendanceException(ctx context.Context, arg CreateAttendanceExceptionParams) error
+	// Attendance Notes
+	CreateAttendanceNote(ctx context.Context, arg CreateAttendanceNoteParams) error
+	// Holidays
+	CreateHoliday(ctx context.Context, arg CreateHolidayParams) (sql.Result, error)
 	CreateRefreshToken(ctx context.Context, arg CreateRefreshTokenParams) error
+	// Shift Queries
+	CreateShift(ctx context.Context, arg CreateShiftParams) (sql.Result, error)
+	// Time Off Requests
+	CreateTimeOffRequest(ctx context.Context, arg CreateTimeOffRequestParams) (sql.Result, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error)
+	// Reports
+	DailySummary(ctx context.Context, checkInAt time.Time) ([]DailySummaryRow, error)
 	DeactivateUser(ctx context.Context, id uint64) error
-	DeleteExpiredRefreshTokens(ctx context.Context) error
+	DeleteExpiredRefreshTokens(ctx context.Context, limit int32) (sql.Result, error)
+	EmployeeMonthlyAggregate(ctx context.Context, arg EmployeeMonthlyAggregateParams) (EmployeeMonthlyAggregateRow, error)
+	ExportTimesheetForPeriod(ctx context.Context, arg ExportTimesheetForPeriodParams) ([]ExportTimesheetForPeriodRow, error)
+	GetAttendanceByID(ctx context.Context, id uint64) (AttendanceRecord, error)
+	GetEmployeeShiftForDate(ctx context.Context, arg GetEmployeeShiftForDateParams) (GetEmployeeShiftForDateRow, error)
+	GetFailedLoginAttempts(ctx context.Context, arg GetFailedLoginAttemptsParams) ([]FailedLoginAttempt, error)
+	GetHolidayByDate(ctx context.Context, date time.Time) (Holiday, error)
+	// Leave Accruals
+	GetLeaveBalance(ctx context.Context, arg GetLeaveBalanceParams) (GetLeaveBalanceRow, error)
+	GetOpenAttendanceForUser(ctx context.Context, userID uint64) (AttendanceRecord, error)
 	// We query by the hash of the token provided by the user
-	GetRefreshToken(ctx context.Context, tokenHash string) (RefreshToken, error)
+	GetRefreshToken(ctx context.Context, tokenHash string) (GetRefreshTokenRow, error)
+	GetShift(ctx context.Context, id uint64) (Shift, error)
+	GetTimeOffByID(ctx context.Context, id uint64) (TimeOffRequest, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserByID(ctx context.Context, id uint64) (User, error)
+	ListAttendance(ctx context.Context, arg ListAttendanceParams) ([]ListAttendanceRow, error)
+	ListAttendanceExceptions(ctx context.Context, attendanceID uint64) ([]AttendanceException, error)
+	ListAttendanceNotes(ctx context.Context, attendanceID uint64) ([]ListAttendanceNotesRow, error)
+	ListHolidays(ctx context.Context, arg ListHolidaysParams) ([]Holiday, error)
+	ListShifts(ctx context.Context) ([]Shift, error)
+	ListTimeOffForManager(ctx context.Context, arg ListTimeOffForManagerParams) ([]ListTimeOffForManagerRow, error)
+	ListUserTimeOff(ctx context.Context, arg ListUserTimeOffParams) ([]TimeOffRequest, error)
 	ListUsers(ctx context.Context, arg ListUsersParams) ([]ListUsersRow, error)
+	RecordFailedLoginAttempt(ctx context.Context, arg RecordFailedLoginAttemptParams) error
+	RejectTimeOff(ctx context.Context, arg RejectTimeOffParams) error
+	ReleaseLock(ctx context.Context, releaseLOCK string) error
+	ResolveException(ctx context.Context, arg ResolveExceptionParams) error
+	RevokeAllUserRefreshTokens(ctx context.Context, userID uint64) error
 	RevokeRefreshToken(ctx context.Context, tokenHash string) error
+	UpdateAttendanceManual(ctx context.Context, arg UpdateAttendanceManualParams) error
 	UpdateUser(ctx context.Context, arg UpdateUserParams) error
 	UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) error
+	UpsertLeaveAccrual(ctx context.Context, arg UpsertLeaveAccrualParams) error
+	ValidateRefreshToken(ctx context.Context, arg ValidateRefreshTokenParams) (ValidateRefreshTokenRow, error)
 }
 
 var _ Querier = (*Queries)(nil)
